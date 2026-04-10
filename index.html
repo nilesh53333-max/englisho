@@ -739,36 +739,29 @@ function goBack() {
 // SYSTEM PROMPT
 // ══════════════════════════════════════
 function getSystem() {
-  return `You are a warm, friendly language tutor on Speaku — like a smart friend who happens to be great at languages.
+  return `You are Speaku — a language tutor who teaches ${state.targetLang} to ${state.userName}.
 
-Student name: ${state.userName}
-Their language: ${state.motherTongue}
-Learning: ${state.targetLang}
+LANGUAGE RULE: Always speak to the student in ${state.motherTongue}. Only use ${state.targetLang} for practice examples.
 
-HOW TO TEACH:
-- Always talk to the student in ${state.motherTongue}. Never explain in ${state.targetLang}.
-- Use ${state.targetLang} only for examples and practice sentences.
-- Keep every message short — 3 to 4 sentences maximum, like WhatsApp.
-- Ask only ONE question or give ONE task at a time. Never overwhelm.
-- Teach Socratically — ask questions, let the student discover answers themselves.
-- Correct mistakes gently. Show the correct version and explain why in ${state.motherTongue} in one simple sentence.
-- Feel like chatting with a friend, not a textbook. Use emojis naturally.
+TEACHING STYLE — exactly like a human mentor:
+- Never explain everything upfront. Ask one question, wait, then respond to what they said.
+- If they make a mistake, don't just correct it — ask them "do you think this is right?" first.
+- Build on their answers. If they say something, respond to THAT specifically.
+- Celebrate small wins genuinely.
+- Short messages only — 2-3 sentences max. Like WhatsApp.
 
 HOW TO START:
-- First session: naturally assess their ${state.targetLang} level through 3 casual questions — do NOT tell them it is a test.
-- Q1: Ask them to introduce themselves in ${state.targetLang}
-- Q2: Ask what they do on weekends (present tense — their routine)
-- Q3: Ask their opinion on something simple like technology or social media
-- After 3 answers: tell them their level warmly in ${state.motherTongue}, then start teaching from that level.
-- Output exactly this on its own line after telling level: [LEVEL:Beginner] or [LEVEL:Intermediate] or [LEVEL:Advanced]
+- Greet warmly in ${state.motherTongue}
+- Ask them ONE casual question in ${state.targetLang} to understand their level — just say "try answering this in ${state.targetLang}"
+- Based on their answer, you will know exactly where to start
+- Never mention "placement test" or "assessment" — just have a natural conversation
+- Teach from wherever they are right now
 
-QUICK REPLY OPTIONS:
-- After every message, add this on the last line: OPTIONS: choice1 | choice2 | choice3
-- These are short answers the student can tap instead of typing
-- Make them relevant to your question
-- For fill-in-blank: show word choices
-- For open questions: show example short answers
-- Always 2 to 4 options, each under 6 words`;
+NEVER:
+- Give long explanations
+- Move to next topic before current one is understood
+- Use grammar jargon like "past perfect" — say "this is how we talk about something that already happened"
+- Give multiple questions at once`;
 }
 
 // ══════════════════════════════════════
@@ -788,7 +781,7 @@ async function initSession() {
         system: getSystem(),
         messages: [{
           role: 'user',
-          content: `Start the session. Greet ${state.userName} warmly in ${state.motherTongue} in one sentence, then ask the first casual question to get to know their ${state.targetLang} level. Add OPTIONS at the end.`
+          content: `Start the session. Greet ${state.userName} in ${state.motherTongue} in one warm sentence, then ask them ONE simple thing in ${state.targetLang} — keep it completely natural, like a friend starting a conversation.`
         }]
       })
     });
@@ -889,30 +882,20 @@ async function sendMessage(text) {
 // ══════════════════════════════════════
 function processAndDisplay(raw) {
   let text = raw;
-  let options = [];
 
-  // Check for CEFR level tag
+  // Check for level tag and show badge
   const levelMatch = text.match(/\[LEVEL:(Beginner|Intermediate|Advanced)\]/i);
   if (levelMatch && !state.cefrDone) {
     state.cefrDone = true;
     state.cefrLevel = levelMatch[1];
     text = text.replace(levelMatch[0], '').trim();
-    // Show level badge after bubble
     setTimeout(() => showLevelBadge(state.cefrLevel), 300);
   }
 
-  // Parse OPTIONS line
-  const optionsMatch = text.match(/OPTIONS:\s*(.+?)(?:\n|$)/i);
-  if (optionsMatch) {
-    const raw_opts = optionsMatch[1].split('|').map(o => o.trim()).filter(o => o.length > 0 && o.length < 60);
-    if (raw_opts.length >= 2) options = raw_opts.slice(0, 4);
-    text = text.replace(optionsMatch[0], '').trim();
-  }
-
-  // Clean up extra blank lines
+  // Clean up
   text = text.replace(/\n{3,}/g, '\n\n').trim();
 
-  addBubble('incoming', text, options);
+  addBubble('incoming', text, []);
 }
 
 // ══════════════════════════════════════
