@@ -986,7 +986,7 @@ function speakText(text) {
   };
 
   utterance.lang = motherVoiceMap[state.motherTongue] || 'en-US';
-  utterance.rate = 0.9;
+  utterance.rate = 0.75;
   utterance.pitch = 1.0;
   utterance.volume = 1.0;
 
@@ -1050,6 +1050,8 @@ function setupVoice() {
 
   recognition.onstart = () => {
     isRecording = true;
+    // Stop TTS so speaker doesn't interfere with mic
+    window.speechSynthesis.cancel();
     document.getElementById('micBtn').classList.add('recording');
     document.getElementById('micBtn').textContent = '⏹';
     setStatus('Listening...', false);
@@ -1061,12 +1063,14 @@ function setupVoice() {
     for (let i = e.resultIndex; i < e.results.length; i++) {
       transcript += e.results[i][0].transcript;
     }
-    document.getElementById('msgInput').value = transcript;
-    onInputChange(document.getElementById('msgInput'));
-    // Auto-send if final result
+    const input = document.getElementById('msgInput');
+    input.value = transcript;
+    onInputChange(input);
+    // DO NOT auto-send — let user review and press send button manually
     if (e.results[e.results.length - 1].isFinal) {
       stopRecording();
-      setTimeout(() => sendMessage(), 300);
+      // Just focus input so user can edit or press send
+      input.focus();
     }
   };
 
