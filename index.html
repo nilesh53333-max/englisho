@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <title>Speaku — Language Tutor</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
@@ -22,7 +22,6 @@ body {
   width: 100%;
   max-width: 430px;
   height: 100vh;
-  max-height: 900px;
   background: #111b21;
   display: flex;
   flex-direction: column;
@@ -30,7 +29,7 @@ body {
   overflow: hidden;
 }
 
-/* ── ONBOARDING ── */
+/* ══════════ ONBOARDING ══════════ */
 #onboarding {
   flex: 1;
   display: flex;
@@ -43,6 +42,7 @@ body {
   background: #202c33;
   padding: 20px 20px 24px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .ob-logo {
@@ -54,15 +54,9 @@ body {
 }
 
 .ob-logo span { color: #00a884; }
+.ob-tagline { font-size: 13px; color: #8696a0; }
 
-.ob-tagline {
-  font-size: 13px;
-  color: #8696a0;
-}
-
-.ob-section {
-  padding: 20px 16px 0;
-}
+.ob-section { padding: 16px 16px 0; }
 
 .ob-label {
   font-size: 11px;
@@ -77,7 +71,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-bottom: 4px;
 }
 
 .lang-btn {
@@ -93,21 +86,13 @@ body {
   font-size: 13px;
   color: #e9edef;
   font-family: 'Inter', sans-serif;
+  font-weight: 500;
 }
 
-.lang-btn:hover { background: #2a3942; }
-.lang-btn.selected {
-  border-color: #00a884;
-  background: rgba(0,168,132,0.1);
-  color: #00a884;
-}
+.lang-btn:active { opacity: 0.7; }
+.lang-btn.selected { border-color: #00a884; background: rgba(0,168,132,0.12); color: #00a884; }
 
 .lang-flag { font-size: 18px; }
-.lang-name { font-weight: 500; }
-
-.name-section {
-  padding: 16px 16px 0;
-}
 
 .name-input {
   width: 100%;
@@ -125,37 +110,17 @@ body {
 .name-input:focus { border-color: #00a884; }
 .name-input::placeholder { color: #8696a0; }
 
-/* Level selector */
-.level-section { padding: 16px 16px 0; }
-
-.level-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 8px;
-}
-
-.level-card {
+.auto-level-box {
   background: #202c33;
-  border: 1.5px solid #2a3942;
+  border: 1.5px solid #00a884;
   border-radius: 12px;
-  padding: 14px 8px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.15s;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.level-card:hover { background: #2a3942; }
-.level-card.selected {
-  border-color: #00a884;
-  background: rgba(0,168,132,0.1);
-}
-
-.level-emoji { font-size: 24px; margin-bottom: 6px; }
-.level-name { font-size: 12px; font-weight: 600; color: #e9edef; }
-.level-desc { font-size: 10px; color: #8696a0; margin-top: 2px; }
-.level-card.selected .level-name { color: #00a884; }
-
-.start-section { padding: 20px 16px 24px; }
+.start-section { padding: 20px 16px 28px; }
 
 .start-btn {
   width: 100%;
@@ -169,14 +134,9 @@ body {
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 
-.start-btn:hover { background: #017a62; }
-.start-btn:disabled { background: #2a3942; color: #8696a0; cursor: not-allowed; }
+.start-btn:active { opacity: 0.85; }
 
 .free-note {
   text-align: center;
@@ -185,14 +145,15 @@ body {
   margin-top: 10px;
 }
 
-/* ── CHAT ── */
+/* ══════════ CHAT SCREEN ══════════ */
 #chatScreen {
   display: none;
   flex-direction: column;
   height: 100%;
+  position: relative;
 }
 
-/* WhatsApp header */
+/* Header */
 .wa-header {
   background: #202c33;
   padding: 10px 16px;
@@ -201,58 +162,49 @@ body {
   gap: 12px;
   border-bottom: 1px solid #2a3942;
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .wa-back {
   color: #aebac1;
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
-  padding: 4px;
+  padding: 4px 6px 4px 0;
+  line-height: 1;
 }
 
 .tutor-avatar {
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00a884, #017a62);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   font-size: 18px;
   flex-shrink: 0;
 }
 
-.tutor-info { flex: 1; }
-
-.tutor-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: #e9edef;
-}
-
-.tutor-status {
-  font-size: 12px;
-  color: #8696a0;
-  margin-top: 1px;
-}
-
+.tutor-info { flex: 1; min-width: 0; }
+.tutor-name { font-size: 15px; font-weight: 600; color: #e9edef; }
+.tutor-status { font-size: 12px; color: #8696a0; margin-top: 1px; }
 .tutor-status.typing { color: #00a884; }
+.tutor-status.recording { color: #f44336; }
 
-.wa-actions {
-  display: flex;
-  gap: 16px;
-  color: #aebac1;
-  font-size: 18px;
+.msgs-left-bar {
+  background: #182229;
+  text-align: center;
+  padding: 5px;
+  font-size: 11px;
+  color: #8696a0;
+  flex-shrink: 0;
 }
+.msgs-left-bar span { color: #00a884; font-weight: 600; }
 
 /* Chat background */
 .wa-bg {
   flex: 1;
   overflow-y: auto;
-  padding: 10px 12px;
+  padding: 10px 12px 6px;
   background-color: #0b141a;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cg fill='none' stroke='%23182229' stroke-width='1'%3E%3Cpath d='M20 20c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S20 25.5 20 20z'/%3E%3Cpath d='M60 20c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S60 25.5 60 20z'/%3E%3Cpath d='M20 60c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S20 65.5 20 60z'/%3E%3Cpath d='M60 60c0-5.5 4.5-10 10-10s10 4.5 10 10-4.5 10-10 10S60 65.5 60 60z'/%3E%3C/g%3E%3C/svg%3E");
-  position: relative;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='12' fill='none' stroke='%23182229' stroke-width='1'/%3E%3C/svg%3E");
   scroll-behavior: smooth;
 }
 
@@ -260,11 +212,7 @@ body {
 .wa-bg::-webkit-scrollbar-thumb { background: #2a3942; border-radius: 3px; }
 
 /* Date pill */
-.date-pill {
-  text-align: center;
-  margin: 8px 0;
-}
-
+.date-pill { text-align: center; margin: 6px 0 10px; }
 .date-pill span {
   background: #182229;
   color: #8696a0;
@@ -274,28 +222,29 @@ body {
   display: inline-block;
 }
 
-/* Message bubbles */
+/* Message rows */
 .msg-row {
   display: flex;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   animation: msgPop 0.2s ease both;
 }
 
 @keyframes msgPop {
-  from { opacity: 0; transform: scale(0.97) translateY(4px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; transform: translateY(5px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .msg-row.incoming { justify-content: flex-start; }
 .msg-row.outgoing { justify-content: flex-end; }
 
+/* Bubbles */
 .bubble {
-  max-width: 75%;
-  padding: 7px 9px 7px 9px;
+  max-width: 78%;
+  padding: 7px 10px 22px;
   border-radius: 8px;
   position: relative;
   word-break: break-word;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
 .bubble.incoming {
@@ -310,37 +259,30 @@ body {
   color: #e9edef;
 }
 
-/* Bubble tails */
+/* Tails */
 .bubble.incoming::before {
   content: '';
   position: absolute;
-  top: 0; left: -8px;
-  border: 8px solid transparent;
-  border-top-color: #202c33;
-  border-right-color: #202c33;
-  border-radius: 2px 0 0 0;
+  top: 0; left: -7px;
+  width: 0; height: 0;
+  border-top: 8px solid #202c33;
+  border-left: 8px solid transparent;
 }
 
 .bubble.outgoing::before {
   content: '';
   position: absolute;
-  top: 0; right: -8px;
-  border: 8px solid transparent;
-  border-top-color: #005c4b;
-  border-left-color: #005c4b;
-  border-radius: 0 2px 0 0;
+  top: 0; right: -7px;
+  width: 0; height: 0;
+  border-top: 8px solid #005c4b;
+  border-right: 8px solid transparent;
 }
 
-.bubble-text {
-  font-size: 14px;
-  padding-right: 44px;
-  min-width: 80px;
-}
+.bubble-text { font-size: 14px; }
 
 .bubble-meta {
   position: absolute;
-  bottom: 5px;
-  right: 8px;
+  bottom: 4px; right: 8px;
   display: flex;
   align-items: center;
   gap: 3px;
@@ -349,9 +291,31 @@ body {
   white-space: nowrap;
 }
 
-.bubble.outgoing .bubble-meta { color: #8696a0; }
+.ticks { color: #53bdeb; font-size: 12px; }
 
-.ticks { font-size: 12px; color: #53bdeb; }
+/* Quick reply buttons */
+.quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 6px 0 8px 4px;
+  animation: msgPop 0.25s ease both;
+}
+
+.qr-btn {
+  background: transparent;
+  border: 1.5px solid #00a884;
+  border-radius: 18px;
+  padding: 7px 14px;
+  font-size: 13px;
+  color: #00a884;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-weight: 500;
+}
+
+.qr-btn:active { background: rgba(0,168,132,0.15); transform: scale(0.97); }
 
 /* Typing indicator */
 .typing-bubble {
@@ -363,17 +327,17 @@ body {
   align-items: center;
   gap: 4px;
   width: fit-content;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
   position: relative;
 }
 
 .typing-bubble::before {
   content: '';
   position: absolute;
-  top: 0; left: -8px;
-  border: 8px solid transparent;
-  border-top-color: #202c33;
-  border-right-color: #202c33;
+  top: 0; left: -7px;
+  width: 0; height: 0;
+  border-top: 8px solid #202c33;
+  border-left: 8px solid transparent;
 }
 
 .typing-bubble.visible { display: flex; }
@@ -392,8 +356,7 @@ body {
   30% { transform: translateY(-5px); opacity: 1; }
 }
 
-/* Scroll anchor */
-#scrollAnchor { height: 1px; }
+#scrollAnchor { height: 4px; }
 
 /* Input bar */
 .wa-input-bar {
@@ -416,8 +379,6 @@ body {
   min-height: 44px;
 }
 
-.wa-emoji { color: #8696a0; font-size: 20px; cursor: pointer; flex-shrink: 0; margin-bottom: 2px; }
-
 #msgInput {
   flex: 1;
   background: transparent;
@@ -429,44 +390,70 @@ body {
   resize: none;
   max-height: 100px;
   line-height: 1.4;
-  padding: 0;
+  padding: 2px 0;
 }
 
 #msgInput::placeholder { color: #8696a0; }
 
-.wa-attach { color: #8696a0; font-size: 20px; cursor: pointer; flex-shrink: 0; margin-bottom: 2px; }
+/* Mic button */
+.mic-btn {
+  width: 44px; height: 44px;
+  background: #00a884;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  font-size: 20px;
+  color: white;
+}
 
+.mic-btn.recording {
+  background: #f44336;
+  animation: micPulse 1s infinite;
+}
+
+@keyframes micPulse {
+  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(244,67,54,0); }
+}
+
+.mic-btn:disabled { background: #2a3942; cursor: not-allowed; }
+
+/* Send btn — shown when text typed */
 .send-btn {
   width: 44px; height: 44px;
   background: #00a884;
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: none;
+  align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: all 0.15s;
   font-size: 18px;
   color: white;
+  transition: all 0.15s;
 }
 
-.send-btn:hover { background: #017a62; }
-.send-btn:disabled { background: #2a3942; cursor: not-allowed; }
+.send-btn.visible { display: flex; }
+.send-btn:active { opacity: 0.8; }
 
-/* Messages left badge */
-.msgs-left-bar {
-  background: #182229;
+/* CEFR result badge */
+.level-badge {
+  background: rgba(0,168,132,0.12);
+  border: 1px solid #00a884;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px 0 8px;
+  font-size: 13px;
+  color: #00a884;
   text-align: center;
-  padding: 5px;
-  font-size: 11px;
-  color: #8696a0;
-  flex-shrink: 0;
+  font-weight: 600;
+  animation: msgPop 0.3s ease both;
 }
 
-.msgs-left-bar span { color: #00a884; font-weight: 600; }
-
-/* Paywall overlay */
+/* Paywall */
 #paywallOverlay {
   display: none;
   position: absolute;
@@ -504,7 +491,6 @@ body {
 }
 
 .pw-plan.active { border-color: #00a884; background: rgba(0,168,132,0.1); }
-
 .pw-plan-name { font-size: 13px; font-weight: 600; color: #e9edef; margin-bottom: 4px; }
 .pw-plan-price { font-size: 20px; font-weight: 700; color: #00a884; }
 .pw-plan-period { font-size: 11px; color: #8696a0; }
@@ -533,79 +519,78 @@ body {
   font-family: 'Inter', sans-serif;
   text-decoration: underline;
 }
+
+/* No mic support notice */
+.no-mic-notice {
+  font-size: 11px;
+  color: #8696a0;
+  text-align: center;
+  padding: 4px 0 0;
+}
 </style>
 </head>
 <body>
-
 <div class="phone">
 
-<!-- ═══════════ ONBOARDING ═══════════ -->
+<!-- ══════════ ONBOARDING ══════════ -->
 <div id="onboarding">
   <div class="ob-header">
     <div class="ob-logo">Speak<span>u</span> 🌍</div>
     <div class="ob-tagline">Learn any language, like chatting with a friend</div>
   </div>
 
-  <!-- Mother tongue -->
   <div class="ob-section">
     <div class="ob-label">I speak</div>
     <div class="lang-grid" id="motherGrid">
-      <button class="lang-btn selected" data-lang="Marathi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Marathi</span></button>
-      <button class="lang-btn" data-lang="Hindi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Hindi</span></button>
-      <button class="lang-btn" data-lang="Tamil" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Tamil</span></button>
-      <button class="lang-btn" data-lang="Telugu" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Telugu</span></button>
-      <button class="lang-btn" data-lang="English" onclick="selectMother(this)"><span class="lang-flag">🇬🇧</span><span class="lang-name">English</span></button>
-      <button class="lang-btn" data-lang="Spanish" onclick="selectMother(this)"><span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span></button>
-      <button class="lang-btn" data-lang="French" onclick="selectMother(this)"><span class="lang-flag">🇫🇷</span><span class="lang-name">French</span></button>
-      <button class="lang-btn" data-lang="German" onclick="selectMother(this)"><span class="lang-flag">🇩🇪</span><span class="lang-name">German</span></button>
+      <button class="lang-btn selected" data-lang="Marathi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Marathi</button>
+      <button class="lang-btn" data-lang="Hindi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Hindi</button>
+      <button class="lang-btn" data-lang="Tamil" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Tamil</button>
+      <button class="lang-btn" data-lang="Telugu" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Telugu</button>
+      <button class="lang-btn" data-lang="Gujarati" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Gujarati</button>
+      <button class="lang-btn" data-lang="Punjabi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Punjabi</button>
+      <button class="lang-btn" data-lang="English" onclick="selectMother(this)"><span class="lang-flag">🇬🇧</span> English</button>
+      <button class="lang-btn" data-lang="Spanish" onclick="selectMother(this)"><span class="lang-flag">🇪🇸</span> Spanish</button>
     </div>
   </div>
 
-  <!-- Target language -->
-  <div class="ob-section" style="margin-top:16px">
+  <div class="ob-section" style="margin-top:14px">
     <div class="ob-label">I want to learn</div>
     <div class="lang-grid" id="targetGrid">
-      <button class="lang-btn selected" data-lang="English" onclick="selectTarget(this)"><span class="lang-flag">🇬🇧</span><span class="lang-name">English</span></button>
-      <button class="lang-btn" data-lang="Spanish" onclick="selectTarget(this)"><span class="lang-flag">🇪🇸</span><span class="lang-name">Spanish</span></button>
-      <button class="lang-btn" data-lang="French" onclick="selectTarget(this)"><span class="lang-flag">🇫🇷</span><span class="lang-name">French</span></button>
-      <button class="lang-btn" data-lang="Japanese" onclick="selectTarget(this)"><span class="lang-flag">🇯🇵</span><span class="lang-name">Japanese</span></button>
-      <button class="lang-btn" data-lang="German" onclick="selectTarget(this)"><span class="lang-flag">🇩🇪</span><span class="lang-name">German</span></button>
-      <button class="lang-btn" data-lang="Korean" onclick="selectTarget(this)"><span class="lang-flag">🇰🇷</span><span class="lang-name">Korean</span></button>
-      <button class="lang-btn" data-lang="Hindi" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Hindi</span></button>
-      <button class="lang-btn" data-lang="Marathi" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span><span class="lang-name">Marathi</span></button>
+      <button class="lang-btn selected" data-lang="English" data-voice="en-US" onclick="selectTarget(this)"><span class="lang-flag">🇬🇧</span> English</button>
+      <button class="lang-btn" data-lang="Spanish" data-voice="es-ES" onclick="selectTarget(this)"><span class="lang-flag">🇪🇸</span> Spanish</button>
+      <button class="lang-btn" data-lang="French" data-voice="fr-FR" onclick="selectTarget(this)"><span class="lang-flag">🇫🇷</span> French</button>
+      <button class="lang-btn" data-lang="German" data-voice="de-DE" onclick="selectTarget(this)"><span class="lang-flag">🇩🇪</span> German</button>
+      <button class="lang-btn" data-lang="Japanese" data-voice="ja-JP" onclick="selectTarget(this)"><span class="lang-flag">🇯🇵</span> Japanese</button>
+      <button class="lang-btn" data-lang="Korean" data-voice="ko-KR" onclick="selectTarget(this)"><span class="lang-flag">🇰🇷</span> Korean</button>
+      <button class="lang-btn" data-lang="Hindi" data-voice="hi-IN" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span> Hindi</button>
+      <button class="lang-btn" data-lang="Marathi" data-voice="mr-IN" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span> Marathi</button>
     </div>
   </div>
 
-  <!-- Level auto detect -->
-  <div style="padding:16px 16px 0">
+  <div class="ob-section" style="margin-top:14px">
+    <div class="ob-label">Your name</div>
+    <input type="text" class="name-input" id="nameInput" placeholder="So your tutor knows what to call you..." maxlength="20"/>
+  </div>
+
+  <div class="ob-section" style="margin-top:14px">
     <div class="ob-label">Level check</div>
-    <div style="background:#202c33;border:1.5px solid #00a884;border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px;">
+    <div class="auto-level-box">
       <div style="font-size:26px">🎯</div>
       <div>
         <div style="font-size:13px;font-weight:600;color:#e9edef;margin-bottom:3px">Auto-detected in chat</div>
-        <div style="font-size:12px;color:#8696a0;line-height:1.4">We'll ask you 3 quick questions inside the chat and figure out your exact level — no guessing!</div>
+        <div style="font-size:12px;color:#8696a0;line-height:1.4">3 quick questions inside the chat will figure out your exact level — no guessing!</div>
       </div>
     </div>
   </div>
 
-  <!-- Name -->
-  <div class="name-section" style="margin-top:16px">
-    <div class="ob-label">Your name</div>
-    <input type="text" class="name-input" id="nameInput" placeholder="So your tutor can address you..." maxlength="20"/>
-  </div>
-
-  <!-- Start -->
   <div class="start-section">
-    <button class="start-btn" id="startBtn" onclick="startChat()">
-      Start Learning 🚀
-    </button>
-    <div class="free-note">✓ Free to try · No signup needed · 20 free messages</div>
+    <button class="start-btn" onclick="startChat()">Start Learning 🚀</button>
+    <div class="free-note">✓ Free to try · No signup · 20 free messages</div>
   </div>
 </div>
 
-<!-- ═══════════ CHAT SCREEN ═══════════ -->
+<!-- ══════════ CHAT SCREEN ══════════ -->
 <div id="chatScreen">
-  <!-- Header -->
   <div class="wa-header">
     <div class="wa-back" onclick="goBack()">←</div>
     <div class="tutor-avatar">🎓</div>
@@ -613,42 +598,36 @@ body {
       <div class="tutor-name" id="tutorName">Speaku Tutor</div>
       <div class="tutor-status" id="tutorStatus">online</div>
     </div>
-    <div class="wa-actions">
-      <span>📞</span>
-      <span>⋮</span>
+    <div style="display:flex;gap:16px;color:#aebac1;font-size:18px">
+      <span>📞</span><span>⋮</span>
     </div>
   </div>
 
   <div class="msgs-left-bar">Free session · <span id="msgsLeft">20</span> messages left</div>
 
-  <!-- Chat bg -->
   <div class="wa-bg" id="chatBg">
-    <div class="date-pill"><span>Today</span></div>
+    <div class="date-pill"><span id="todayDate">Today</span></div>
     <div class="typing-bubble" id="typingBubble">
-      <div class="td"></div>
-      <div class="td"></div>
-      <div class="td"></div>
+      <div class="td"></div><div class="td"></div><div class="td"></div>
     </div>
     <div id="scrollAnchor"></div>
   </div>
 
-  <!-- Input -->
   <div class="wa-input-bar">
     <div class="wa-input-wrap">
-      <span class="wa-emoji">😊</span>
       <textarea id="msgInput" placeholder="Type a message..." rows="1"
-        onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
-      <span class="wa-attach">📎</span>
+        onkeydown="handleKey(event)"
+        oninput="onInputChange(this)"></textarea>
     </div>
     <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
+    <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Tap to speak">🎤</button>
   </div>
 
-  <!-- Paywall -->
   <div id="paywallOverlay">
     <div class="paywall-sheet">
       <div class="pw-icon">🎓</div>
       <div class="pw-title">You're doing great!</div>
-      <div class="pw-sub">Free session ended. Upgrade to keep learning with unlimited sessions in any language.</div>
+      <div class="pw-sub">Free session ended. Upgrade to continue with unlimited sessions in any language.</div>
       <div class="pw-plans">
         <div class="pw-plan active" id="plan1" onclick="selectPlan(1)">
           <div class="pw-plan-name">Monthly</div>
@@ -663,44 +642,7 @@ body {
         </div>
       </div>
       <button class="pw-btn">Continue Learning →</button>
-      <button class="pw-free" onclick="dismissPaywall()">Continue with free (3 more messages)</button>
-    </div>
-  </div>
-
-  <!-- CEFR Certificate -->
-  <div id="certOverlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.9);z-index:200;align-items:center;justify-content:center;padding:20px;">
-    <div style="width:100%;max-width:360px;">
-      <!-- Certificate Card -->
-      <div id="certCard" style="background:linear-gradient(135deg,#1a2a1a,#0d1f0d);border:2px solid #00a884;border-radius:20px;padding:28px 24px;text-align:center;position:relative;overflow:hidden;">
-        <!-- Background pattern -->
-        <div style="position:absolute;inset:0;opacity:0.05;background-image:repeating-linear-gradient(45deg,#00a884 0,#00a884 1px,transparent 0,transparent 50%);background-size:20px 20px;"></div>
-        
-        <div style="position:relative;z-index:1;">
-          <div style="font-size:11px;letter-spacing:2px;color:#00a884;text-transform:uppercase;margin-bottom:12px">Speaku · Language Assessment</div>
-          <div style="font-size:48px;margin-bottom:4px">🎓</div>
-          <div style="font-size:13px;color:#8696a0;margin-bottom:6px">This certifies that</div>
-          <div style="font-size:22px;font-weight:700;color:#e9edef;margin-bottom:16px" id="certName">Nilesh</div>
-          
-          <div style="background:rgba(0,168,132,0.15);border:1.5px solid #00a884;border-radius:14px;padding:16px;margin-bottom:16px;">
-            <div style="font-size:48px;font-weight:800;color:#00a884;line-height:1" id="certLevel">B1</div>
-            <div style="font-size:13px;color:#e9edef;margin-top:4px" id="certLang">English</div>
-            <div style="font-size:11px;color:#8696a0;margin-top:4px">CEFR Level</div>
-          </div>
-          
-          <div style="font-size:12px;color:#8696a0;line-height:1.5;margin-bottom:16px" id="certDesc">Can understand the main points of clear standard input on familiar matters.</div>
-          
-          <div style="font-size:11px;color:#3a4a52;margin-bottom:20px">speaku.ai · ${new Date().toLocaleDateString('en-IN')}</div>
-          
-          <div style="display:flex;flex-direction:column;gap:10px;">
-            <button onclick="shareOrDownloadCert()" style="background:#00a884;color:white;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
-              📤 Share Certificate
-            </button>
-            <button onclick="startLearning()" style="background:transparent;color:#00a884;border:1.5px solid #00a884;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
-              Start Learning →
-            </button>
-          </div>
-        </div>
-      </div>
+      <button class="pw-free" onclick="dismissPaywall()">Continue free (3 more messages)</button>
     </div>
   </div>
 </div>
@@ -708,20 +650,31 @@ body {
 </div><!-- .phone -->
 
 <script>
-const WORKER_URL = 'https://speaku-api.nilesh53333.workers.dev';
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const WORKER = 'https://speaku-api.nilesh53333.workers.dev';
 const MAX_FREE = 20;
 
-let state = {
+const state = {
   motherTongue: 'Marathi',
   targetLang: 'English',
-  level: 'unknown',
-  userName: '',
+  voiceLang: 'en-US',
+  userName: 'there',
   msgCount: 0,
   history: [],
-  loading: false
+  loading: false,
+  cefrDone: false,
+  cefrLevel: null
 };
 
-// ── ONBOARDING ──
+// Speech recognition
+let recognition = null;
+let isRecording = false;
+
+// ══════════════════════════════════════
+// ONBOARDING
+// ══════════════════════════════════════
 function selectMother(el) {
   document.querySelectorAll('#motherGrid .lang-btn').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
@@ -732,104 +685,101 @@ function selectTarget(el) {
   document.querySelectorAll('#targetGrid .lang-btn').forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
   state.targetLang = el.dataset.lang;
+  state.voiceLang = el.dataset.voice || 'en-US';
 }
 
-function selectLevel(el, level) {
-  document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  state.level = level;
-}
-
-function selectPlan(n) {
-  document.getElementById('plan1').classList.toggle('active', n === 1);
-  document.getElementById('plan2').classList.toggle('active', n === 2);
-}
-
-function dismissPaywall() {
-  state.msgCount = 0;
-  document.getElementById('msgsLeft').textContent = 3;
-  document.getElementById('paywallOverlay').classList.remove('visible');
-}
-
-// ── START CHAT ──
 function startChat() {
   if (state.motherTongue === state.targetLang) {
     alert('Please select different languages!');
     return;
   }
-
   state.userName = document.getElementById('nameInput').value.trim() || 'there';
 
-  // Update header
-  const langFlags = { English:'🇬🇧', Spanish:'🇪🇸', French:'🇫🇷', German:'🇩🇪', Japanese:'🇯🇵', Korean:'🇰🇷', Hindi:'🇮🇳', Marathi:'🇮🇳', Tamil:'🇮🇳', Telugu:'🇮🇳' };
-  document.getElementById('tutorName').textContent = `${langFlags[state.targetLang] || '🌍'} ${state.targetLang} Tutor`;
+  // Set today's date
+  const now = new Date();
+  document.getElementById('todayDate').textContent =
+    now.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' });
 
+  // Flag emojis map
+  const flags = { English:'🇬🇧', Spanish:'🇪🇸', French:'🇫🇷', German:'🇩🇪', Japanese:'🇯🇵', Korean:'🇰🇷', Hindi:'🇮🇳', Marathi:'🇮🇳', Tamil:'🇮🇳', Telugu:'🇮🇳', Gujarati:'🇮🇳', Punjabi:'🇮🇳' };
+  document.getElementById('tutorName').textContent = `${flags[state.targetLang] || '🌍'} ${state.targetLang} Tutor`;
+
+  // Show chat screen
   document.getElementById('onboarding').style.display = 'none';
-  document.getElementById('chatScreen').style.display = 'flex';
-  document.getElementById('chatScreen').style.flexDirection = 'column';
-  document.getElementById('chatScreen').style.height = '100%';
-  document.getElementById('chatScreen').style.position = 'relative';
+  const cs = document.getElementById('chatScreen');
+  cs.style.display = 'flex';
+  cs.style.flexDirection = 'column';
+  cs.style.height = '100%';
 
-  setTimeout(() => initSession(), 400);
+  // Setup voice
+  setupVoice();
+
+  setTimeout(initSession, 500);
 }
 
 function goBack() {
+  stopRecording();
   document.getElementById('chatScreen').style.display = 'none';
   document.getElementById('onboarding').style.display = 'flex';
   document.getElementById('onboarding').style.flexDirection = 'column';
-  // Clear chat
+  // Reset
   const bg = document.getElementById('chatBg');
-  bg.innerHTML = '<div class="date-pill"><span>Today</span></div><div class="typing-bubble" id="typingBubble"><div class="td"></div><div class="td"></div><div class="td"></div></div><div id="scrollAnchor"></div>';
+  bg.innerHTML = '<div class="date-pill"><span id="todayDate">Today</span></div><div class="typing-bubble" id="typingBubble"><div class="td"></div><div class="td"></div><div class="td"></div></div><div id="scrollAnchor"></div>';
   state.history = [];
   state.msgCount = 0;
+  state.cefrDone = false;
+  state.cefrLevel = null;
+  state.loading = false;
+  document.getElementById('msgsLeft').textContent = MAX_FREE;
+  document.getElementById('sendBtn').classList.remove('visible');
+  document.getElementById('msgInput').value = '';
 }
 
-// ── SYSTEM PROMPT ──
+// ══════════════════════════════════════
+// SYSTEM PROMPT
+// ══════════════════════════════════════
 function getSystem() {
-  return `You are a CEFR-certified ${state.targetLang} language assessor and tutor on Speaku.
+  return `You are a warm, friendly language tutor on Speaku — like a smart friend who happens to be great at languages.
 
-Student: ${state.userName} | Mother tongue: ${state.motherTongue} | Learning: ${state.targetLang}
+Student name: ${state.userName}
+Their language: ${state.motherTongue}
+Learning: ${state.targetLang}
 
-PHASE 1 — CEFR PLACEMENT TEST (first 5 exchanges):
-Ask exactly 5 questions, one at a time. Wait for each answer before asking next.
+HOW TO TEACH:
+- Always talk to the student in ${state.motherTongue}. Never explain in ${state.targetLang}.
+- Use ${state.targetLang} only for examples and practice sentences.
+- Keep every message short — 3 to 4 sentences maximum, like WhatsApp.
+- Ask only ONE question or give ONE task at a time. Never overwhelm.
+- Teach Socratically — ask questions, let the student discover answers themselves.
+- Correct mistakes gently. Show the correct version and explain why in ${state.motherTongue} in one simple sentence.
+- Feel like chatting with a friend, not a textbook. Use emojis naturally.
 
-Q1 (A1 test): Ask them to introduce themselves in ${state.targetLang} — name, where from, what they do.
-Q2 (A2 test): Ask them to describe their daily routine in ${state.targetLang}.
-Q3 (B1 test): Ask them to describe a problem they faced recently and how they solved it.
-Q4 (B1/B2 test): Ask their opinion on a current topic — like technology, social media, or city life.
-Q5 (B2 test): Ask a hypothetical — "If you could live anywhere in the world, where and why?"
+HOW TO START:
+- First session: naturally assess their ${state.targetLang} level through 3 casual questions — do NOT tell them it is a test.
+- Q1: Ask them to introduce themselves in ${state.targetLang}
+- Q2: Ask what they do on weekends (present tense — their routine)
+- Q3: Ask their opinion on something simple like technology or social media
+- After 3 answers: tell them their level warmly in ${state.motherTongue}, then start teaching from that level.
+- Output exactly this on its own line after telling level: [LEVEL:Beginner] or [LEVEL:Intermediate] or [LEVEL:Advanced]
 
-After Q5, assess their CEFR level:
-- A1: Only basic phrases, many errors, very limited vocabulary
-- A2: Simple sentences correct, basic past tense, limited expression
-- B1: Can express opinions, reasonable grammar, good vocabulary
-- B2: Fluent, complex sentences, minor errors only
-
-IMPORTANT — After assessment:
-1. Tell them their level warmly in ${state.motherTongue}
-2. Explain what that level means in simple terms
-3. Output EXACTLY this line so the app can detect it:
-   CEFR_RESULT:LEVEL:X1 where X1 is their level (A1/A2/B1/B2)
-   Example: CEFR_RESULT:LEVEL:B1
-4. Then immediately start teaching from that level using Socratic method
-
-PHASE 2 — TEACHING (after assessment):
-- ALWAYS respond in ${state.motherTongue} only
-- Use ${state.targetLang} only for examples and practice
-- Keep messages SHORT — 3-4 sentences max
-- Always end with ONE question or task
-- Teach one concept at a time
-- Correct mistakes very gently
-- Feel like a friendly WhatsApp tutor 😊`;
+QUICK REPLY OPTIONS:
+- After every message, add this on the last line: OPTIONS: choice1 | choice2 | choice3
+- These are short answers the student can tap instead of typing
+- Make them relevant to your question
+- For fill-in-blank: show word choices
+- For open questions: show example short answers
+- Always 2 to 4 options, each under 6 words`;
 }
 
-// ── INIT SESSION ──
+// ══════════════════════════════════════
+// INIT SESSION
+// ══════════════════════════════════════
 async function initSession() {
   showTyping();
   setStatus('typing...', true);
 
   try {
-    const res = await fetch(WORKER_URL, {
+    const res = await fetch(WORKER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -838,52 +788,66 @@ async function initSession() {
         system: getSystem(),
         messages: [{
           role: 'user',
-          content: `Start with a placement test. In ${state.motherTongue}, tell ${state.userName} warmly that before we start, you want to check their ${state.targetLang} level with 3 quick questions. Keep it casual and friendly like WhatsApp. Then ask the FIRST test question — make it simple: ask them to write something basic in ${state.targetLang} like introducing themselves. After all 3 questions, you will tell them their level and start teaching. Ask only question 1 now.`
+          content: `Start the session. Greet ${state.userName} warmly in ${state.motherTongue} in one sentence, then ask the first casual question to get to know their ${state.targetLang} level. Add OPTIONS at the end.`
         }]
       })
     });
+
     const data = await res.json();
-    const reply = data.content?.map(b => b.text || '').join('') || `नमस्ते ${state.userName}! 😊`;
+    const raw = data.content?.map(b => b.text || '').join('') || '';
     hideTyping();
     setStatus('online', false);
-    addBubble('incoming', reply);
-    state.history.push({ role: 'assistant', content: reply });
+    processAndDisplay(raw);
+    state.history.push({ role: 'assistant', content: raw });
+
   } catch(e) {
     hideTyping();
     setStatus('online', false);
-    addBubble('incoming', `नमस्ते ${state.userName}! 😊 मी तुमचा ${state.targetLang} tutor आहे. चला सुरुवात करूया!`);
+    addBubble('incoming', `नमस्ते ${state.userName}! 😊 मी तुमचा Speaku tutor आहे.`, []);
+    console.error(e);
   }
 }
 
-// ── SEND MESSAGE ──
-async function sendMessage() {
+// ══════════════════════════════════════
+// SEND MESSAGE
+// ══════════════════════════════════════
+async function sendMessage(text) {
   const input = document.getElementById('msgInput');
-  const text = input.value.trim();
-  if (!text || state.loading) return;
+  const msgText = text || input.value.trim();
+  if (!msgText || state.loading) return;
 
-  const remaining = MAX_FREE - state.msgCount;
-  if (remaining <= 0) {
+  // Check limit
+  if (state.msgCount >= MAX_FREE) {
     document.getElementById('paywallOverlay').classList.add('visible');
     return;
   }
 
-  input.value = '';
-  input.style.height = 'auto';
+  // Clear input
+  if (!text) {
+    input.value = '';
+    input.style.height = 'auto';
+    document.getElementById('sendBtn').classList.remove('visible');
+    document.getElementById('micBtn').style.display = 'flex';
+  }
 
-  addBubble('outgoing', text);
-  state.history.push({ role: 'user', content: text });
+  // Remove existing quick replies
+  removeQuickReplies();
+
+  addBubble('outgoing', msgText, []);
+  state.history.push({ role: 'user', content: msgText });
   state.msgCount++;
 
   const left = MAX_FREE - state.msgCount;
   document.getElementById('msgsLeft').textContent = left;
 
   state.loading = true;
-  document.getElementById('sendBtn').disabled = true;
+  document.getElementById('sendBtn').style.pointerEvents = 'none';
+  document.getElementById('micBtn').disabled = true;
   showTyping();
   setStatus('typing...', true);
 
   try {
-    const res = await fetch(WORKER_URL, {
+    const res = await fetch(WORKER, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -893,45 +857,82 @@ async function sendMessage() {
         messages: state.history
       })
     });
+
     const data = await res.json();
-    let reply = data.content?.map(b => b.text || '').join('') || 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा.';
+    const raw = data.content?.map(b => b.text || '').join('') || 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा.';
     hideTyping();
     setStatus('online', false);
-    const cleanReply = checkForCEFR(reply);
-    addBubble('incoming', cleanReply);
-    state.history.push({ role: 'assistant', content: reply });
+    processAndDisplay(raw);
+    state.history.push({ role: 'assistant', content: raw });
 
-    if (left <= 0) setTimeout(() => {
-      document.getElementById('paywallOverlay').classList.add('visible');
-    }, 1500);
+    if (left <= 0) {
+      setTimeout(() => {
+        document.getElementById('paywallOverlay').classList.add('visible');
+      }, 1500);
+    }
 
   } catch(e) {
     hideTyping();
     setStatus('online', false);
-    addBubble('incoming', 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा. 🙏');
+    addBubble('incoming', 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा. 🙏', []);
+    console.error(e);
   } finally {
     state.loading = false;
-    document.getElementById('sendBtn').disabled = false;
-    document.getElementById('msgInput').focus();
+    document.getElementById('sendBtn').style.pointerEvents = 'auto';
+    document.getElementById('micBtn').disabled = false;
   }
 }
 
-// ── UI HELPERS ──
-function addBubble(dir, text) {
+// ══════════════════════════════════════
+// PROCESS AI RESPONSE
+// Parses OPTIONS and [LEVEL:X] tags
+// ══════════════════════════════════════
+function processAndDisplay(raw) {
+  let text = raw;
+  let options = [];
+
+  // Check for CEFR level tag
+  const levelMatch = text.match(/\[LEVEL:(Beginner|Intermediate|Advanced)\]/i);
+  if (levelMatch && !state.cefrDone) {
+    state.cefrDone = true;
+    state.cefrLevel = levelMatch[1];
+    text = text.replace(levelMatch[0], '').trim();
+    // Show level badge after bubble
+    setTimeout(() => showLevelBadge(state.cefrLevel), 300);
+  }
+
+  // Parse OPTIONS line
+  const optionsMatch = text.match(/OPTIONS:\s*(.+?)(?:\n|$)/i);
+  if (optionsMatch) {
+    const raw_opts = optionsMatch[1].split('|').map(o => o.trim()).filter(o => o.length > 0 && o.length < 60);
+    if (raw_opts.length >= 2) options = raw_opts.slice(0, 4);
+    text = text.replace(optionsMatch[0], '').trim();
+  }
+
+  // Clean up extra blank lines
+  text = text.replace(/\n{3,}/g, '\n\n').trim();
+
+  addBubble('incoming', text, options);
+}
+
+// ══════════════════════════════════════
+// UI — ADD BUBBLE
+// ══════════════════════════════════════
+function addBubble(dir, text, options = []) {
   const bg = document.getElementById('chatBg');
   const anchor = document.getElementById('scrollAnchor');
-  const typing = document.getElementById('typingBubble');
 
   const now = new Date();
   const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
 
+  // Bubble
   const row = document.createElement('div');
   row.className = `msg-row ${dir}`;
 
   const bubble = document.createElement('div');
   bubble.className = `bubble ${dir}`;
   bubble.innerHTML = `
-    <div class="bubble-text">${text.replace(/\n/g,'<br>')}</div>
+    <div class="bubble-text">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
     <div class="bubble-meta">
       ${time}
       ${dir === 'outgoing' ? '<span class="ticks">✓✓</span>' : ''}
@@ -939,12 +940,161 @@ function addBubble(dir, text) {
 
   row.appendChild(bubble);
   bg.insertBefore(row, anchor);
+
+  // Quick replies (only for incoming)
+  if (dir === 'incoming' && options.length > 0) {
+    const qrDiv = document.createElement('div');
+    qrDiv.className = 'quick-replies';
+    qrDiv.id = 'currentQR';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'qr-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        removeQuickReplies();
+        sendMessage(opt);
+      };
+      qrDiv.appendChild(btn);
+    });
+    bg.insertBefore(qrDiv, anchor);
+  }
+
   anchor.scrollIntoView({ behavior: 'smooth' });
 }
 
+function removeQuickReplies() {
+  const existing = document.getElementById('currentQR');
+  if (existing) existing.remove();
+}
+
+function showLevelBadge(level) {
+  const bg = document.getElementById('chatBg');
+  const anchor = document.getElementById('scrollAnchor');
+  const badge = document.createElement('div');
+  badge.className = 'level-badge';
+  const emoji = level === 'Beginner' ? '🌱' : level === 'Intermediate' ? '🌿' : '🌳';
+  badge.textContent = `${emoji} Your level: ${level}`;
+  bg.insertBefore(badge, anchor);
+  anchor.scrollIntoView({ behavior: 'smooth' });
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+// ══════════════════════════════════════
+// VOICE INPUT
+// ══════════════════════════════════════
+function setupVoice() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('micBtn').style.display = 'none';
+    const bar = document.querySelector('.wa-input-bar');
+    const notice = document.createElement('div');
+    notice.className = 'no-mic-notice';
+    notice.textContent = 'Voice not supported on this browser — use Chrome';
+    bar.parentNode.insertBefore(notice, bar.nextSibling);
+    return;
+  }
+
+  recognition = new SpeechRecognition();
+  recognition.lang = state.voiceLang;
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    isRecording = true;
+    document.getElementById('micBtn').classList.add('recording');
+    document.getElementById('micBtn').textContent = '⏹';
+    setStatus('Listening...', false);
+    document.getElementById('tutorStatus').className = 'tutor-status recording';
+  };
+
+  recognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    document.getElementById('msgInput').value = transcript;
+    onInputChange(document.getElementById('msgInput'));
+    // Auto-send if final result
+    if (e.results[e.results.length - 1].isFinal) {
+      stopRecording();
+      setTimeout(() => sendMessage(), 300);
+    }
+  };
+
+  recognition.onerror = (e) => {
+    stopRecording();
+    if (e.error !== 'no-speech' && e.error !== 'aborted') {
+      console.warn('Speech error:', e.error);
+    }
+  };
+
+  recognition.onend = () => {
+    stopRecording();
+  };
+}
+
+function toggleVoice() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  if (!recognition || state.loading) return;
+  try {
+    recognition.lang = state.voiceLang;
+    recognition.start();
+  } catch(e) {
+    console.warn('Recognition start error:', e);
+  }
+}
+
+function stopRecording() {
+  if (recognition && isRecording) {
+    try { recognition.stop(); } catch(e) {}
+  }
+  isRecording = false;
+  const micBtn = document.getElementById('micBtn');
+  micBtn.classList.remove('recording');
+  micBtn.textContent = '🎤';
+  setStatus('online', false);
+}
+
+// ══════════════════════════════════════
+// INPUT HELPERS
+// ══════════════════════════════════════
+function onInputChange(el) {
+  // Auto resize
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+
+  // Toggle send/mic button
+  const hasText = el.value.trim().length > 0;
+  document.getElementById('sendBtn').classList.toggle('visible', hasText);
+  document.getElementById('micBtn').style.display = hasText ? 'none' : 'flex';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+}
+
+// ══════════════════════════════════════
+// STATUS & TYPING
+// ══════════════════════════════════════
 function showTyping() {
-  const t = document.getElementById('typingBubble');
-  t.classList.add('visible');
+  document.getElementById('typingBubble').classList.add('visible');
   document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -958,73 +1108,19 @@ function setStatus(text, isTyping) {
   el.className = 'tutor-status' + (isTyping ? ' typing' : '');
 }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+// ══════════════════════════════════════
+// PAYWALL
+// ══════════════════════════════════════
+function selectPlan(n) {
+  document.getElementById('plan1').classList.toggle('active', n === 1);
+  document.getElementById('plan2').classList.toggle('active', n === 2);
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+function dismissPaywall() {
+  state.msgCount = MAX_FREE - 3; // Give 3 more
+  document.getElementById('msgsLeft').textContent = 3;
+  document.getElementById('paywallOverlay').classList.remove('visible');
 }
-// ── CEFR CERTIFICATE ──
-const cefrDescriptions = {
-  'A1': 'Can understand and use familiar everyday expressions and very basic phrases.',
-  'A2': 'Can understand sentences and frequently used expressions related to areas of basic relevance.',
-  'B1': 'Can understand the main points on familiar matters and can deal with most travel situations.',
-  'B2': 'Can understand the main ideas of complex text and interact with native speakers fluently.',
-  'C1': 'Can express ideas fluently and spontaneously without much obvious searching for words.',
-  'C2': 'Can understand with ease virtually everything heard or read — near native level.'
-};
-
-function checkForCEFR(text) {
-  const match = text.match(/CEFR_RESULT:LEVEL:([ABC][12])/);
-  if (match) {
-    const level = match[1];
-    setTimeout(() => showCertificate(level), 1500);
-    // Remove the CEFR_RESULT line from displayed text
-    return text.replace(/CEFR_RESULT:LEVEL:[ABC][12]/g, '').trim();
-  }
-  return text;
-}
-
-function showCertificate(level) {
-  document.getElementById('certName').textContent = state.userName;
-  document.getElementById('certLevel').textContent = level;
-  document.getElementById('certLang').textContent = state.targetLang;
-  document.getElementById('certDesc').textContent = cefrDescriptions[level] || '';
-  
-  const overlay = document.getElementById('certOverlay');
-  overlay.style.display = 'flex';
-}
-
-function startLearning() {
-  document.getElementById('certOverlay').style.display = 'none';
-}
-
-async function shareOrDownloadCert() {
-  const card = document.getElementById('certCard');
-  const level = document.getElementById('certLevel').textContent;
-  
-  // Simple share text if Web Share API available
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: 'My Speaku Certificate',
-        text: `I just got my ${state.targetLang} CEFR Level ${level} certificate on Speaku! 🎓\nspeaku.ai`,
-      });
-    } catch(e) {}
-  } else {
-    // Fallback — copy to clipboard
-    const text = `I just got my ${state.targetLang} CEFR Level ${level} certificate on Speaku! 🎓\nspeaku.ai`;
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Certificate text copied! Paste it anywhere to share 😊');
-    });
-  }
-}
-
 </script>
 </body>
 </html>
