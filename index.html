@@ -666,6 +666,43 @@ body {
       <button class="pw-free" onclick="dismissPaywall()">Continue with free (3 more messages)</button>
     </div>
   </div>
+
+  <!-- CEFR Certificate -->
+  <div id="certOverlay" style="display:none;position:absolute;inset:0;background:rgba(0,0,0,0.9);z-index:200;align-items:center;justify-content:center;padding:20px;">
+    <div style="width:100%;max-width:360px;">
+      <!-- Certificate Card -->
+      <div id="certCard" style="background:linear-gradient(135deg,#1a2a1a,#0d1f0d);border:2px solid #00a884;border-radius:20px;padding:28px 24px;text-align:center;position:relative;overflow:hidden;">
+        <!-- Background pattern -->
+        <div style="position:absolute;inset:0;opacity:0.05;background-image:repeating-linear-gradient(45deg,#00a884 0,#00a884 1px,transparent 0,transparent 50%);background-size:20px 20px;"></div>
+        
+        <div style="position:relative;z-index:1;">
+          <div style="font-size:11px;letter-spacing:2px;color:#00a884;text-transform:uppercase;margin-bottom:12px">Speaku · Language Assessment</div>
+          <div style="font-size:48px;margin-bottom:4px">🎓</div>
+          <div style="font-size:13px;color:#8696a0;margin-bottom:6px">This certifies that</div>
+          <div style="font-size:22px;font-weight:700;color:#e9edef;margin-bottom:16px" id="certName">Nilesh</div>
+          
+          <div style="background:rgba(0,168,132,0.15);border:1.5px solid #00a884;border-radius:14px;padding:16px;margin-bottom:16px;">
+            <div style="font-size:48px;font-weight:800;color:#00a884;line-height:1" id="certLevel">B1</div>
+            <div style="font-size:13px;color:#e9edef;margin-top:4px" id="certLang">English</div>
+            <div style="font-size:11px;color:#8696a0;margin-top:4px">CEFR Level</div>
+          </div>
+          
+          <div style="font-size:12px;color:#8696a0;line-height:1.5;margin-bottom:16px" id="certDesc">Can understand the main points of clear standard input on familiar matters.</div>
+          
+          <div style="font-size:11px;color:#3a4a52;margin-bottom:20px">speaku.ai · ${new Date().toLocaleDateString('en-IN')}</div>
+          
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <button onclick="shareOrDownloadCert()" style="background:#00a884;color:white;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
+              📤 Share Certificate
+            </button>
+            <button onclick="startLearning()" style="background:transparent;color:#00a884;border:1.5px solid #00a884;border-radius:10px;padding:13px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;">
+              Start Learning →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </div><!-- .phone -->
@@ -749,24 +786,41 @@ function goBack() {
 
 // ── SYSTEM PROMPT ──
 function getSystem() {
-  return `You are a warm friendly ${state.targetLang} tutor on Speaku.
+  return `You are a CEFR-certified ${state.targetLang} language assessor and tutor on Speaku.
 
 Student: ${state.userName} | Mother tongue: ${state.motherTongue} | Learning: ${state.targetLang}
 
-RULES:
-1. ALWAYS respond in ${state.motherTongue} only. Never explain in ${state.targetLang}.
-2. Use ${state.targetLang} only for example words or practice sentences.
-3. Keep messages SHORT — 3-4 sentences max, like WhatsApp chat.
-4. Always end with ONE question or task.
-5. Feel like a friendly WhatsApp tutor, not a formal teacher. Use emojis 😊
-6. Correct mistakes very gently.
+PHASE 1 — CEFR PLACEMENT TEST (first 5 exchanges):
+Ask exactly 5 questions, one at a time. Wait for each answer before asking next.
 
-PLACEMENT TEST (do this first — 3 questions):
-Q1: Ask them to write a simple sentence in ${state.targetLang} — like "tell me your name and where you are from in ${state.targetLang}"
-Q2 (after their answer): Ask something medium — describe what they did yesterday in ${state.targetLang}
-Q3 (after their answer): Ask something harder — express an opinion or a hypothetical situation
+Q1 (A1 test): Ask them to introduce themselves in ${state.targetLang} — name, where from, what they do.
+Q2 (A2 test): Ask them to describe their daily routine in ${state.targetLang}.
+Q3 (B1 test): Ask them to describe a problem they faced recently and how they solved it.
+Q4 (B1/B2 test): Ask their opinion on a current topic — like technology, social media, or city life.
+Q5 (B2 test): Ask a hypothetical — "If you could live anywhere in the world, where and why?"
 
-After Q3: Silently assess their level based on grammar, vocabulary and confidence. Tell them their result warmly in ${state.motherTongue} (Beginner/Intermediate/Advanced). Then immediately start teaching from that level using Socratic method — one concept at a time, make them discover answers themselves.`;
+After Q5, assess their CEFR level:
+- A1: Only basic phrases, many errors, very limited vocabulary
+- A2: Simple sentences correct, basic past tense, limited expression
+- B1: Can express opinions, reasonable grammar, good vocabulary
+- B2: Fluent, complex sentences, minor errors only
+
+IMPORTANT — After assessment:
+1. Tell them their level warmly in ${state.motherTongue}
+2. Explain what that level means in simple terms
+3. Output EXACTLY this line so the app can detect it:
+   CEFR_RESULT:LEVEL:X1 where X1 is their level (A1/A2/B1/B2)
+   Example: CEFR_RESULT:LEVEL:B1
+4. Then immediately start teaching from that level using Socratic method
+
+PHASE 2 — TEACHING (after assessment):
+- ALWAYS respond in ${state.motherTongue} only
+- Use ${state.targetLang} only for examples and practice
+- Keep messages SHORT — 3-4 sentences max
+- Always end with ONE question or task
+- Teach one concept at a time
+- Correct mistakes very gently
+- Feel like a friendly WhatsApp tutor 😊`;
 }
 
 // ── INIT SESSION ──
@@ -840,10 +894,11 @@ async function sendMessage() {
       })
     });
     const data = await res.json();
-    const reply = data.content?.map(b => b.text || '').join('') || 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा.';
+    let reply = data.content?.map(b => b.text || '').join('') || 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा.';
     hideTyping();
     setStatus('online', false);
-    addBubble('incoming', reply);
+    const cleanReply = checkForCEFR(reply);
+    addBubble('incoming', cleanReply);
     state.history.push({ role: 'assistant', content: reply });
 
     if (left <= 0) setTimeout(() => {
@@ -914,6 +969,62 @@ function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
 }
+// ── CEFR CERTIFICATE ──
+const cefrDescriptions = {
+  'A1': 'Can understand and use familiar everyday expressions and very basic phrases.',
+  'A2': 'Can understand sentences and frequently used expressions related to areas of basic relevance.',
+  'B1': 'Can understand the main points on familiar matters and can deal with most travel situations.',
+  'B2': 'Can understand the main ideas of complex text and interact with native speakers fluently.',
+  'C1': 'Can express ideas fluently and spontaneously without much obvious searching for words.',
+  'C2': 'Can understand with ease virtually everything heard or read — near native level.'
+};
+
+function checkForCEFR(text) {
+  const match = text.match(/CEFR_RESULT:LEVEL:([ABC][12])/);
+  if (match) {
+    const level = match[1];
+    setTimeout(() => showCertificate(level), 1500);
+    // Remove the CEFR_RESULT line from displayed text
+    return text.replace(/CEFR_RESULT:LEVEL:[ABC][12]/g, '').trim();
+  }
+  return text;
+}
+
+function showCertificate(level) {
+  document.getElementById('certName').textContent = state.userName;
+  document.getElementById('certLevel').textContent = level;
+  document.getElementById('certLang').textContent = state.targetLang;
+  document.getElementById('certDesc').textContent = cefrDescriptions[level] || '';
+  
+  const overlay = document.getElementById('certOverlay');
+  overlay.style.display = 'flex';
+}
+
+function startLearning() {
+  document.getElementById('certOverlay').style.display = 'none';
+}
+
+async function shareOrDownloadCert() {
+  const card = document.getElementById('certCard');
+  const level = document.getElementById('certLevel').textContent;
+  
+  // Simple share text if Web Share API available
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: 'My Speaku Certificate',
+        text: `I just got my ${state.targetLang} CEFR Level ${level} certificate on Speaku! 🎓\nspeaku.ai`,
+      });
+    } catch(e) {}
+  } else {
+    // Fallback — copy to clipboard
+    const text = `I just got my ${state.targetLang} CEFR Level ${level} certificate on Speaku! 🎓\nspeaku.ai`;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Certificate text copied! Paste it anywhere to share 😊');
+    });
+  }
+}
+
 </script>
 </body>
 </html>
