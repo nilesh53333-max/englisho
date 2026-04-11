@@ -701,6 +701,8 @@ async function sendMessage(text) {
 
   input.value = '';
   input.style.height = 'auto';
+  input.blur(); // ✅ force mobile to release
+  setTimeout(() => { input.value = ''; onType(input); }, 50); // ✅ double clear for mobile
   document.getElementById('sendBtn').classList.remove('show');
   document.getElementById('micBtn').style.display = 'flex';
 
