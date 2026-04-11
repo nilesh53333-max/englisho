@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-<title>Speaku — Language Tutor</title>
+<title>Speaku — Speak English Confidently</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -14,7 +14,6 @@ body {
   height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
   overflow: hidden;
 }
 
@@ -22,14 +21,13 @@ body {
   width: 100%;
   max-width: 430px;
   height: 100vh;
-  background: #111b21;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
 }
 
-/* ══════════ ONBOARDING ══════════ */
+/* ══ ONBOARDING ══ */
 #onboarding {
   flex: 1;
   display: flex;
@@ -40,21 +38,21 @@ body {
 
 .ob-header {
   background: #202c33;
-  padding: 20px 20px 24px;
+  padding: 24px 20px;
   text-align: center;
   flex-shrink: 0;
 }
 
 .ob-logo {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 700;
   color: #e9edef;
-  letter-spacing: -0.5px;
+  letter-spacing: -1px;
   margin-bottom: 4px;
 }
 
 .ob-logo span { color: #00a884; }
-.ob-tagline { font-size: 13px; color: #8696a0; }
+.ob-tagline { font-size: 13px; color: #8696a0; line-height: 1.4; }
 
 .ob-section { padding: 16px 16px 0; }
 
@@ -82,17 +80,18 @@ body {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  transition: all 0.15s;
   font-size: 13px;
   color: #e9edef;
   font-family: 'Inter', sans-serif;
   font-weight: 500;
+  transition: all 0.15s;
 }
 
-.lang-btn:active { opacity: 0.7; }
-.lang-btn.selected { border-color: #00a884; background: rgba(0,168,132,0.12); color: #00a884; }
-
-.lang-flag { font-size: 18px; }
+.lang-btn.selected {
+  border-color: #00a884;
+  background: rgba(0,168,132,0.12);
+  color: #00a884;
+}
 
 .name-input {
   width: 100%;
@@ -104,23 +103,10 @@ body {
   color: #e9edef;
   font-family: 'Inter', sans-serif;
   outline: none;
-  transition: border-color 0.2s;
 }
 
 .name-input:focus { border-color: #00a884; }
 .name-input::placeholder { color: #8696a0; }
-
-.auto-level-box {
-  background: #202c33;
-  border: 1.5px solid #00a884;
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.start-section { padding: 20px 16px 28px; }
 
 .start-btn {
   width: 100%;
@@ -133,19 +119,11 @@ body {
   color: white;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  transition: all 0.2s;
 }
 
-.start-btn:active { opacity: 0.85; }
+.free-note { text-align: center; font-size: 12px; color: #8696a0; margin-top: 10px; }
 
-.free-note {
-  text-align: center;
-  font-size: 12px;
-  color: #8696a0;
-  margin-top: 10px;
-}
-
-/* ══════════ CHAT SCREEN ══════════ */
+/* ══ CHAT ══ */
 #chatScreen {
   display: none;
   flex-direction: column;
@@ -153,7 +131,6 @@ body {
   position: relative;
 }
 
-/* Header */
 .wa-header {
   background: #202c33;
   padding: 10px 16px;
@@ -162,24 +139,16 @@ body {
   gap: 12px;
   border-bottom: 1px solid #2a3942;
   flex-shrink: 0;
-  z-index: 10;
 }
 
-.wa-back {
-  color: #aebac1;
-  font-size: 22px;
-  cursor: pointer;
-  padding: 4px 6px 4px 0;
-  line-height: 1;
-}
+.wa-back { color: #aebac1; font-size: 22px; cursor: pointer; padding: 4px 6px 4px 0; }
 
 .tutor-avatar {
   width: 40px; height: 40px;
   border-radius: 50%;
   background: linear-gradient(135deg, #00a884, #017a62);
   display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
+  font-size: 18px; flex-shrink: 0;
 }
 
 .tutor-info { flex: 1; min-width: 0; }
@@ -188,7 +157,10 @@ body {
 .tutor-status.typing { color: #00a884; }
 .tutor-status.recording { color: #f44336; }
 
-.msgs-left-bar {
+.header-actions { display: flex; gap: 16px; color: #aebac1; font-size: 20px; align-items: center; }
+.header-actions span { cursor: pointer; }
+
+.msgs-bar {
   background: #182229;
   text-align: center;
   padding: 5px;
@@ -196,9 +168,9 @@ body {
   color: #8696a0;
   flex-shrink: 0;
 }
-.msgs-left-bar span { color: #00a884; font-weight: 600; }
+.msgs-bar b { color: #00a884; }
 
-/* Chat background */
+/* Chat bg */
 .wa-bg {
   flex: 1;
   overflow-y: auto;
@@ -211,33 +183,28 @@ body {
 .wa-bg::-webkit-scrollbar { width: 3px; }
 .wa-bg::-webkit-scrollbar-thumb { background: #2a3942; border-radius: 3px; }
 
-/* Date pill */
 .date-pill { text-align: center; margin: 6px 0 10px; }
 .date-pill span {
-  background: #182229;
-  color: #8696a0;
-  font-size: 11px;
-  padding: 4px 10px;
-  border-radius: 8px;
-  display: inline-block;
+  background: #182229; color: #8696a0;
+  font-size: 11px; padding: 4px 10px;
+  border-radius: 8px; display: inline-block;
 }
 
-/* Message rows */
+/* Messages */
 .msg-row {
   display: flex;
   margin-bottom: 2px;
-  animation: msgPop 0.2s ease both;
+  animation: msgIn 0.2s ease both;
 }
 
-@keyframes msgPop {
-  from { opacity: 0; transform: translateY(5px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .msg-row.incoming { justify-content: flex-start; }
 .msg-row.outgoing { justify-content: flex-end; }
 
-/* Bubbles */
 .bubble {
   max-width: 78%;
   padding: 7px 10px 22px;
@@ -259,12 +226,10 @@ body {
   color: #e9edef;
 }
 
-/* Tails */
 .bubble.incoming::before {
   content: '';
   position: absolute;
   top: 0; left: -7px;
-  width: 0; height: 0;
   border-top: 8px solid #202c33;
   border-left: 8px solid transparent;
 }
@@ -273,7 +238,6 @@ body {
   content: '';
   position: absolute;
   top: 0; right: -7px;
-  width: 0; height: 0;
   border-top: 8px solid #005c4b;
   border-right: 8px solid transparent;
 }
@@ -283,51 +247,29 @@ body {
 .bubble-meta {
   position: absolute;
   bottom: 4px; right: 8px;
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  font-size: 11px;
-  color: #8696a0;
-  white-space: nowrap;
+  display: flex; align-items: center; gap: 3px;
+  font-size: 11px; color: #8696a0; white-space: nowrap;
 }
 
 .ticks { color: #53bdeb; font-size: 12px; }
 
-/* Quick reply buttons */
-.quick-replies {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin: 6px 0 8px 4px;
-  animation: msgPop 0.25s ease both;
-}
-
-.qr-btn {
-  background: transparent;
-  border: 1.5px solid #00a884;
-  border-radius: 18px;
-  padding: 7px 14px;
-  font-size: 13px;
-  color: #00a884;
-  font-family: 'Inter', sans-serif;
-  cursor: pointer;
-  transition: all 0.15s;
-  font-weight: 500;
-}
-
-.qr-btn:active { background: rgba(0,168,132,0.15); transform: scale(0.97); }
-
 /* Typing indicator */
+.typing-row {
+  display: none;
+  justify-content: flex-start;
+  margin-bottom: 4px;
+}
+
+.typing-row.visible { display: flex; }
+
 .typing-bubble {
   background: #202c33;
   border-radius: 8px;
   border-top-left-radius: 2px;
   padding: 10px 14px;
-  display: none;
+  display: flex;
   align-items: center;
   gap: 4px;
-  width: fit-content;
-  margin-bottom: 4px;
   position: relative;
 }
 
@@ -335,24 +277,21 @@ body {
   content: '';
   position: absolute;
   top: 0; left: -7px;
-  width: 0; height: 0;
   border-top: 8px solid #202c33;
   border-left: 8px solid transparent;
 }
-
-.typing-bubble.visible { display: flex; }
 
 .td {
   width: 7px; height: 7px;
   border-radius: 50%;
   background: #8696a0;
-  animation: tdBounce 1.2s infinite;
+  animation: tdB 1.2s infinite;
 }
 .td:nth-child(2) { animation-delay: 0.2s; }
 .td:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes tdBounce {
-  0%,60%,100% { transform: translateY(0); opacity: 0.5; }
+@keyframes tdB {
+  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
   30% { transform: translateY(-5px); opacity: 1; }
 }
 
@@ -395,7 +334,6 @@ body {
 
 #msgInput::placeholder { color: #8696a0; }
 
-/* Mic button */
 .mic-btn {
   width: 44px; height: 44px;
   background: #00a884;
@@ -403,25 +341,23 @@ body {
   border: none;
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
+  font-size: 20px; color: white;
   flex-shrink: 0;
   transition: all 0.2s;
-  font-size: 20px;
-  color: white;
 }
 
 .mic-btn.recording {
   background: #f44336;
-  animation: micPulse 1s infinite;
+  animation: micP 1s infinite;
 }
 
-@keyframes micPulse {
-  0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
-  50% { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(244,67,54,0); }
+@keyframes micP {
+  0%,100% { box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(244,67,54,0); }
 }
 
-.mic-btn:disabled { background: #2a3942; cursor: not-allowed; }
+.mic-btn:disabled { background: #2a3942; cursor: not-allowed; animation: none; }
 
-/* Send btn — shown when text typed */
 .send-btn {
   width: 44px; height: 44px;
   background: #00a884;
@@ -430,43 +366,24 @@ body {
   cursor: pointer;
   display: none;
   align-items: center; justify-content: center;
+  font-size: 18px; color: white;
   flex-shrink: 0;
-  font-size: 18px;
-  color: white;
-  transition: all 0.15s;
 }
 
-.send-btn.visible { display: flex; }
-.send-btn:active { opacity: 0.8; }
-
-/* CEFR result badge */
-.level-badge {
-  background: rgba(0,168,132,0.12);
-  border: 1px solid #00a884;
-  border-radius: 12px;
-  padding: 10px 14px;
-  margin: 4px 0 8px;
-  font-size: 13px;
-  color: #00a884;
-  text-align: center;
-  font-weight: 600;
-  animation: msgPop 0.3s ease both;
-}
+.send-btn.show { display: flex; }
 
 /* Paywall */
 #paywallOverlay {
   display: none;
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   background: rgba(0,0,0,0.85);
   z-index: 100;
   align-items: flex-end;
-  justify-content: center;
 }
 
 #paywallOverlay.visible { display: flex; }
 
-.paywall-sheet {
+.pw-sheet {
   background: #202c33;
   border-radius: 20px 20px 0 0;
   padding: 28px 24px 36px;
@@ -481,89 +398,66 @@ body {
 .pw-plans { display: flex; gap: 10px; margin-bottom: 20px; }
 
 .pw-plan {
-  flex: 1;
-  background: #2a3942;
+  flex: 1; background: #2a3942;
   border: 1.5px solid #3a4a52;
-  border-radius: 14px;
-  padding: 16px 10px;
-  cursor: pointer;
-  transition: all 0.15s;
+  border-radius: 14px; padding: 16px 10px;
+  cursor: pointer; transition: all 0.15s;
 }
 
 .pw-plan.active { border-color: #00a884; background: rgba(0,168,132,0.1); }
-.pw-plan-name { font-size: 13px; font-weight: 600; color: #e9edef; margin-bottom: 4px; }
-.pw-plan-price { font-size: 20px; font-weight: 700; color: #00a884; }
-.pw-plan-period { font-size: 11px; color: #8696a0; }
-.pw-plan-save { font-size: 10px; background: #00a884; color: white; padding: 2px 6px; border-radius: 8px; display: inline-block; margin-top: 4px; }
+.pw-pname { font-size: 13px; font-weight: 600; color: #e9edef; margin-bottom: 4px; }
+.pw-price { font-size: 20px; font-weight: 700; color: #00a884; }
+.pw-period { font-size: 11px; color: #8696a0; }
+.pw-save { font-size: 10px; background: #00a884; color: white; padding: 2px 6px; border-radius: 8px; display: inline-block; margin-top: 4px; }
 
 .pw-btn {
-  width: 100%;
-  background: #00a884;
-  border: none;
-  border-radius: 12px;
-  padding: 15px;
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-  cursor: pointer;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 12px;
+  width: 100%; background: #00a884; border: none;
+  border-radius: 12px; padding: 15px;
+  font-size: 16px; font-weight: 600; color: white;
+  cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px;
 }
 
 .pw-free {
-  font-size: 13px;
-  color: #8696a0;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: 'Inter', sans-serif;
-  text-decoration: underline;
-}
-
-/* No mic support notice */
-.no-mic-notice {
-  font-size: 11px;
-  color: #8696a0;
-  text-align: center;
-  padding: 4px 0 0;
+  font-size: 13px; color: #8696a0; cursor: pointer;
+  background: none; border: none; font-family: 'Inter', sans-serif; text-decoration: underline;
 }
 </style>
 </head>
 <body>
 <div class="phone">
 
-<!-- ══════════ ONBOARDING ══════════ -->
+<!-- ══ ONBOARDING ══ -->
 <div id="onboarding">
   <div class="ob-header">
     <div class="ob-logo">Speak<span>u</span> 🌍</div>
-    <div class="ob-tagline">Learn any language, like chatting with a friend</div>
+    <div class="ob-tagline">Practice speaking English like chatting with a friend.<br>No grammar lessons. Just real conversation.</div>
   </div>
 
   <div class="ob-section">
     <div class="ob-label">I speak</div>
     <div class="lang-grid" id="motherGrid">
-      <button class="lang-btn selected" data-lang="Marathi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Marathi</button>
-      <button class="lang-btn" data-lang="Hindi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Hindi</button>
-      <button class="lang-btn" data-lang="Tamil" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Tamil</button>
-      <button class="lang-btn" data-lang="Telugu" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Telugu</button>
-      <button class="lang-btn" data-lang="Gujarati" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Gujarati</button>
-      <button class="lang-btn" data-lang="Punjabi" onclick="selectMother(this)"><span class="lang-flag">🇮🇳</span> Punjabi</button>
-      <button class="lang-btn" data-lang="English" onclick="selectMother(this)"><span class="lang-flag">🇬🇧</span> English</button>
-      <button class="lang-btn" data-lang="Spanish" onclick="selectMother(this)"><span class="lang-flag">🇪🇸</span> Spanish</button>
+      <button class="lang-btn selected" data-lang="Marathi" onclick="sel('mother',this)">🇮🇳 Marathi</button>
+      <button class="lang-btn" data-lang="Hindi" onclick="sel('mother',this)">🇮🇳 Hindi</button>
+      <button class="lang-btn" data-lang="Tamil" onclick="sel('mother',this)">🇮🇳 Tamil</button>
+      <button class="lang-btn" data-lang="Telugu" onclick="sel('mother',this)">🇮🇳 Telugu</button>
+      <button class="lang-btn" data-lang="Gujarati" onclick="sel('mother',this)">🇮🇳 Gujarati</button>
+      <button class="lang-btn" data-lang="Punjabi" onclick="sel('mother',this)">🇮🇳 Punjabi</button>
+      <button class="lang-btn" data-lang="English" onclick="sel('mother',this)">🇬🇧 English</button>
+      <button class="lang-btn" data-lang="Spanish" onclick="sel('mother',this)">🇪🇸 Spanish</button>
     </div>
   </div>
 
   <div class="ob-section" style="margin-top:14px">
     <div class="ob-label">I want to learn</div>
     <div class="lang-grid" id="targetGrid">
-      <button class="lang-btn selected" data-lang="English" data-voice="en-US" onclick="selectTarget(this)"><span class="lang-flag">🇬🇧</span> English</button>
-      <button class="lang-btn" data-lang="Spanish" data-voice="es-ES" onclick="selectTarget(this)"><span class="lang-flag">🇪🇸</span> Spanish</button>
-      <button class="lang-btn" data-lang="French" data-voice="fr-FR" onclick="selectTarget(this)"><span class="lang-flag">🇫🇷</span> French</button>
-      <button class="lang-btn" data-lang="German" data-voice="de-DE" onclick="selectTarget(this)"><span class="lang-flag">🇩🇪</span> German</button>
-      <button class="lang-btn" data-lang="Japanese" data-voice="ja-JP" onclick="selectTarget(this)"><span class="lang-flag">🇯🇵</span> Japanese</button>
-      <button class="lang-btn" data-lang="Korean" data-voice="ko-KR" onclick="selectTarget(this)"><span class="lang-flag">🇰🇷</span> Korean</button>
-      <button class="lang-btn" data-lang="Hindi" data-voice="hi-IN" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span> Hindi</button>
-      <button class="lang-btn" data-lang="Marathi" data-voice="mr-IN" onclick="selectTarget(this)"><span class="lang-flag">🇮🇳</span> Marathi</button>
+      <button class="lang-btn selected" data-lang="English" data-voice="en-US" onclick="sel('target',this)">🇬🇧 English</button>
+      <button class="lang-btn" data-lang="Spanish" data-voice="es-ES" onclick="sel('target',this)">🇪🇸 Spanish</button>
+      <button class="lang-btn" data-lang="French" data-voice="fr-FR" onclick="sel('target',this)">🇫🇷 French</button>
+      <button class="lang-btn" data-lang="German" data-voice="de-DE" onclick="sel('target',this)">🇩🇪 German</button>
+      <button class="lang-btn" data-lang="Japanese" data-voice="ja-JP" onclick="sel('target',this)">🇯🇵 Japanese</button>
+      <button class="lang-btn" data-lang="Korean" data-voice="ko-KR" onclick="sel('target',this)">🇰🇷 Korean</button>
+      <button class="lang-btn" data-lang="Hindi" data-voice="hi-IN" onclick="sel('target',this)">🇮🇳 Hindi</button>
+      <button class="lang-btn" data-lang="Marathi" data-voice="mr-IN" onclick="sel('target',this)">🇮🇳 Marathi</button>
     </div>
   </div>
 
@@ -572,19 +466,8 @@ body {
     <input type="text" class="name-input" id="nameInput" placeholder="So your tutor knows what to call you..." maxlength="20"/>
   </div>
 
-  <div class="ob-section" style="margin-top:14px">
-    <div class="ob-label">Level check</div>
-    <div class="auto-level-box">
-      <div style="font-size:26px">🎯</div>
-      <div>
-        <div style="font-size:13px;font-weight:600;color:#e9edef;margin-bottom:3px">Auto-detected in chat</div>
-        <div style="font-size:12px;color:#8696a0;line-height:1.4">3 quick questions inside the chat will figure out your exact level — no guessing!</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="start-section">
-    <button class="start-btn" onclick="startChat()">Start Learning 🚀</button>
+  <div style="padding:20px 16px 28px">
+    <button class="start-btn" onclick="startChat()">Start Talking 🎤</button>
     <div class="free-note">✓ Free to try · No signup · 20 free messages</div>
     <div style="text-align:center;margin-top:14px;padding-bottom:4px">
       <a href="privacy.html" style="font-size:11px;color:#8696a0;margin:0 10px;text-decoration:none">Privacy Policy</a>
@@ -593,27 +476,29 @@ body {
   </div>
 </div>
 
-<!-- ══════════ CHAT SCREEN ══════════ -->
+<!-- ══ CHAT ══ -->
 <div id="chatScreen">
   <div class="wa-header">
     <div class="wa-back" onclick="goBack()">←</div>
     <div class="tutor-avatar">🎓</div>
     <div class="tutor-info">
-      <div class="tutor-name" id="tutorName">Speaku Tutor</div>
+      <div class="tutor-name" id="tutorName">English Tutor</div>
       <div class="tutor-status" id="tutorStatus">online</div>
     </div>
-    <div style="display:flex;gap:16px;color:#aebac1;font-size:18px;align-items:center">
-      <span id="speakerBtn" onclick="toggleSpeaker()" style="cursor:pointer;font-size:20px" title="Toggle voice">🔊</span>
+    <div class="header-actions">
+      <span id="speakerBtn" onclick="toggleSpeaker()" title="Toggle voice">🔊</span>
       <span>⋮</span>
     </div>
   </div>
 
-  <div class="msgs-left-bar">Free session · <span id="msgsLeft">20</span> messages left</div>
+  <div class="msgs-bar">Free session · <b id="msgsLeft">20</b> messages left</div>
 
   <div class="wa-bg" id="chatBg">
-    <div class="date-pill"><span id="todayDate">Today</span></div>
-    <div class="typing-bubble" id="typingBubble">
-      <div class="td"></div><div class="td"></div><div class="td"></div>
+    <div class="date-pill"><span id="dateLabel">Today</span></div>
+    <div class="typing-row" id="typingRow">
+      <div class="typing-bubble">
+        <div class="td"></div><div class="td"></div><div class="td"></div>
+      </div>
     </div>
     <div id="scrollAnchor"></div>
   </div>
@@ -622,28 +507,28 @@ body {
     <div class="wa-input-wrap">
       <textarea id="msgInput" placeholder="Type a message..." rows="1"
         onkeydown="handleKey(event)"
-        oninput="onInputChange(this)"></textarea>
+        oninput="onType(this)"></textarea>
     </div>
     <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
-    <button class="mic-btn" id="micBtn" onclick="toggleVoice()" title="Tap to speak">🎤</button>
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
   </div>
 
   <div id="paywallOverlay">
-    <div class="paywall-sheet">
+    <div class="pw-sheet">
       <div class="pw-icon">🎓</div>
-      <div class="pw-title">You're doing great!</div>
-      <div class="pw-sub">Free session ended. Upgrade to continue with unlimited sessions in any language.</div>
+      <div class="pw-title">You're on a roll!</div>
+      <div class="pw-sub">Free session ended. Upgrade to keep practicing with unlimited sessions.</div>
       <div class="pw-plans">
-        <div class="pw-plan active" id="plan1" onclick="selectPlan(1)">
-          <div class="pw-plan-name">Monthly</div>
-          <div class="pw-plan-price">$4.99</div>
-          <div class="pw-plan-period">per month</div>
+        <div class="pw-plan active" id="plan1" onclick="selPlan(1)">
+          <div class="pw-pname">Monthly</div>
+          <div class="pw-price">$4.99</div>
+          <div class="pw-period">per month</div>
         </div>
-        <div class="pw-plan" id="plan2" onclick="selectPlan(2)">
-          <div class="pw-plan-name">Yearly</div>
-          <div class="pw-plan-price">$39</div>
-          <div class="pw-plan-period">per year</div>
-          <div class="pw-plan-save">SAVE 35%</div>
+        <div class="pw-plan" id="plan2" onclick="selPlan(2)">
+          <div class="pw-pname">Yearly</div>
+          <div class="pw-price">$39</div>
+          <div class="pw-period">per year</div>
+          <div class="pw-save">SAVE 35%</div>
         </div>
       </div>
       <button class="pw-btn">Continue Learning →</button>
@@ -652,504 +537,226 @@ body {
   </div>
 </div>
 
-</div><!-- .phone -->
+</div>
 
 <script>
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-const WORKER = 'https://speaku-api.nilesh53333.workers.dev';
+// ══════════════════════════
+// CONFIG — swap key here
+// ══════════════════════════
+const GEMINI_URL = 'https://speaku-api.nilesh53333.workers.dev/gemini';
 const MAX_FREE = 20;
 
-const state = {
-  motherTongue: 'Marathi',
-  targetLang: 'English',
+// ══════════════════════════
+// STATE
+// ══════════════════════════
+const S = {
+  mother: 'Marathi',
+  target: 'English',
   voiceLang: 'en-US',
-  userName: 'there',
-  msgCount: 0,
+  name: 'there',
+  count: 0,
   history: [],
   loading: false,
-  cefrDone: false,
-  cefrLevel: null
+  speakerOn: true,
+  recognition: null,
+  recording: false
 };
 
-// Speech recognition
-let recognition = null;
-let isRecording = false;
-let speakerEnabled = true;
-
-function toggleSpeaker() {
-  speakerEnabled = !speakerEnabled;
-  document.getElementById('speakerBtn').textContent = speakerEnabled ? '🔊' : '🔇';
-  if (!speakerEnabled) window.speechSynthesis.cancel();
-}
-
-// ══════════════════════════════════════
+// ══════════════════════════
 // ONBOARDING
-// ══════════════════════════════════════
-function selectMother(el) {
-  document.querySelectorAll('#motherGrid .lang-btn').forEach(b => b.classList.remove('selected'));
+// ══════════════════════════
+function sel(type, el) {
+  const grid = type === 'mother' ? 'motherGrid' : 'targetGrid';
+  document.querySelectorAll(`#${grid} .lang-btn`).forEach(b => b.classList.remove('selected'));
   el.classList.add('selected');
-  state.motherTongue = el.dataset.lang;
-}
-
-function selectTarget(el) {
-  document.querySelectorAll('#targetGrid .lang-btn').forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  state.targetLang = el.dataset.lang;
-  state.voiceLang = el.dataset.voice || 'en-US';
+  if (type === 'mother') S.mother = el.dataset.lang;
+  else { S.target = el.dataset.lang; S.voiceLang = el.dataset.voice || 'en-US'; }
 }
 
 function startChat() {
-  if (state.motherTongue === state.targetLang) {
-    alert('Please select different languages!');
-    return;
-  }
-  state.userName = document.getElementById('nameInput').value.trim() || 'there';
+  if (S.mother === S.target) { alert('Please select different languages!'); return; }
+  S.name = document.getElementById('nameInput').value.trim() || 'there';
 
-  // Set today's date
-  const now = new Date();
-  document.getElementById('todayDate').textContent =
-    now.toLocaleDateString('en-IN', { weekday:'long', day:'numeric', month:'long' });
+  const flags = {English:'🇬🇧',Spanish:'🇪🇸',French:'🇫🇷',German:'🇩🇪',Japanese:'🇯🇵',Korean:'🇰🇷',Hindi:'🇮🇳',Marathi:'🇮🇳',Tamil:'🇮🇳',Telugu:'🇮🇳',Gujarati:'🇮🇳',Punjabi:'🇮🇳'};
+  document.getElementById('tutorName').textContent = `${flags[S.target]||'🌍'} ${S.target} Tutor`;
+  document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
 
-  // Flag emojis map
-  const flags = { English:'🇬🇧', Spanish:'🇪🇸', French:'🇫🇷', German:'🇩🇪', Japanese:'🇯🇵', Korean:'🇰🇷', Hindi:'🇮🇳', Marathi:'🇮🇳', Tamil:'🇮🇳', Telugu:'🇮🇳', Gujarati:'🇮🇳', Punjabi:'🇮🇳' };
-  document.getElementById('tutorName').textContent = `${flags[state.targetLang] || '🌍'} ${state.targetLang} Tutor`;
-
-  // Show chat screen
   document.getElementById('onboarding').style.display = 'none';
   const cs = document.getElementById('chatScreen');
-  cs.style.display = 'flex';
-  cs.style.flexDirection = 'column';
-  cs.style.height = '100%';
+  cs.style.cssText = 'display:flex;flex-direction:column;height:100%;position:relative;';
 
-  // Setup voice
   setupVoice();
-
-  setTimeout(initSession, 500);
+  initTTS();
+  setTimeout(initSession, 400);
 }
 
 function goBack() {
-  stopRecording();
+  stopMic();
+  cancelTTS();
   document.getElementById('chatScreen').style.display = 'none';
-  document.getElementById('onboarding').style.display = 'flex';
-  document.getElementById('onboarding').style.flexDirection = 'column';
-  // Reset
-  const bg = document.getElementById('chatBg');
-  bg.innerHTML = '<div class="date-pill"><span id="todayDate">Today</span></div><div class="typing-bubble" id="typingBubble"><div class="td"></div><div class="td"></div><div class="td"></div></div><div id="scrollAnchor"></div>';
-  state.history = [];
-  state.msgCount = 0;
-  state.cefrDone = false;
-  state.cefrLevel = null;
-  state.loading = false;
+  document.getElementById('onboarding').style.cssText = 'flex:1;display:flex;flex-direction:column;background:#111b21;overflow-y:auto;';
+  // Full reset
+  S.history = []; S.count = 0; S.loading = false;
+  document.getElementById('chatBg').innerHTML = '<div class="date-pill"><span id="dateLabel">Today</span></div><div class="typing-row" id="typingRow"><div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div></div><div id="scrollAnchor"></div>';
   document.getElementById('msgsLeft').textContent = MAX_FREE;
-  document.getElementById('sendBtn').classList.remove('visible');
   document.getElementById('msgInput').value = '';
+  document.getElementById('sendBtn').classList.remove('show');
+  document.getElementById('micBtn').style.display = 'flex';
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════
 // SYSTEM PROMPT
-// ══════════════════════════════════════
+// ══════════════════════════
 function getSystem() {
-  return `You are a speaking practice partner for ${state.userName} who speaks ${state.motherTongue} and wants to get comfortable speaking ${state.targetLang}.
+  return `You are a speaking practice partner helping ${S.name} get comfortable speaking ${S.target}. They speak ${S.mother}.
 
-YOUR ONLY JOB: Keep the conversation going. Make them speak. That's it.
+YOUR ONLY JOB: Keep the conversation flowing naturally. Make them speak. That is it.
 
-HOW:
-- Ask simple questions about their real life — today, food, work, friends, hobbies, plans
-- When they answer, react naturally and ask a follow-up — like a real friend would
-- If they use a wrong word or broken sentence — DO NOT correct it, DO NOT explain it — just respond naturally using the correct version in your reply so they absorb it automatically
-- If they get stuck and can't find a word — give them ONLY that one word in ${state.targetLang}, nothing else
-- Never explain grammar. Never list vocabulary. Never give meanings.
-- Keep your messages to 1-2 sentences MAX — you are not teaching, you are chatting
-- Respond in ${state.motherTongue} for encouragement only — keep most of the conversation in ${state.targetLang} so they are forced to think in it
-- If they write in ${state.motherTongue} — gently nudge: "Try saying that in ${state.targetLang}!"
-- The goal is SPEED and COMFORT — not accuracy. Fluency first, grammar later.`;
+HOW TO DO IT:
+- Chat about their real life — today, food, work, friends, hobbies, plans, opinions
+- React naturally to what they say and ask ONE follow-up question
+- Keep your messages to 2-3 sentences MAX — like WhatsApp
+- If they make a grammar mistake — do NOT correct it or explain it — just use the correct version naturally in your reply so they absorb it
+- If they get stuck on a word — give them ONLY that one word in ${S.target}, nothing else, then continue
+- If they write in ${S.mother} — gently say "Try saying that in ${S.target}!" and wait
+- Use ${S.mother} only for a short encouraging word occasionally — keep conversation mostly in ${S.target}
+- Never teach grammar. Never list words. Never give explanations.
+- Goal: fluency and confidence — not perfection`;
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════
+// GEMINI API CALL
+// ══════════════════════════
+async function callGemini(userMsg) {
+  // Build conversation for Gemini format
+  const contents = [];
+
+  // Add history
+  S.history.forEach(m => {
+    contents.push({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] });
+  });
+
+  // Add current user message
+  if (userMsg) contents.push({ role: 'user', parts: [{ text: userMsg }] });
+
+  const body = {
+    system_instruction: { parts: [{ text: getSystem() }] },
+    contents,
+    generationConfig: { maxOutputTokens: 300, temperature: 0.9 }
+  };
+
+  const res = await fetch(GEMINI_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message);
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+}
+
+// ══════════════════════════
 // INIT SESSION
-// ══════════════════════════════════════
+// ══════════════════════════
 async function initSession() {
-  showTyping();
-  setStatus('typing...', true);
-
+  showTyping(); setStatus('typing...', true);
   try {
-    const res = await fetch(WORKER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: getSystem(),
-        messages: [{
-          role: 'user',
-          content: `Start a casual conversation with ${state.userName}. In ${state.motherTongue}, tell them in ONE sentence — we are just going to chat in ${state.targetLang} today, no teaching, no pressure. Then immediately ask them one super simple question about their day in ${state.targetLang}. Keep it like WhatsApp.`
-        }]
-      })
-    });
-
-    const data = await res.json();
-    const raw = data.content?.map(b => b.text || '').join('') || '';
-    hideTyping();
-    setStatus('online', false);
-    processAndDisplay(raw);
-    state.history.push({ role: 'assistant', content: raw });
-
+    const reply = await callGemini(`Start a casual conversation with ${S.name}. In ${S.mother}, say one warm sentence that today we are just going to chat in ${S.target} — no studying, no pressure, just talking. Then immediately ask them one easy question about their day in ${S.target}.`);
+    hideTyping(); setStatus('online', false);
+    addBubble('incoming', reply);
+    S.history.push({ role: 'assistant', content: reply });
   } catch(e) {
-    hideTyping();
-    setStatus('online', false);
-    addBubble('incoming', `नमस्ते ${state.userName}! 😊 मी तुमचा Speaku tutor आहे.`, []);
+    hideTyping(); setStatus('online', false);
+    addBubble('incoming', `नमस्ते ${S.name}! 😊 आज आपण फक्त ${S.target} मध्ये गप्पा मारूया — शिकवणं नाही, tension नको! How was your day today?`);
     console.error(e);
   }
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════
 // SEND MESSAGE
-// ══════════════════════════════════════
+// ══════════════════════════
 async function sendMessage(text) {
   const input = document.getElementById('msgInput');
-  const msgText = text || input.value.trim();
-  if (!msgText || state.loading) return;
+  const msg = (text || input.value).trim();
+  if (!msg || S.loading) return;
 
-  // Check limit
-  if (state.msgCount >= MAX_FREE) {
-    document.getElementById('paywallOverlay').classList.add('visible');
-    return;
-  }
+  if (S.count >= MAX_FREE) { document.getElementById('paywallOverlay').classList.add('visible'); return; }
 
-  // Clear input
-  if (!text) {
-    input.value = '';
-    input.style.height = 'auto';
-    document.getElementById('sendBtn').classList.remove('visible');
-    document.getElementById('micBtn').style.display = 'flex';
-  }
+  // ✅ FIX: Clear input AND reset UI immediately
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').classList.remove('show');
+  document.getElementById('micBtn').style.display = 'flex';
 
-  // Remove existing quick replies
-  removeQuickReplies();
+  addBubble('outgoing', msg);
+  S.history.push({ role: 'user', content: msg });
+  S.count++;
+  document.getElementById('msgsLeft').textContent = MAX_FREE - S.count;
 
-  addBubble('outgoing', msgText, []);
-  state.history.push({ role: 'user', content: msgText });
-  state.msgCount++;
-
-  const left = MAX_FREE - state.msgCount;
-  document.getElementById('msgsLeft').textContent = left;
-
-  state.loading = true;
-  document.getElementById('sendBtn').style.pointerEvents = 'none';
+  S.loading = true;
   document.getElementById('micBtn').disabled = true;
-  showTyping();
-  setStatus('typing...', true);
+  showTyping(); setStatus('typing...', true);
 
   try {
-    const res = await fetch(WORKER, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: getSystem(),
-        messages: state.history
-      })
-    });
-
-    const data = await res.json();
-    const raw = data.content?.map(b => b.text || '').join('') || 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा.';
-    hideTyping();
-    setStatus('online', false);
-    processAndDisplay(raw);
-    state.history.push({ role: 'assistant', content: raw });
-
-    if (left <= 0) {
-      setTimeout(() => {
-        document.getElementById('paywallOverlay').classList.add('visible');
-      }, 1500);
-    }
-
+    const reply = await callGemini(null); // history already has the message
+    hideTyping(); setStatus('online', false);
+    addBubble('incoming', reply);
+    S.history.push({ role: 'assistant', content: reply });
+    if (MAX_FREE - S.count <= 0) setTimeout(() => document.getElementById('paywallOverlay').classList.add('visible'), 1500);
   } catch(e) {
-    hideTyping();
-    setStatus('online', false);
-    addBubble('incoming', 'काहीतरी चूक झाली. पुन्हा प्रयत्न करा. 🙏', []);
+    hideTyping(); setStatus('online', false);
+    addBubble('incoming', 'Something went wrong. Please try again. 🙏');
     console.error(e);
   } finally {
-    state.loading = false;
-    document.getElementById('sendBtn').style.pointerEvents = 'auto';
+    S.loading = false;
     document.getElementById('micBtn').disabled = false;
+    document.getElementById('msgInput').focus();
   }
 }
 
-// ══════════════════════════════════════
-// PROCESS AI RESPONSE
-// Parses OPTIONS and [LEVEL:X] tags
-// ══════════════════════════════════════
-function processAndDisplay(raw) {
-  let text = raw;
-
-  // Check for level tag and show badge
-  const levelMatch = text.match(/\[LEVEL:(Beginner|Intermediate|Advanced)\]/i);
-  if (levelMatch && !state.cefrDone) {
-    state.cefrDone = true;
-    state.cefrLevel = levelMatch[1];
-    text = text.replace(levelMatch[0], '').trim();
-    setTimeout(() => showLevelBadge(state.cefrLevel), 300);
-  }
-
-  // Clean up
-  text = text.replace(/\n{3,}/g, '\n\n').trim();
-
-  addBubble('incoming', text, []);
-}
-
-// ══════════════════════════════════════
-// UI — ADD BUBBLE
-// ══════════════════════════════════════
-function addBubble(dir, text, options = []) {
+// ══════════════════════════
+// ADD BUBBLE
+// ══════════════════════════
+function addBubble(dir, text) {
   const bg = document.getElementById('chatBg');
   const anchor = document.getElementById('scrollAnchor');
+  const typingRow = document.getElementById('typingRow');
 
   const now = new Date();
   const time = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
 
-  // Bubble
   const row = document.createElement('div');
   row.className = `msg-row ${dir}`;
 
   const bubble = document.createElement('div');
   bubble.className = `bubble ${dir}`;
-  bubble.innerHTML = `
-    <div class="bubble-text">${escapeHtml(text).replace(/\n/g, '<br>')}</div>
-    <div class="bubble-meta">
-      ${time}
-      ${dir === 'outgoing' ? '<span class="ticks">✓✓</span>' : ''}
-    </div>`;
+  bubble.innerHTML = `<div class="bubble-text">${esc(text).replace(/\n/g,'<br>')}</div><div class="bubble-meta">${time}${dir==='outgoing'?'<span class="ticks">✓✓</span>':''}</div>`;
 
   row.appendChild(bubble);
-  bg.insertBefore(row, anchor);
-
-  // Quick replies (only for incoming)
-  if (dir === 'incoming' && options.length > 0) {
-    const qrDiv = document.createElement('div');
-    qrDiv.className = 'quick-replies';
-    qrDiv.id = 'currentQR';
-    options.forEach(opt => {
-      const btn = document.createElement('button');
-      btn.className = 'qr-btn';
-      btn.textContent = opt;
-      btn.onclick = () => {
-        removeQuickReplies();
-        sendMessage(opt);
-      };
-      qrDiv.appendChild(btn);
-    });
-    bg.insertBefore(qrDiv, anchor);
-  }
-
+  bg.insertBefore(row, typingRow);
   anchor.scrollIntoView({ behavior: 'smooth' });
 
-  // Auto-speak incoming messages
-  if (dir === 'incoming') {
-    speakText(text);
+  // Speak incoming messages
+  if (dir === 'incoming' && S.speakerOn) {
+    speak(text);
   }
 }
 
-function speakText(text) {
-  if (!window.speechSynthesis || !speakerEnabled) return;
-
-  // Cancel any ongoing speech
-  window.speechSynthesis.cancel();
-
-  // Extract only English parts to speak (skip Marathi explanation)
-  // Speak the full text — browser will handle what it can
-  const utterance = new SpeechSynthesisUtterance(text);
-
-  // Use target language voice
-  const voiceMap = {
-    'English': 'en-US',
-    'Spanish': 'es-ES',
-    'French': 'fr-FR',
-    'German': 'de-DE',
-    'Japanese': 'ja-JP',
-    'Korean': 'ko-KR',
-    'Hindi': 'hi-IN',
-    'Marathi': 'mr-IN'
-  };
-
-  // Set language to mother tongue since tutor speaks in mother tongue
-  const motherVoiceMap = {
-    'Marathi': 'mr-IN',
-    'Hindi': 'hi-IN',
-    'Tamil': 'ta-IN',
-    'Telugu': 'te-IN',
-    'Gujarati': 'gu-IN',
-    'Punjabi': 'pa-IN',
-    'English': 'en-US',
-    'Spanish': 'es-ES',
-    'French': 'fr-FR',
-    'German': 'de-DE'
-  };
-
-  utterance.lang = motherVoiceMap[state.motherTongue] || 'en-US';
-  utterance.rate = 0.75;
-  utterance.pitch = 1.0;
-  utterance.volume = 1.0;
-
-  // Try to find a matching voice
-  const voices = window.speechSynthesis.getVoices();
-  const matchingVoice = voices.find(v => v.lang.startsWith(utterance.lang.split('-')[0]));
-  if (matchingVoice) utterance.voice = matchingVoice;
-
-  window.speechSynthesis.speak(utterance);
+function esc(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-function removeQuickReplies() {
-  const existing = document.getElementById('currentQR');
-  if (existing) existing.remove();
-}
-
-function showLevelBadge(level) {
-  const bg = document.getElementById('chatBg');
-  const anchor = document.getElementById('scrollAnchor');
-  const badge = document.createElement('div');
-  badge.className = 'level-badge';
-  const emoji = level === 'Beginner' ? '🌱' : level === 'Intermediate' ? '🌿' : '🌳';
-  badge.textContent = `${emoji} Your level: ${level}`;
-  bg.insertBefore(badge, anchor);
-  anchor.scrollIntoView({ behavior: 'smooth' });
-}
-
-function escapeHtml(text) {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-}
-
-// ══════════════════════════════════════
-// VOICE INPUT
-// ══════════════════════════════════════
-// Preload voices
-if (window.speechSynthesis) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
-
-function setupVoice() {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    document.getElementById('micBtn').style.display = 'none';
-    const bar = document.querySelector('.wa-input-bar');
-    const notice = document.createElement('div');
-    notice.className = 'no-mic-notice';
-    notice.textContent = 'Voice not supported on this browser — use Chrome';
-    bar.parentNode.insertBefore(notice, bar.nextSibling);
-    return;
-  }
-
-  recognition = new SpeechRecognition();
-  recognition.lang = state.voiceLang;
-  recognition.continuous = false;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 1;
-
-  recognition.onstart = () => {
-    isRecording = true;
-    // Stop TTS so speaker doesn't interfere with mic
-    window.speechSynthesis.cancel();
-    document.getElementById('micBtn').classList.add('recording');
-    document.getElementById('micBtn').textContent = '⏹';
-    setStatus('Listening...', false);
-    document.getElementById('tutorStatus').className = 'tutor-status recording';
-  };
-
-  recognition.onresult = (e) => {
-    let transcript = '';
-    for (let i = e.resultIndex; i < e.results.length; i++) {
-      transcript += e.results[i][0].transcript;
-    }
-    const input = document.getElementById('msgInput');
-    input.value = transcript;
-    onInputChange(input);
-    // DO NOT auto-send — let user review and press send button manually
-    if (e.results[e.results.length - 1].isFinal) {
-      stopRecording();
-      // Just focus input so user can edit or press send
-      input.focus();
-    }
-  };
-
-  recognition.onerror = (e) => {
-    stopRecording();
-    if (e.error !== 'no-speech' && e.error !== 'aborted') {
-      console.warn('Speech error:', e.error);
-    }
-  };
-
-  recognition.onend = () => {
-    stopRecording();
-  };
-}
-
-function toggleVoice() {
-  if (isRecording) {
-    stopRecording();
-  } else {
-    startRecording();
-  }
-}
-
-function startRecording() {
-  if (!recognition || state.loading) return;
-  try {
-    recognition.lang = state.voiceLang;
-    recognition.start();
-  } catch(e) {
-    console.warn('Recognition start error:', e);
-  }
-}
-
-function stopRecording() {
-  if (recognition && isRecording) {
-    try { recognition.stop(); } catch(e) {}
-  }
-  isRecording = false;
-  const micBtn = document.getElementById('micBtn');
-  micBtn.classList.remove('recording');
-  micBtn.textContent = '🎤';
-  setStatus('online', false);
-}
-
-// ══════════════════════════════════════
-// INPUT HELPERS
-// ══════════════════════════════════════
-function onInputChange(el) {
-  // Auto resize
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
-
-  // Toggle send/mic button
-  const hasText = el.value.trim().length > 0;
-  document.getElementById('sendBtn').classList.toggle('visible', hasText);
-  document.getElementById('micBtn').style.display = hasText ? 'none' : 'flex';
-}
-
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
-}
-
-// ══════════════════════════════════════
-// STATUS & TYPING
-// ══════════════════════════════════════
+// ══════════════════════════
+// TYPING & STATUS
+// ══════════════════════════
 function showTyping() {
-  document.getElementById('typingBubble').classList.add('visible');
+  document.getElementById('typingRow').classList.add('visible');
   document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
 }
 
 function hideTyping() {
-  document.getElementById('typingBubble').classList.remove('visible');
+  document.getElementById('typingRow').classList.remove('visible');
 }
 
 function setStatus(text, isTyping) {
@@ -1158,16 +765,141 @@ function setStatus(text, isTyping) {
   el.className = 'tutor-status' + (isTyping ? ' typing' : '');
 }
 
-// ══════════════════════════════════════
+// ══════════════════════════
+// INPUT HANDLING
+// ══════════════════════════
+function onType(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  const has = el.value.trim().length > 0;
+  document.getElementById('sendBtn').classList.toggle('show', has);
+  document.getElementById('micBtn').style.display = has ? 'none' : 'flex';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+// ══════════════════════════
+// VOICE INPUT (MIC)
+// ══════════════════════════
+function setupVoice() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    document.getElementById('micBtn').style.display = 'none';
+    return;
+  }
+
+  S.recognition = new SR();
+  S.recognition.lang = S.voiceLang;
+  S.recognition.continuous = false;
+  S.recognition.interimResults = true;
+
+  S.recognition.onstart = () => {
+    S.recording = true;
+    cancelTTS(); // ✅ FIX: Stop speaker when mic starts
+    document.getElementById('micBtn').classList.add('recording');
+    document.getElementById('micBtn').textContent = '⏹';
+    setStatus('Listening...', false);
+    document.getElementById('tutorStatus').className = 'tutor-status recording';
+  };
+
+  S.recognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    const input = document.getElementById('msgInput');
+    input.value = transcript;
+    onType(input);
+
+    // ✅ FIX: Only stop recording on final — do NOT auto send
+    if (e.results[e.results.length - 1].isFinal) {
+      stopMic();
+      // Focus input so user can review and press send manually
+      input.focus();
+    }
+  };
+
+  S.recognition.onerror = (e) => {
+    if (e.error !== 'no-speech' && e.error !== 'aborted') console.warn('Mic error:', e.error);
+    stopMic();
+  };
+
+  S.recognition.onend = () => stopMic();
+}
+
+function toggleMic() {
+  if (S.recording) stopMic();
+  else startMic();
+}
+
+function startMic() {
+  if (!S.recognition || S.loading) return;
+  try { S.recognition.lang = S.voiceLang; S.recognition.start(); } catch(e) {}
+}
+
+function stopMic() {
+  if (S.recognition && S.recording) {
+    try { S.recognition.stop(); } catch(e) {}
+  }
+  S.recording = false;
+  const btn = document.getElementById('micBtn');
+  btn.classList.remove('recording');
+  btn.textContent = '🎤';
+  setStatus('online', false);
+}
+
+// ══════════════════════════
+// VOICE OUTPUT (TTS)
+// ══════════════════════════
+let voices = [];
+
+function initTTS() {
+  if (!window.speechSynthesis) return;
+  voices = window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
+}
+
+function speak(text) {
+  if (!window.speechSynthesis || !S.speakerOn) return;
+  cancelTTS();
+
+  const u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.85; // ✅ FIX: Slower speed
+  u.pitch = 1.0;
+  u.volume = 1.0;
+
+  // Use target language voice for English parts
+  const langMap = { English:'en', Spanish:'es', French:'fr', German:'de', Japanese:'ja', Korean:'ko', Hindi:'hi', Marathi:'mr' };
+  const langCode = langMap[S.mother] || 'en';
+  const match = voices.find(v => v.lang.startsWith(langCode));
+  if (match) u.voice = match;
+  else u.lang = `${langCode}-IN`;
+
+  window.speechSynthesis.speak(u);
+}
+
+function cancelTTS() {
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+}
+
+function toggleSpeaker() {
+  S.speakerOn = !S.speakerOn;
+  document.getElementById('speakerBtn').textContent = S.speakerOn ? '🔊' : '🔇';
+  if (!S.speakerOn) cancelTTS();
+}
+
+// ══════════════════════════
 // PAYWALL
-// ══════════════════════════════════════
-function selectPlan(n) {
-  document.getElementById('plan1').classList.toggle('active', n === 1);
-  document.getElementById('plan2').classList.toggle('active', n === 2);
+// ══════════════════════════
+function selPlan(n) {
+  document.getElementById('plan1').classList.toggle('active', n===1);
+  document.getElementById('plan2').classList.toggle('active', n===2);
 }
 
 function dismissPaywall() {
-  state.msgCount = MAX_FREE - 3; // Give 3 more
+  S.count = MAX_FREE - 3;
   document.getElementById('msgsLeft').textContent = 3;
   document.getElementById('paywallOverlay').classList.remove('visible');
 }
