@@ -541,7 +541,7 @@ body {
 
 <script>
 // ══════════════════════════
-// CONFIG — swap key here
+// CONFIG
 // ══════════════════════════
 const GEMINI_URL = 'https://speaku-api.nilesh53333.workers.dev/gemini';
 const MAX_FREE = 20;
@@ -595,7 +595,6 @@ function goBack() {
   cancelTTS();
   document.getElementById('chatScreen').style.display = 'none';
   document.getElementById('onboarding').style.cssText = 'flex:1;display:flex;flex-direction:column;background:#111b21;overflow-y:auto;';
-  // Full reset
   S.history = []; S.count = 0; S.loading = false;
   document.getElementById('chatBg').innerHTML = '<div class="date-pill"><span id="dateLabel">Today</span></div><div class="typing-row" id="typingRow"><div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div></div><div id="scrollAnchor"></div>';
   document.getElementById('msgsLeft').textContent = MAX_FREE;
@@ -625,24 +624,34 @@ HOW TO DO IT:
 }
 
 // ══════════════════════════
-// GEMINI API CALL
+// GEMINI API CALL — FIXED ✅
 // ══════════════════════════
 async function callGemini(userMsg) {
-  // Build conversation for Gemini format
   const contents = [];
 
   // Add history
   S.history.forEach(m => {
-    contents.push({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] });
+    contents.push({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    });
   });
 
-  // Add current user message
-  if (userMsg) contents.push({ role: 'user', parts: [{ text: userMsg }] });
+  // Add current user message if passed directly
+  if (userMsg) {
+    contents.push({ role: 'user', parts: [{ text: userMsg }] });
+  }
 
   const body = {
-    system_instruction: { parts: [{ text: getSystem() }] },
+    system_instruction: {
+      role: 'user',                          // ✅ FIX 1: Gemini needs role:'user' here
+      parts: [{ text: getSystem() }]
+    },
     contents,
-    generationConfig: { maxOutputTokens: 300, temperature: 0.9 }
+    generationConfig: {                      // ✅ FIX 2: correct camelCase for Gemini
+      maxOutputTokens: 300,
+      temperature: 0.9
+    }
   };
 
   const res = await fetch(GEMINI_URL, {
@@ -652,7 +661,7 @@ async function callGemini(userMsg) {
   });
 
   const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
+  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
 }
 
@@ -683,7 +692,6 @@ async function sendMessage(text) {
 
   if (S.count >= MAX_FREE) { document.getElementById('paywallOverlay').classList.add('visible'); return; }
 
-  // ✅ FIX: Clear input AND reset UI immediately
   input.value = '';
   input.style.height = 'auto';
   document.getElementById('sendBtn').classList.remove('show');
@@ -737,10 +745,7 @@ function addBubble(dir, text) {
   bg.insertBefore(row, typingRow);
   anchor.scrollIntoView({ behavior: 'smooth' });
 
-  // Speak incoming messages
-  if (dir === 'incoming' && S.speakerOn) {
-    speak(text);
-  }
+  if (dir === 'incoming' && S.speakerOn) speak(text);
 }
 
 function esc(t) {
@@ -797,7 +802,7 @@ function setupVoice() {
 
   S.recognition.onstart = () => {
     S.recording = true;
-    cancelTTS(); // ✅ FIX: Stop speaker when mic starts
+    cancelTTS();
     document.getElementById('micBtn').classList.add('recording');
     document.getElementById('micBtn').textContent = '⏹';
     setStatus('Listening...', false);
@@ -812,11 +817,8 @@ function setupVoice() {
     const input = document.getElementById('msgInput');
     input.value = transcript;
     onType(input);
-
-    // ✅ FIX: Only stop recording on final — do NOT auto send
     if (e.results[e.results.length - 1].isFinal) {
       stopMic();
-      // Focus input so user can review and press send manually
       input.focus();
     }
   };
@@ -866,13 +868,12 @@ function speak(text) {
   cancelTTS();
 
   const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85; // ✅ FIX: Slower speed
+  u.rate = 0.85;
   u.pitch = 1.0;
   u.volume = 1.0;
 
-  // Use target language voice for English parts
   const langMap = { English:'en', Spanish:'es', French:'fr', German:'de', Japanese:'ja', Korean:'ko', Hindi:'hi', Marathi:'mr' };
-  const langCode = langMap[S.mother] || 'en';
+  const langCode = langMap[S.target] || 'en';  // ✅ FIX 3: speak in TARGET language, not mother tongue
   const match = voices.find(v => v.lang.startsWith(langCode));
   if (match) u.voice = match;
   else u.lang = `${langCode}-IN`;
