@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<meta name="description" content="Englisho — English बोलायला शिका, आपल्या भाषेत. Learn to speak English confidently through conversation."/>
+<meta name="description" content="Englisho — Learn to speak English confidently in your own language. Practice through real conversation."/>
 <title>Englisho — Speak English Confidently</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -783,25 +783,25 @@ body {
         <div class="hero-badge-dot"></div>
         Free to try · No signup needed
       </div>
-      <h1>English बोलायला शिका,<br><span>आपल्या भाषेत</span></h1>
-      <p class="hero-sub">WhatsApp सारख्या chat मध्ये English practice करा. Grammar lessons नाही — फक्त real conversation. तुमच्या tutor ला तुमच्या भाषेत बोलता येतं!</p>
+      <h1>Learn to Speak English<br><span>in your own language</span></h1>
+      <p class="hero-sub">Practice English like chatting with a friend on WhatsApp. No grammar lessons — just real conversation. Your AI tutor explains everything in your own language!</p>
 
       <div class="hero-features">
         <div class="feature-item">
           <div class="feature-icon">🗣️</div>
-          Voice + text दोन्ही प्रकारे बोलता येतं
+          Speak or type — mic and text both work
         </div>
         <div class="feature-item">
           <div class="feature-icon">✅</div>
-          Silent correction — चुका automatically fix होतात
+          Silent correction — mistakes fixed naturally
         </div>
         <div class="feature-item">
           <div class="feature-icon">🇮🇳</div>
-          Marathi, Hindi, Tamil, Telugu मध्ये explain होतं
+          Explains in Marathi, Hindi, Tamil, Telugu & more
         </div>
         <div class="feature-item">
           <div class="feature-icon">💰</div>
-          फक्त ₹49/month — कोणत्याही coaching पेक्षा स्वस्त
+          Just ₹49/month — cheaper than any coaching class
         </div>
       </div>
 
@@ -822,7 +822,7 @@ body {
         </div>
         <div class="mock-chat">
           <div class="mock-bubble in">
-            नमस्ते Priya! 😊 आज आपण English मध्ये गप्पा मारूया. How was your day today?
+            Hi Priya! 😊 Today let's just chat in English — no pressure, just talking! What did you do today?
             <div class="mock-time">9:41</div>
           </div>
           <div class="mock-bubble out">
@@ -849,24 +849,24 @@ body {
   <!-- Features -->
   <div class="features-section" id="features">
     <div class="features-inner">
-      <div class="section-title">English शिकणं आता सोपं झालं</div>
-      <div class="section-sub">Coaching class नाही, app download नाही — फक्त chat करा आणि शिका</div>
+      <div class="section-title">Learning English is now easy</div>
+      <div class="section-sub">No coaching class, no app download — just chat and learn</div>
 
       <div class="features-grid">
         <div class="feature-card">
           <div class="feature-card-icon">🗣️</div>
           <div class="feature-card-title">Real Conversation Practice</div>
-          <div class="feature-card-desc">WhatsApp सारख्या chat मध्ये English बोला. AI tutor तुमच्याशी natural conversation करतो — boring lessons नाही.</div>
+          <div class="feature-card-desc">Chat in English just like WhatsApp. Your AI tutor has natural conversations with you — no boring lessons.</div>
         </div>
         <div class="feature-card">
           <div class="feature-card-icon">🤫</div>
           <div class="feature-card-title">Silent Correction</div>
-          <div class="feature-card-desc">चूक झाली तर directly correct करत नाही — reply मध्येच बरोबर sentence वापरतो.</div>
+          <div class="feature-card-desc">When you make a mistake, the tutor uses the correct sentence naturally in the reply — without pointing it out.</div>
         </div>
         <div class="feature-card">
           <div class="feature-card-icon">🎤</div>
-          <div class="feature-card-title">Mic ने बोला</div>
-          <div class="feature-card-desc">Type करायचं नाही? Mic button दाबा आणि English मध्ये बोला. Speaking confidence build होते.</div>
+          <div class="feature-card-title">Speak with Mic</div>
+          <div class="feature-card-desc">Don't want to type? Press the mic button and speak in English. Build your speaking confidence naturally.</div>
         </div>
       </div>
     </div>
@@ -876,8 +876,8 @@ body {
 <!-- ══ ONBOARDING PAGE ══ -->
 <div id="onboardingPage" style="display:none;min-height:calc(100vh - 56px);display:none;align-items:center;justify-content:center;padding:40px 24px;">
   <div class="ob-panel">
-    <div class="ob-panel-title">चला सुरुवात करूया! 🚀</div>
-    <div class="ob-panel-sub">तुमची भाषा निवडा आणि English practice सुरू करा</div>
+    <div class="ob-panel-title">Let's get started! 🚀</div>
+    <div class="ob-panel-sub">Select your language and start practicing English</div>
 
     <div class="ob-label">I speak</div>
     <div class="lang-grid" id="motherGrid">
@@ -973,7 +973,7 @@ body {
 </div>
 
 <script>
-const GEMINI_URL = 'https://speaku-api.nilesh53333.workers.dev/gemini';
+const GEMINI_URL = 'https://englisho-api.nilesh53333.workers.dev/gemini';
 const MAX_FREE = 20;
 
 const S = {
@@ -1096,7 +1096,7 @@ async function initSession() {
     S.history.push({ role: 'assistant', content: reply });
   } catch(e) {
     hideTyping(); setStatus('online', false);
-    addBubble('incoming', `नमस्ते ${S.name}! 😊 आज आपण फक्त English मध्ये गप्पा मारूया — no tension! Tell me, what's something interesting that happened to you this week?`);
+    addBubble('incoming', `Hi ${S.name}! 😊 Today we're just going to chat in English — no pressure, no studying! Tell me, what's something interesting that happened to you this week?`);
     console.error(e);
   }
 }
