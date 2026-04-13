@@ -10,7 +10,6 @@
   --green: #00a884;
   --dark-green: #017a62;
   --bg: #f0f2f5;
-  --white: #ffffff;
   --chat-bg: #efeae2;
   --incoming: #ffffff;
   --outgoing: #d9fdd3;
@@ -19,354 +18,85 @@
   --border: #e9edef;
   --header: #008069;
 }
-
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-body {
-  font-family: 'Inter', -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-/* ══ CHAT CONTAINER ══ */
-.chat-wrap {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-.chat-header {
-  background: var(--header);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
-
-.chat-back {
-  color: rgba(255,255,255,0.85);
-  font-size: 20px;
-  cursor: pointer;
-  padding: 4px 8px 4px 0;
-  text-decoration: none;
-}
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+.chat-wrap { display: flex; flex-direction: column; height: 100vh; max-width: 800px; margin: 0 auto; width: 100%; }
+.chat-header { background: var(--header); padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.chat-back { color: rgba(255,255,255,0.85); font-size: 20px; cursor: pointer; padding: 4px 8px 4px 0; text-decoration: none; }
 .chat-back:hover { color: white; }
-
-.chat-avatar {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
+.chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .chat-info { flex: 1; }
 .chat-name { font-size: 15px; font-weight: 600; color: white; }
 .chat-status { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 1px; }
 .chat-status.typing { color: #a8e6cf; }
-
 .chat-actions { display: flex; gap: 16px; color: rgba(255,255,255,0.8); font-size: 20px; }
 .chat-actions span { cursor: pointer; transition: color 0.15s; }
 .chat-actions span:hover { color: white; }
-
-.msgs-bar {
-  background: #fafafa;
-  border-bottom: 1px solid var(--border);
-  text-align: center;
-  padding: 5px;
-  font-size: 12px;
-  color: var(--muted);
-  flex-shrink: 0;
-}
+.msgs-bar { background: #fafafa; border-bottom: 1px solid var(--border); text-align: center; padding: 5px; font-size: 12px; color: var(--muted); flex-shrink: 0; }
 .msgs-bar b { color: var(--green); }
-
-/* ══ CHAT BG ══ */
-.wa-bg {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px 20px;
-  background-color: var(--chat-bg);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 10 L50 30 L70 30 L55 45 L60 65 L40 52 L20 65 L25 45 L10 30 L30 30 Z' fill='none' stroke='%23ddd5c8' stroke-width='0.5'/%3E%3C/svg%3E");
-  scroll-behavior: smooth;
-}
-
+.wa-bg { flex: 1; overflow-y: auto; padding: 16px 20px; background-color: var(--chat-bg); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 10 L50 30 L70 30 L55 45 L60 65 L40 52 L20 65 L25 45 L10 30 L30 30 Z' fill='none' stroke='%23ddd5c8' stroke-width='0.5'/%3E%3C/svg%3E"); scroll-behavior: smooth; }
 .wa-bg::-webkit-scrollbar { width: 4px; }
 .wa-bg::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
-
 .date-pill { text-align: center; margin: 4px 0 12px; }
-.date-pill span {
-  background: rgba(255,255,255,0.85);
-  color: var(--muted);
-  font-size: 11.5px;
-  padding: 4px 12px;
-  border-radius: 8px;
-  display: inline-block;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-}
-
+.date-pill span { background: rgba(255,255,255,0.85); color: var(--muted); font-size: 11.5px; padding: 4px 12px; border-radius: 8px; display: inline-block; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
 .msg-row { display: flex; margin-bottom: 2px; animation: msgIn 0.2s ease both; }
 .msg-row.incoming { justify-content: flex-start; }
 .msg-row.outgoing { justify-content: flex-end; }
-
-@keyframes msgIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.bubble {
-  max-width: 65%;
-  padding: 7px 10px 22px;
-  border-radius: 8px;
-  position: relative;
-  word-break: break-word;
-  line-height: 1.55;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-}
-
-.bubble.incoming {
-  background: var(--incoming);
-  border-top-left-radius: 2px;
-  color: var(--text);
-}
-.bubble.outgoing {
-  background: var(--outgoing);
-  border-top-right-radius: 2px;
-  color: var(--text);
-}
-
-.bubble.incoming::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -7px;
-  border-top: 8px solid var(--incoming);
-  border-left: 8px solid transparent;
-}
-.bubble.outgoing::before {
-  content: '';
-  position: absolute;
-  top: 0; right: -7px;
-  border-top: 8px solid var(--outgoing);
-  border-right: 8px solid transparent;
-}
-
+@keyframes msgIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.bubble { max-width: 65%; padding: 7px 10px 22px; border-radius: 8px; position: relative; word-break: break-word; line-height: 1.55; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.bubble.incoming { background: var(--incoming); border-top-left-radius: 2px; color: var(--text); }
+.bubble.outgoing { background: var(--outgoing); border-top-right-radius: 2px; color: var(--text); }
+.bubble.incoming::before { content: ''; position: absolute; top: 0; left: -7px; border-top: 8px solid var(--incoming); border-left: 8px solid transparent; }
+.bubble.outgoing::before { content: ''; position: absolute; top: 0; right: -7px; border-top: 8px solid var(--outgoing); border-right: 8px solid transparent; }
 .bubble-text { font-size: 14px; }
-.bubble-meta {
-  position: absolute;
-  bottom: 4px; right: 8px;
-  display: flex; align-items: center; gap: 3px;
-  font-size: 11px; color: var(--muted); white-space: nowrap;
-}
+.bubble-meta { position: absolute; bottom: 4px; right: 8px; display: flex; align-items: center; gap: 3px; font-size: 11px; color: var(--muted); white-space: nowrap; }
 .ticks { color: #4fc3f7; font-size: 12px; }
-
-/* Typing indicator */
 .typing-row { display: none; justify-content: flex-start; margin-bottom: 4px; }
 .typing-row.visible { display: flex; }
-
-.typing-bubble {
-  background: white;
-  border-radius: 8px;
-  border-top-left-radius: 2px;
-  padding: 10px 14px;
-  display: flex; align-items: center; gap: 4px;
-  position: relative;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
-}
-.typing-bubble::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -7px;
-  border-top: 8px solid white;
-  border-left: 8px solid transparent;
-}
-
-.td {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #aaa;
-  animation: tdB 1.2s infinite;
-}
+.typing-bubble { background: white; border-radius: 8px; border-top-left-radius: 2px; padding: 10px 14px; display: flex; align-items: center; gap: 4px; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
+.typing-bubble::before { content: ''; position: absolute; top: 0; left: -7px; border-top: 8px solid white; border-left: 8px solid transparent; }
+.td { width: 7px; height: 7px; border-radius: 50%; background: #aaa; animation: tdB 1.2s infinite; }
 .td:nth-child(2) { animation-delay: 0.2s; }
 .td:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes tdB {
-  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
-  30% { transform: translateY(-5px); opacity: 1; }
-}
-
+@keyframes tdB { 0%,60%,100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
 #scrollAnchor { height: 4px; }
-
-/* ══ INPUT BAR ══ */
-.chat-input-bar {
-  background: #f0f2f5;
-  padding: 10px 16px;
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-  border-top: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.chat-input-wrap {
-  flex: 1;
-  background: white;
-  border-radius: 24px;
-  padding: 10px 16px;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  min-height: 44px;
-  border: 1px solid var(--border);
-}
-
-#msgInput {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 15px;
-  color: var(--text);
-  font-family: 'Inter', sans-serif;
-  resize: none;
-  max-height: 100px;
-  line-height: 1.4;
-  padding: 2px 0;
-}
+.chat-input-bar { background: #f0f2f5; padding: 10px 16px; display: flex; align-items: flex-end; gap: 10px; border-top: 1px solid var(--border); flex-shrink: 0; }
+.chat-input-wrap { flex: 1; background: white; border-radius: 24px; padding: 10px 16px; display: flex; align-items: flex-end; gap: 8px; min-height: 44px; border: 1px solid var(--border); }
+#msgInput { flex: 1; background: transparent; border: none; outline: none; font-size: 15px; color: var(--text); font-family: 'Inter', sans-serif; resize: none; max-height: 100px; line-height: 1.4; padding: 2px 0; }
 #msgInput::placeholder { color: #aaa; }
-
-.mic-btn {
-  width: 44px; height: 44px;
-  background: var(--green);
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px; color: white;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
-.mic-btn.recording {
-  background: #f44336;
-  animation: micP 1s infinite;
-}
-@keyframes micP {
-  0%,100% { box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
-  50% { box-shadow: 0 0 0 10px rgba(244,67,54,0); }
-}
+.mic-btn { width: 44px; height: 44px; background: var(--green); border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; color: white; flex-shrink: 0; transition: all 0.2s; }
+.mic-btn.recording { background: #f44336; animation: micP 1s infinite; }
+@keyframes micP { 0%,100% { box-shadow: 0 0 0 0 rgba(244,67,54,0.4); } 50% { box-shadow: 0 0 0 10px rgba(244,67,54,0); } }
 .mic-btn:disabled { background: #ccc; cursor: not-allowed; animation: none; }
-
-.send-btn {
-  width: 44px; height: 44px;
-  background: var(--green);
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  display: none;
-  align-items: center; justify-content: center;
-  font-size: 18px; color: white;
-  flex-shrink: 0;
-  transition: all 0.2s;
-}
+.send-btn { width: 44px; height: 44px; background: var(--green); border-radius: 50%; border: none; cursor: pointer; display: none; align-items: center; justify-content: center; font-size: 18px; color: white; flex-shrink: 0; transition: all 0.2s; }
 .send-btn:hover { background: var(--dark-green); }
 .send-btn.show { display: flex; }
-
-/* ══ PAYWALL ══ */
-#paywallOverlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 200;
-  align-items: flex-end;
-  justify-content: center;
-}
+#paywallOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; align-items: flex-end; justify-content: center; }
 #paywallOverlay.visible { display: flex; }
-
-.pw-sheet {
-  background: white;
-  border-radius: 20px 20px 0 0;
-  padding: 28px 24px 36px;
-  width: 100%;
-  max-width: 480px;
-  text-align: center;
-}
+.pw-sheet { background: white; border-radius: 20px 20px 0 0; padding: 28px 24px 36px; width: 100%; max-width: 480px; text-align: center; }
 .pw-icon { font-size: 44px; margin-bottom: 14px; }
 .pw-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
 .pw-sub { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 24px; }
-
 .pw-plans { display: flex; gap: 10px; margin-bottom: 20px; }
-.pw-plan {
-  flex: 1; background: var(--bg);
-  border: 1.5px solid var(--border);
-  border-radius: 14px; padding: 16px 10px;
-  cursor: pointer; transition: all 0.15s;
-}
+.pw-plan { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 16px 10px; cursor: pointer; transition: all 0.15s; }
 .pw-plan.active { border-color: var(--green); background: #e8f5e9; }
 .pw-pname { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .pw-price { font-size: 22px; font-weight: 700; color: var(--green); }
 .pw-period { font-size: 11px; color: var(--muted); }
 .pw-save { font-size: 10px; background: var(--green); color: white; padding: 2px 6px; border-radius: 8px; display: inline-block; margin-top: 4px; }
-
-.pw-btn {
-  width: 100%; background: var(--green); border: none;
-  border-radius: 12px; padding: 15px;
-  font-size: 16px; font-weight: 600; color: white;
-  cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px;
-  transition: all 0.2s;
-}
+.pw-btn { width: 100%; background: var(--green); border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 600; color: white; cursor: pointer; font-family: 'Inter', sans-serif; margin-bottom: 12px; transition: all 0.2s; }
 .pw-btn:hover { background: var(--dark-green); }
-.pw-free {
-  font-size: 13px; color: var(--muted); cursor: pointer;
-  background: none; border: none; font-family: 'Inter', sans-serif; text-decoration: underline;
-}
-
-/* ══ SUMMARY CARD ══ */
-.summary-card {
-  background: white;
-  border: 1.5px solid var(--green);
-  border-radius: 14px;
-  margin: 12px 0;
-  animation: msgIn 0.3s ease both;
-  overflow: hidden;
-  box-shadow: 0 2px 12px rgba(0,168,132,0.15);
-}
-.summary-header {
-  background: var(--green);
-  padding: 12px 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+.pw-free { font-size: 13px; color: var(--muted); cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; text-decoration: underline; }
+.summary-card { background: white; border: 1.5px solid var(--green); border-radius: 14px; margin: 12px 0; animation: msgIn 0.3s ease both; overflow: hidden; box-shadow: 0 2px 12px rgba(0,168,132,0.15); }
+.summary-header { background: var(--green); padding: 12px 16px; display: flex; align-items: center; gap: 8px; }
 .summary-header span { color: white; font-weight: 700; font-size: 14px; }
 .summary-header .time { color: rgba(255,255,255,0.7); font-size: 12px; margin-left: auto; }
-.summary-body {
-  padding: 16px;
-  font-size: 13px;
-  color: #111;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  font-family: 'Inter', sans-serif;
-}
-
-@media (max-width: 768px) {
-  .bubble { max-width: 80%; }
-  .wa-bg { padding: 12px 12px; }
-}
+.summary-body { padding: 16px; font-size: 13px; color: #111; line-height: 1.8; white-space: pre-wrap; font-family: 'Inter', sans-serif; }
+@media (max-width: 768px) { .bubble { max-width: 80%; } .wa-bg { padding: 12px 12px; } }
 </style>
 </head>
 <body>
-
 <div class="chat-wrap">
-
-  <!-- HEADER -->
   <div class="chat-header">
     <a class="chat-back" href="index.html">←</a>
     <div class="chat-avatar">🎓</div>
@@ -379,52 +109,31 @@ body {
       <span title="Level" id="levelBadge" style="font-size:13px;background:rgba(255,255,255,0.2);padding:3px 8px;border-radius:99px;color:white;font-weight:600;"></span>
     </div>
   </div>
-
-  <!-- MSGS BAR -->
   <div class="msgs-bar">Free session · <b id="msgsLeft">20</b> messages left</div>
-
-  <!-- CHAT AREA -->
   <div class="wa-bg" id="chatBg">
     <div class="date-pill"><span id="dateLabel">Today</span></div>
     <div class="typing-row" id="typingRow">
-      <div class="typing-bubble">
-        <div class="td"></div><div class="td"></div><div class="td"></div>
-      </div>
+      <div class="typing-bubble"><div class="td"></div><div class="td"></div><div class="td"></div></div>
     </div>
     <div id="scrollAnchor"></div>
   </div>
-
-  <!-- INPUT -->
   <div class="chat-input-bar">
     <div class="chat-input-wrap">
-      <textarea id="msgInput" placeholder="Type a message..." rows="1"
-        onkeydown="handleKey(event)"
-        oninput="onType(this)"></textarea>
+      <textarea id="msgInput" placeholder="Type a message..." rows="1" onkeydown="handleKey(event)" oninput="onType(this)"></textarea>
     </div>
     <button class="send-btn" id="sendBtn" onclick="sendMessage()">↑</button>
     <button class="mic-btn" id="micBtn" onclick="toggleMic()">🎤</button>
   </div>
-
 </div>
 
-<!-- PAYWALL -->
 <div id="paywallOverlay">
   <div class="pw-sheet">
     <div class="pw-icon">🎓</div>
     <div class="pw-title">You're on a roll!</div>
     <div class="pw-sub">Free session ended. Upgrade to keep practicing with unlimited sessions.</div>
     <div class="pw-plans">
-      <div class="pw-plan active" id="plan1" onclick="selPlan(1)">
-        <div class="pw-pname">Monthly</div>
-        <div class="pw-price">₹49</div>
-        <div class="pw-period">per month</div>
-      </div>
-      <div class="pw-plan" id="plan2" onclick="selPlan(2)">
-        <div class="pw-pname">Yearly</div>
-        <div class="pw-price">₹399</div>
-        <div class="pw-period">per year</div>
-        <div class="pw-save">SAVE 32%</div>
-      </div>
+      <div class="pw-plan active" id="plan1" onclick="selPlan(1)"><div class="pw-pname">Monthly</div><div class="pw-price">₹49</div><div class="pw-period">per month</div></div>
+      <div class="pw-plan" id="plan2" onclick="selPlan(2)"><div class="pw-pname">Yearly</div><div class="pw-price">₹399</div><div class="pw-period">per year</div><div class="pw-save">SAVE 32%</div></div>
     </div>
     <button class="pw-btn">Continue Learning →</button>
     <button class="pw-free" onclick="dismissPaywall()">Continue free (3 more messages)</button>
@@ -434,8 +143,6 @@ body {
 <script>
 const GEMINI_URL = 'https://englisho-api.nilesh53333.workers.dev/gemini';
 const MAX_FREE = 20;
-
-// Read URL params immediately
 const _params = new URLSearchParams(window.location.search);
 
 const S = {
@@ -447,10 +154,10 @@ const S = {
   loading: false,
   speakerOn: true,
   recognition: null,
-  recording: false
+  recording: false,
+  reportShown: false
 };
 
-// ── INIT ON LOAD ──
 window.addEventListener('DOMContentLoaded', function() {
   document.getElementById('dateLabel').textContent =
     new Date().toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long'});
@@ -466,145 +173,132 @@ function getLevelInstructions() {
   const level = S.level;
   if (level === 'A1') return `
 STUDENT LEVEL: A1 — Complete Beginner
-- Use ONLY simple words (cat, home, eat, go, good, happy)
-- Very short sentences — maximum 8 words per sentence
-- Ask only basic questions: "What did you eat?", "Where do you live?"
-- Silently correct mistakes with the simplest version
-- Celebrate every attempt warmly
-- Topics: food, family, daily routine, colours, numbers, weather`;
+- Use ONLY very simple words. Max 1 short sentence in reply + 1 simple question.
+- Topics: food, home, family, daily routine
+- Questions like: "What did you eat?" "Do you have a pet?"
+- Celebrate warmly every attempt`;
 
   if (level === 'A2') return `
-STUDENT LEVEL: A2 — Elementary
-- Use simple but complete sentences
-- Introduce common phrases and expressions naturally
-- Topics: shopping, travel, work, hobbies, past events
-- Gently push them to use past tense and simple questions
-- Keep replies friendly and encouraging`;
+STUDENT LEVEL: A2 — Elementary  
+- Simple sentences, friendly tone. Max 2 short sentences + 1 question.
+- Topics: work, shopping, hobbies, past events
+- Use past tense gently in your replies to model it`;
 
   if (level === 'B1') return `
 STUDENT LEVEL: B1 — Intermediate
-- Use natural conversational English
-- Introduce phrasal verbs and common idioms naturally
-- Topics: opinions, experiences, plans, news, culture, work life
-- Push them to give reasons and explain thoughts
-- Correct errors silently — model correct grammar in reply`;
+- Natural conversational English. 2 sentences + 1 question max.
+- Topics: opinions, experiences, plans, local news
+- Introduce phrasal verbs naturally. Ask "why" and "what do you think"`;
 
   if (level === 'B2') return `
 STUDENT LEVEL: B2 — Upper Intermediate
-- Speak like a natural native friend — no simplification
-- Use idioms, phrasal verbs, nuanced vocabulary freely
-- Topics: current events, career, relationships, complex opinions, debate
-- Challenge them: "Why do you think that?", "Can you explain more?"
-- Correct subtle grammar errors silently — tense, articles, prepositions
-- Push for longer, more detailed responses`;
+- Speak naturally, no simplification. 2 sentences + 1 focused question.
+- Topics: career, society, relationships, current events
+- Use idioms naturally. Ask for reasons and opinions.
+- Match their answer depth — if they write 1 line, you write 1-2 lines back`;
 
   if (level === 'C1') return `
 STUDENT LEVEL: C1 — Advanced
-- Treat them as near-native — complex vocabulary, formal and informal registers
-- Discuss abstract topics: philosophy, economics, society, ethics, technology
-- Use sophisticated expressions, metaphors, cultural references
-- Challenge every response — ask for counter-arguments, nuance, examples
-- Only correct very subtle errors — focus on precision and elegance
-- Engage in genuine intellectual conversation`;
+- Near-native conversation. 2 sentences + 1 intellectually engaging question.
+- Topics: philosophy, ethics, technology, society, abstract ideas
+- IMPORTANT: If user gives a SHORT answer, ask a SHORT follow-up. Mirror their energy.
+- Do NOT write 4-line questions to someone giving 5-word answers`;
 
   return '';
 }
 
-// ── SYSTEM PROMPT ──
+// ── SYSTEM PROMPT — recalculated every message to mirror length ──
 function getSystem() {
+  // Calculate avg length of last 3 user messages
+  const userMsgs = S.history.filter(m => m.role === 'user').slice(-3);
+  const avgLen = userMsgs.length
+    ? Math.round(userMsgs.reduce((s,m) => s + m.content.length, 0) / userMsgs.length)
+    : 60;
+
+  const lengthRule = avgLen < 25
+    ? 'USER IS GIVING VERY SHORT ANSWERS. Your reply must be MAX 1 sentence + 1 short question. Do NOT write long philosophical questions.'
+    : avgLen < 70
+    ? 'USER IS GIVING MEDIUM ANSWERS. Keep your reply to 2 short sentences + 1 clear question.'
+    : 'USER IS GIVING DETAILED ANSWERS. You can match their energy with 2-3 sentences + 1 follow-up.';
+
   return `You are an English speaking coach for ${S.name}. Their mother tongue is ${S.mother}.
 ${getLevelInstructions()}
 
-YOUR ONLY JOB: Keep the conversation flowing naturally in English. Make them speak.
+CRITICAL LENGTH RULE: ${lengthRule}
 
-HOW TO DO IT:
-- Chat about their real life — today, food, work, friends, hobbies, plans, opinions
-- React naturally and ask ONE follow-up question per reply
-- Keep replies to 2-3 sentences MAX — like WhatsApp chat
-- SILENT CORRECTION: when user makes a grammar mistake, use the correct version naturally in your reply. NEVER say "you made a mistake". Example: user says "I am go to market" → you reply "Oh you went to the market! What did you buy?"
-- If they write in ${S.mother} — gently say "Try saying that in English!" and wait
-- Never teach grammar rules. Never list words. Never give explanations.
-- Never ask "how was your day" repeatedly — vary your questions
-- Goal: fluency and confidence — not perfection`;
+CORE RULES:
+- React naturally, ask ONE follow-up question only
+- SILENT CORRECTION: weave correct grammar naturally into your reply without ever saying "mistake". Example: user says "I am go market" → you reply "Oh you went to the market! What did you get?"
+- If they write in ${S.mother} — say "Try that in English!" and wait
+- Never explain grammar rules. Never list words.
+- Vary topics — never repeat the same question type twice in a row
+- Goal: build fluency and confidence, not perfection`;
 }
 
 // ── SUMMARY PROMPT ──
 function getSummaryPrompt() {
-  return `You are an expert English coach reviewing a real conversation. Give ${S.name} a DETAILED, SPECIFIC, USEFUL session report.
+  return `You are an expert English coach. Review this conversation and write a COMPLETE, SPECIFIC session report for ${S.name}.
 
-RULES:
-- Be SPECIFIC — quote actual sentences they used
-- Be HONEST — if level seems different from ${S.level}, say so kindly
-- Be ACTIONABLE — every correction shows exactly what to say instead
-- Complete every section fully — never cut off mid-sentence
+Their declared level: ${S.level}
 
-Write in this EXACT format:
+FORMAT — complete every section, never cut off:
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 🌟 SESSION REPORT — ${S.name}
 ━━━━━━━━━━━━━━━━━━━━━━━
 
-📊 ENGLISH LEVEL ASSESSMENT
+📊 LEVEL ASSESSMENT
 Detected level: [A1/A2/B1/B2/C1]
-[2-3 sentences explaining WHY based on THIS conversation]
+[2 sentences: WHY this level, based on actual vocabulary and grammar used]
 
 ━━━━━━━━━━━━━━━━━━━━━━
 ✅ STRENGTHS
 ━━━━━━━━━━━━━━━━━━━━━━
-1. [Specific strength with example from conversation]
-2. [Another specific strength with example]
+1. [Quote actual sentence + what was good about it]
+2. [Another specific strength from conversation]
 3. [Third if applicable]
 
 ━━━━━━━━━━━━━━━━━━━━━━
 🔧 MISTAKES & CORRECTIONS
 ━━━━━━━━━━━━━━━━━━━━━━
-1. ❌ "[exact quote from conversation]"
-   ✅ "[corrected version]"
-   💬 [1 line reason]
-
-2. ❌ "[exact quote]"
-   ✅ "[correction]"
-   💬 [reason]
-
-3. ❌ "[exact quote]"
-   ✅ "[correction]"
-   💬 [reason]
+1. ❌ "[exact quote]" → ✅ "[correction]" — [1 line reason]
+2. ❌ "[exact quote]" → ✅ "[correction]" — [1 line reason]  
+3. ❌ "[exact quote]" → ✅ "[correction]" — [1 line reason]
 
 ━━━━━━━━━━━━━━━━━━━━━━
-📈 NEXT SESSION
+📈 PRACTICE FOR NEXT TIME
 ━━━━━━━━━━━━━━━━━━━━━━
-Focus area: [specific grammar or vocabulary skill]
-Practice this: [one concrete daily exercise]
-Topic to try: [one topic that would stretch them]
+Focus: [1 specific grammar point to work on]
+Try this: [1 concrete practice sentence or exercise]
+Next topic: [1 topic that would stretch them based on this chat]
 
 ━━━━━━━━━━━━━━━━━━━━━━
 💬 COACH'S NOTE
 ━━━━━━━━━━━━━━━━━━━━━━
-[2-3 warm, genuine sentences about this specific session. End with encouragement.]
+[2 warm sentences specific to THIS session. End with genuine encouragement.]
 ━━━━━━━━━━━━━━━━━━━━━━
 
-Base everything ONLY on what was actually said. Complete every section fully.`;
+Only use what was ACTUALLY said. Complete all sections.`;
 }
 
 // ── INIT SESSION ──
 async function initSession() {
   showTyping(); setStatus('typing...', true);
-  const levelOpener = {
-    'A1': `Start a very simple warm conversation with ${S.name}. In ${S.mother}, say one encouraging sentence that today we will just chat in English — no studying, no pressure. Then ask ONE very simple question in English like "What did you eat today?" Super basic A1 level only.`,
-    'A2': `Start a friendly conversation with ${S.name}. In ${S.mother}, one warm sentence that today we are just chatting. Then ask a simple everyday question about their day, work, or family. A2 level — simple complete sentences.`,
-    'B1': `Start a natural conversation with ${S.name}. In ${S.mother}, one sentence to set a relaxed tone. Then ask an interesting question about their opinions or experiences. B1 level.`,
-    'B2': `Start a conversation with ${S.name}. In ${S.mother}, just one short line. Then ask a thought-provoking question about their work, ambitions, or a complex opinion. B2 level — go deep quickly, no small talk.`,
-    'C1': `Start a conversation with ${S.name}. In ${S.mother}, one brief line. Then open with a genuinely intellectually stimulating question about society, human nature, technology or ethics. C1 level — treat them as near-native, skip small talk entirely.`
+  const openers = {
+    'A1': `Greet ${S.name} warmly. In ${S.mother}, say one short sentence: today we just chat in English, no pressure. Then ask ONE very simple question in English — like "What did you eat today?" or "Do you like tea or coffee?" Keep it A1 level only.`,
+    'A2': `Greet ${S.name}. In ${S.mother}, one warm line that today is just English chat time. Then ask a simple everyday question about their routine or recent activity. A2 level — simple and friendly.`,
+    'B1': `Greet ${S.name}. In ${S.mother}, one relaxed line about just chatting in English today. Then ask something about their week, a recent experience, or what they enjoy. B1 level — natural and conversational.`,
+    'B2': `Greet ${S.name} briefly. In ${S.mother}, one short line. Then ask ONE direct interesting question about their work, a recent opinion, or something they care about. B2 — get to the point, no small talk filler.`,
+    'C1': `Greet ${S.name} briefly. In ${S.mother}, one brief line. Then open with ONE sharp, thought-provoking question on a real topic — technology, society, human behaviour, or their field of work. C1 — treat them as near-native, no warm-up needed.`
   };
   try {
-    const reply = await callGemini(levelOpener[S.level] || levelOpener['A1']);
+    const reply = await callGemini(openers[S.level] || openers['A1']);
     hideTyping(); setStatus('Level ' + S.level + ' · online', false);
     addBubble('incoming', reply);
     S.history.push({ role: 'assistant', content: reply });
   } catch(e) {
     hideTyping(); setStatus('Level ' + S.level + ' · online', false);
-    addBubble('incoming', `Hi ${S.name}! 😊 Let's chat in English today — no pressure! Tell me something interesting about yourself.`);
-    console.error(e);
+    addBubble('incoming', `Hi ${S.name}! 😊 Let's chat in English today — no pressure! What's been on your mind lately?`);
   }
 }
 
@@ -615,18 +309,12 @@ async function callGemini(userMsg) {
     contents.push({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] });
   });
   if (userMsg) contents.push({ role: 'user', parts: [{ text: userMsg }] });
-
   const body = {
     system_instruction: { role: 'user', parts: [{ text: getSystem() }] },
     contents,
-    generationConfig: { maxOutputTokens: 500, temperature: 0.9 }
+    generationConfig: { maxOutputTokens: 300, temperature: 0.85 }
   };
-
-  const res = await fetch(GEMINI_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
+  const res = await fetch(GEMINI_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const data = await res.json();
   if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
@@ -662,28 +350,90 @@ async function sendMessage(text) {
       setTimeout(() => document.getElementById('paywallOverlay').classList.add('visible'), 1500);
     }
 
-    // Show summary AFTER AI replies to user's 10th message
-    if (S.count === 10) {
-      setTimeout(() => {
-        const bg = document.getElementById('chatBg');
-        const typingRow = document.getElementById('typingRow');
-        const divider = document.createElement('div');
-        divider.style.cssText = 'text-align:center;margin:16px 0 8px;';
-        divider.innerHTML = '<span style="background:rgba(255,255,255,0.85);color:#667781;font-size:11.5px;padding:4px 14px;border-radius:8px;display:inline-block;">📊 Generating your session report...</span>';
-        bg.insertBefore(divider, typingRow);
-        document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
-        showSessionSummary();
-      }, 1800);
+    // FIX: After 10th message, show a button — user chooses when to get report
+    if (S.count === 10 && !S.reportShown) {
+      S.reportShown = true;
+      setTimeout(() => showReportButton(), 1500);
     }
   } catch(e) {
     hideTyping(); setStatus('Level ' + S.level + ' · online', false);
     addBubble('incoming', 'Something went wrong. Please try again. 🙏');
-    console.error(e);
   } finally {
     S.loading = false;
     document.getElementById('micBtn').disabled = false;
     document.getElementById('msgInput').focus();
   }
+}
+
+// ── REPORT BUTTON — user controls when to see it ──
+function showReportButton() {
+  const bg = document.getElementById('chatBg');
+  const typingRow = document.getElementById('typingRow');
+  const wrap = document.createElement('div');
+  wrap.id = 'reportBtnWrap';
+  wrap.style.cssText = 'text-align:center;margin:16px 0 12px;';
+  wrap.innerHTML = `
+    <div style="background:rgba(255,255,255,0.95);border-radius:14px;padding:16px 18px;display:inline-block;box-shadow:0 2px 8px rgba(0,0,0,0.1);max-width:290px;">
+      <div style="font-size:15px;font-weight:700;color:#111b21;margin-bottom:4px;">🎉 10 messages done!</div>
+      <div style="font-size:12px;color:#667781;margin-bottom:14px;line-height:1.5;">Ready to see how you did? Get your detailed English session report.</div>
+      <button onclick="getReport(this)" style="background:#00a884;color:white;border:none;border-radius:10px;padding:10px 22px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;width:100%;margin-bottom:8px;">📊 Get My Report</button>
+      <button onclick="document.getElementById('reportBtnWrap').remove()" style="background:none;border:none;color:#667781;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:underline;">Keep chatting first</button>
+    </div>
+  `;
+  bg.insertBefore(wrap, typingRow);
+  document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
+}
+
+function getReport(btn) {
+  document.getElementById('reportBtnWrap')?.remove();
+  const bg = document.getElementById('chatBg');
+  const typingRow = document.getElementById('typingRow');
+  const divider = document.createElement('div');
+  divider.style.cssText = 'text-align:center;margin:8px 0;';
+  divider.innerHTML = '<span style="background:rgba(255,255,255,0.85);color:#667781;font-size:11.5px;padding:4px 14px;border-radius:8px;display:inline-block;">📊 Generating your session report...</span>';
+  bg.insertBefore(divider, typingRow);
+  document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
+  showSessionSummary();
+}
+
+// ── SESSION SUMMARY ──
+async function showSessionSummary() {
+  showTyping(); setStatus('writing your report...', true);
+  try {
+    const contents = S.history.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+    contents.push({ role: 'user', parts: [{ text: 'Generate my full session report now.' }] });
+    const body = {
+      system_instruction: { role: 'user', parts: [{ text: getSummaryPrompt() }] },
+      contents,
+      generationConfig: { maxOutputTokens: 1500, temperature: 0.4 }
+    };
+    const res = await fetch(GEMINI_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+    const data = await res.json();
+    const summary = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
+    if (summary) addSummaryCard(summary);
+  } catch(e) {
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
+  }
+}
+
+function addSummaryCard(text) {
+  const bg = document.getElementById('chatBg');
+  const typingRow = document.getElementById('typingRow');
+  const card = document.createElement('div');
+  card.className = 'summary-card';
+  card.innerHTML = `
+    <div class="summary-header">
+      <span>📊</span><span>Session Report</span>
+      <span class="time">${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span>
+    </div>
+    <div class="summary-body">${esc(text)}</div>
+  `;
+  bg.insertBefore(card, typingRow);
+  document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
 }
 
 // ── BUBBLES ──
@@ -704,20 +454,13 @@ function addBubble(dir, text) {
 }
 
 function esc(t) { return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-function showTyping() {
-  document.getElementById('typingRow').classList.add('visible');
-  document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
-}
+function showTyping() { document.getElementById('typingRow').classList.add('visible'); document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' }); }
 function hideTyping() { document.getElementById('typingRow').classList.remove('visible'); }
-
 function setStatus(text, isTyping) {
   const el = document.getElementById('tutorStatus');
   el.textContent = text;
   el.className = 'chat-status' + (isTyping ? ' typing' : '');
 }
-
-// ── INPUT ──
 function onType(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 100) + 'px';
@@ -725,53 +468,9 @@ function onType(el) {
   document.getElementById('sendBtn').classList.toggle('show', has);
   document.getElementById('micBtn').style.display = has ? 'none' : 'flex';
 }
+function handleKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }
 
-function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
-}
-
-// ── SESSION SUMMARY ──
-async function showSessionSummary() {
-  showTyping(); setStatus('writing your session report...', true);
-  try {
-    const contents = S.history.map(m => ({
-      role: m.role === 'assistant' ? 'model' : 'user',
-      parts: [{ text: m.content }]
-    }));
-    contents.push({ role: 'user', parts: [{ text: 'Generate my full session report based on our entire conversation.' }] });
-    const body = {
-      system_instruction: { role: 'user', parts: [{ text: getSummaryPrompt() }] },
-      contents,
-      generationConfig: { maxOutputTokens: 1500, temperature: 0.5 }
-    };
-    const res = await fetch(GEMINI_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    const data = await res.json();
-    const summary = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
-    if (summary) addSummaryCard(summary);
-  } catch(e) {
-    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
-  }
-}
-
-function addSummaryCard(text) {
-  const bg = document.getElementById('chatBg');
-  const typingRow = document.getElementById('typingRow');
-  const card = document.createElement('div');
-  card.className = 'summary-card';
-  card.innerHTML = `
-    <div class="summary-header">
-      <span>📊</span>
-      <span>Session Report</span>
-      <span class="time">${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span>
-    </div>
-    <div class="summary-body">${esc(text)}</div>
-  `;
-  bg.insertBefore(card, typingRow);
-  document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
-}
-
-// ── VOICE INPUT ──
+// ── VOICE ──
 function setupVoice() {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SR) { document.getElementById('micBtn').style.display = 'none'; return; }
@@ -784,7 +483,6 @@ function setupVoice() {
     document.getElementById('micBtn').classList.add('recording');
     document.getElementById('micBtn').textContent = '⏹';
     setStatus('Listening...', false);
-    document.getElementById('tutorStatus').className = 'chat-status';
     document.getElementById('tutorStatus').style.color = '#ffcdd2';
   };
   S.recognition.onresult = (e) => {
@@ -797,7 +495,6 @@ function setupVoice() {
   S.recognition.onerror = (e) => { if (e.error !== 'no-speech' && e.error !== 'aborted') console.warn(e.error); stopMic(); };
   S.recognition.onend = () => stopMic();
 }
-
 function toggleMic() { if (S.recording) stopMic(); else startMic(); }
 function startMic() { if (!S.recognition || S.loading) return; try { S.recognition.start(); } catch(e) {} }
 function stopMic() {
@@ -816,7 +513,6 @@ function initTTS() {
   voices = window.speechSynthesis.getVoices();
   window.speechSynthesis.onvoiceschanged = () => { voices = window.speechSynthesis.getVoices(); };
 }
-
 function speak(text) {
   if (!window.speechSynthesis || !S.speakerOn) return;
   cancelTTS();
@@ -826,9 +522,7 @@ function speak(text) {
   if (match) u.voice = match; else u.lang = 'en-US';
   window.speechSynthesis.speak(u);
 }
-
 function cancelTTS() { if (window.speechSynthesis) window.speechSynthesis.cancel(); }
-
 function toggleSpeaker() {
   S.speakerOn = !S.speakerOn;
   document.getElementById('speakerBtn').textContent = S.speakerOn ? '🔊' : '🔇';
@@ -840,7 +534,6 @@ function selPlan(n) {
   document.getElementById('plan1').classList.toggle('active', n===1);
   document.getElementById('plan2').classList.toggle('active', n===2);
 }
-
 function dismissPaywall() {
   S.count = MAX_FREE - 3;
   document.getElementById('msgsLeft').textContent = 3;
