@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,16 @@
 <meta name="description" content="Englisho — Learn to speak English confidently in your own language. Practice through real conversation."/>
 <title>Englisho — Speak English Confidently</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script>
+// Run before page renders — hide landing if coming from placement test
+if (new URLSearchParams(window.location.search).get('level')) {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('landingPage').style.display = 'none';
+    document.getElementById('onboardingPage').style.display = 'none';
+    document.getElementById('chatPage').style.display = 'block';
+  });
+}
+</script>
 <style>
 :root {
   --green: #00a884;
@@ -428,6 +439,11 @@ body {
   padding: 20px 24px;
 }
 
+#chatPage.active, #chatPage[style*="display: block"], #chatPage[style*="display:block"] {
+  display: block !important;
+}
+}
+
 .chat-container {
   background: white;
   border-radius: 16px;
@@ -776,7 +792,7 @@ body {
 </nav>
 
 <!-- ══ LANDING PAGE ══ -->
-<div id="landingPage">
+<div id="landingPage" style="display:block">
   <div class="hero">
     <div class="hero-left">
       <div class="hero-badge">
@@ -996,12 +1012,17 @@ function readURLParams() {
     S.level  = params.get('level')  || 'A1';
     S.name   = params.get('name')   || 'there';
     S.mother = params.get('lang')   || 'Marathi';
-    // Auto-launch chat directly — skip onboarding
+
+    // Force hide everything except chat
     document.getElementById('landingPage').style.display = 'none';
     document.getElementById('onboardingPage').style.display = 'none';
-    document.getElementById('chatPage').style.display = 'block';
+
+    const cp = document.getElementById('chatPage');
+    cp.style.display = 'block';
+    cp.style.visibility = 'visible';
+    cp.style.opacity = '1';
+
     document.getElementById('dateLabel').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'});
-    // Show level badge in chat header
     document.getElementById('tutorStatus').textContent = 'Level ' + S.level + ' · online';
     setupVoice();
     initTTS();
