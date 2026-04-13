@@ -1119,24 +1119,65 @@ HOW TO DO IT:
 }
 
 function getSummaryPrompt() {
-  return `You are an encouraging English coach. Review this conversation and give a session summary in this exact format:
+  return `You are an expert English coach reviewing a real conversation. Your job is to give ${S.name} a DETAILED, SPECIFIC, USEFUL session report.
 
-🌟 Session Summary for ${S.name}!
+RULES:
+- Be SPECIFIC — quote actual sentences they used, not generic praise
+- Be HONEST — if their level is lower than ${S.level}, say so kindly
+- Be ACTIONABLE — every correction must show exactly what to say instead
+- Never cut off mid-sentence — complete every point fully
+- Write the full report — do not shorten or summarize early
 
-📊 Overall Level: [One line assessment — Beginner / Intermediate / Advanced, with one sentence explanation]
+Write the report in this EXACT format (fill every section fully):
 
-✅ What you did well:
-• [Specific thing 1 from actual conversation]
-• [Specific thing 2 from actual conversation]
+━━━━━━━━━━━━━━━━━━━━━━━
+🌟 SESSION REPORT — ${S.name}
+━━━━━━━━━━━━━━━━━━━━━━━
 
-🔧 Mistakes to remember:
-• [Correction 1: "You said X → say Y instead"]
-• [Correction 2: "You said X → say Y instead"]
-• [Correction 3 if applicable]
+📊 ENGLISH LEVEL ASSESSMENT
+Detected level: [A1/A2/B1/B2/C1]
+[Write 2-3 sentences explaining WHY — mention specific vocabulary, sentence structures, or ideas from THIS conversation that led to this assessment]
 
-💡 Focus for next session: [One specific thing they should practice next time]
+━━━━━━━━━━━━━━━━━━━━━━
+✅ STRENGTHS (what you did well)
+━━━━━━━━━━━━━━━━━━━━━━
+1. [Specific strength with example from conversation — e.g. "You used 'mind-muscle connection' naturally — great advanced vocabulary"]
+2. [Another specific strength with example]
+3. [Third strength if applicable]
 
-Keep it warm, encouraging, and based ONLY on what actually happened in this conversation. Max 12 lines.`;
+━━━━━━━━━━━━━━━━━━━━━━
+🔧 MISTAKES & CORRECTIONS
+━━━━━━━━━━━━━━━━━━━━━━
+[For each mistake, show: ❌ What you said → ✅ What to say instead + brief reason why]
+
+1. ❌ "[exact quote from conversation]"
+   ✅ "[corrected version]"
+   💬 [1 line explanation]
+
+2. ❌ "[exact quote]"
+   ✅ "[correction]"
+   💬 [explanation]
+
+3. ❌ "[exact quote]"
+   ✅ "[correction]"
+   💬 [explanation]
+
+(Include only real mistakes from this conversation. If fewer than 3, that's fine.)
+
+━━━━━━━━━━━━━━━━━━━━━━
+📈 PROGRESS TIPS FOR NEXT SESSION
+━━━━━━━━━━━━━━━━━━━━━━
+Focus area: [One specific grammar or vocabulary skill to work on]
+Practice this: [One concrete exercise or sentence pattern to practice daily]
+Topic to explore: [One topic that would stretch them based on this conversation]
+
+━━━━━━━━━━━━━━━━━━━━━━
+💬 COACH'S NOTE
+━━━━━━━━━━━━━━━━━━━━━━
+[2-3 warm, genuine sentences about their overall performance in this specific session. Mention something real from the conversation. End with genuine encouragement.]
+━━━━━━━━━━━━━━━━━━━━━━
+
+IMPORTANT: Base everything ONLY on what was actually said in this conversation. Do not invent examples. Complete every section fully before ending.`;
 }
 
 // ── GEMINI API ──
@@ -1162,14 +1203,22 @@ async function callGemini(userMsg) {
 // ── INIT SESSION ──
 async function initSession() {
   showTyping(); setStatus('typing...', true);
+  const levelOpener = {
+    'A1': `Start a very simple, warm conversation with ${S.name}. In ${S.mother}, say one encouraging sentence that today we will just chat in English — no studying, no pressure. Then ask ONE very simple question in English like "What did you eat today?" or "What is your favourite colour?" — super basic, A1 level only.`,
+    'A2': `Start a friendly conversation with ${S.name}. In ${S.mother}, say one warm sentence that today we are just chatting in English. Then ask a simple everyday question in English — about their day, their work, their family. A2 level — simple but complete sentences.`,
+    'B1': `Start a natural conversation with ${S.name}. In ${S.mother}, say one sentence that today we are just having a casual English chat. Then ask an interesting question about their opinions or experiences — something they can talk about for a while. B1 level.`,
+    'B2': `Start a conversation with ${S.name}. In ${S.mother}, just one short sentence to set the tone. Then immediately ask a thought-provoking question in English — about their work, ambitions, a recent experience, or a complex opinion. B2 level — no small talk, go deep quickly.`,
+    'C1': `Start a conversation with ${S.name}. Skip the small talk entirely. In ${S.mother}, just one brief sentence. Then open with a genuinely interesting, intellectually stimulating question in English — about society, human nature, technology, ethics, or a complex personal belief. C1 level — treat them as near-native.`
+  };
+  const opener = levelOpener[S.level] || levelOpener['A1'];
   try {
-    const reply = await callGemini(`Start a casual conversation with ${S.name}. In ${S.mother}, say one warm sentence that today we are just going to chat in English — no studying, no pressure, just talking. Then immediately ask them one easy interesting question in English. Never ask "how was your day" — be more creative.`);
-    hideTyping(); setStatus('online', false);
+    const reply = await callGemini(opener);
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
     addBubble('incoming', reply);
     S.history.push({ role: 'assistant', content: reply });
   } catch(e) {
-    hideTyping(); setStatus('online', false);
-    addBubble('incoming', `Hi ${S.name}! 😊 Today we're just going to chat in English — no pressure, no studying! Tell me, what's something interesting that happened to you this week?`);
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
+    addBubble('incoming', `Hi ${S.name}! 😊 Today we're just going to chat in English — no pressure! Tell me something interesting about yourself.`);
     console.error(e);
   }
 }
@@ -1196,11 +1245,24 @@ async function sendMessage(text) {
 
   try {
     const reply = await callGemini(null);
-    hideTyping(); setStatus('online', false);
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
     addBubble('incoming', reply);
     S.history.push({ role: 'assistant', content: reply });
     if (MAX_FREE - S.count <= 0) setTimeout(() => document.getElementById('paywallOverlay').classList.add('visible'), 1500);
-    if (S.count === 10) setTimeout(showSessionSummary, 1000);
+    // Summary fires AFTER AI replies to user's 10th message — user sees full exchange first
+    if (S.count === 10) {
+      setTimeout(() => {
+        // Show a divider message first
+        const bg = document.getElementById('chatBg');
+        const typingRow = document.getElementById('typingRow');
+        const divider = document.createElement('div');
+        divider.style.cssText = 'text-align:center;margin:16px 0 8px;';
+        divider.innerHTML = '<span style="background:rgba(255,255,255,0.85);color:#667781;font-size:11.5px;padding:4px 14px;border-radius:8px;display:inline-block;">📊 Generating your session report...</span>';
+        bg.insertBefore(divider, typingRow);
+        document.getElementById('scrollAnchor').scrollIntoView({ behavior: 'smooth' });
+        showSessionSummary();
+      }, 1800);
+    }
   } catch(e) {
     hideTyping(); setStatus('online', false);
     addBubble('incoming', 'Something went wrong. Please try again. 🙏');
@@ -1314,17 +1376,28 @@ function toggleSpeaker() {
 
 // ── SESSION SUMMARY ──
 async function showSessionSummary() {
-  showTyping(); setStatus('reviewing your session...', true);
+  showTyping(); setStatus('writing your session report...', true);
   try {
-    const contents = S.history.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
-    contents.push({ role: 'user', parts: [{ text: 'Give me a session summary now.' }] });
-    const body = { system_instruction: { role: 'user', parts: [{ text: getSummaryPrompt() }] }, contents, generationConfig: { maxOutputTokens: 600, temperature: 0.7 } };
+    // Send FULL history (not just last 10) so summary sees everything
+    const contents = S.history.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+    contents.push({ role: 'user', parts: [{ text: 'Please generate my full session report now based on our entire conversation above.' }] });
+    const body = {
+      system_instruction: { role: 'user', parts: [{ text: getSummaryPrompt() }] },
+      contents,
+      generationConfig: { maxOutputTokens: 1500, temperature: 0.5 }
+    };
     const res = await fetch(GEMINI_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     const data = await res.json();
     const summary = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    hideTyping(); setStatus('online', false);
+    hideTyping(); setStatus('Level ' + S.level + ' · online', false);
     if (summary) addSummaryCard(summary);
-  } catch(e) { hideTyping(); setStatus('online', false); }
+  } catch(e) {
+    hideTyping();
+    setStatus('Level ' + S.level + ' · online', false);
+  }
 }
 
 function addSummaryCard(text) {
@@ -1332,8 +1405,24 @@ function addSummaryCard(text) {
   const anchor = document.getElementById('scrollAnchor');
   const typingRow = document.getElementById('typingRow');
   const card = document.createElement('div');
-  card.style.cssText = 'background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border:1px solid #a5d6a7;border-radius:12px;padding:16px;margin:10px 0;animation:msgIn 0.3s ease both;';
-  card.innerHTML = `<div style="font-size:13px;color:#1b5e20;line-height:1.7;white-space:pre-wrap">${esc(text)}</div>`;
+  card.style.cssText = `
+    background: white;
+    border: 1.5px solid #00a884;
+    border-radius: 14px;
+    padding: 0;
+    margin: 12px 0;
+    animation: msgIn 0.3s ease both;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,168,132,0.15);
+  `;
+  card.innerHTML = `
+    <div style="background:#00a884;padding:12px 16px;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:18px;">📊</span>
+      <span style="color:white;font-weight:700;font-size:14px;">Session Report</span>
+      <span style="color:rgba(255,255,255,0.7);font-size:12px;margin-left:auto;">${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}</span>
+    </div>
+    <div style="padding:16px;font-size:13px;color:#111;line-height:1.8;white-space:pre-wrap;font-family:'Inter',sans-serif;">${esc(text)}</div>
+  `;
   bg.insertBefore(card, typingRow);
   anchor.scrollIntoView({ behavior: 'smooth' });
 }
