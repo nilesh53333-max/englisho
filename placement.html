@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Englisho — English Level Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  min-height: 100vh;
+}
+
+/* ══ NAV ══ */
+.nav {
+  background: #008069;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.nav-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: -0.5px;
+}
+.nav-logo span { color: #a8e6cf; }
+
+/* ══ PROGRESS BAR ══ */
+.progress-wrap {
+  background: white;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e9edef;
+}
+.progress-bar-bg {
+  background: #e9edef;
+  border-radius: 99px;
+  height: 5px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  background: #00a884;
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+.progress-label {
+  font-size: 12px;
+  color: #667781;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* ══ MAIN CONTENT ══ */
+.page-wrap {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ══ QUESTION CARD ══ */
+.q-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 20px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: none;
+  animation: fadeUp 0.3s ease both;
+}
+.q-card.active { display: block; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Level badge */
+.level-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.level-A1 { background: #dcfce7; color: #166534; }
+.level-A2 { background: #dcfce7; color: #166534; }
+.level-B1 { background: #fef9c3; color: #854d0e; }
+.level-B2 { background: #fef9c3; color: #854d0e; }
+.level-C1 { background: #dbeafe; color: #1e40af; }
+
+/* Translate button */
+.translate-btn {
+  display: block;
+  width: 100%;
+  background: #f3e8ff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #7c3aed;
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.translate-btn:hover { background: #ede9fe; }
+.translate-btn.translated { background: #ede9fe; }
+
+/* Translation text */
+.translation-text {
+  display: none;
+  background: #f8f4ff;
+  border-left: 3px solid #7c3aed;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #5b21b6;
+  line-height: 1.5;
+  animation: fadeUp 0.2s ease;
+}
+.translation-text.show { display: block; }
+
+/* Question text */
+.q-text {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #111;
+  margin-bottom: 22px;
+}
+
+/* Options */
+.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+
+.opt-btn {
+  background: white;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #111;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  transition: all 0.15s;
+  text-align: left;
+}
+.opt-btn:hover { border-color: #93c5fd; background: #eff6ff; }
+.opt-btn.selected { border-color: #3b82f6; background: #eff6ff; }
+.opt-btn.correct { border-color: #22c55e; background: #f0fdf4; }
+.opt-btn.wrong { border-color: #ef4444; background: #fef2f2; }
+
+.opt-letter {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid #9ca3af;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+  color: #374151;
+  transition: all 0.15s;
+}
+.opt-btn.selected .opt-letter { border-color: #3b82f6; color: #3b82f6; }
+.opt-btn.correct .opt-letter { border-color: #22c55e; background: #22c55e; color: white; }
+.opt-btn.wrong .opt-letter { border-color: #ef4444; background: #ef4444; color: white; }
+
+/* Next button */
+.next-btn {
+  width: 100%;
+  max-width: 220px;
+  background: linear-gradient(135deg, #00a884, #008069);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.next-btn.enabled {
+  opacity: 1;
+  pointer-events: all;
+}
+.next-btn.enabled:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,168,132,0.35); }
+
+/* ══ SPEAKING SECTION ══ */
+.speak-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 20px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: none;
+  animation: fadeUp 0.3s ease both;
+}
+.speak-card.active { display: block; }
+
+.speak-intro {
+  font-size: 13px;
+  color: #667781;
+  text-align: center;
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.sentences-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+
+.sentence-item {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.sentence-num {
+  width: 28px; height: 28px;
+  background: #3b82f6;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  flex-shrink: 0;
+}
+
+.sentence-body { flex: 1; }
+.sentence-text { font-size: 15px; font-weight: 600; color: #111; line-height: 1.45; margin-bottom: 3px; }
+.sentence-level { font-size: 12px; color: #3b82f6; font-weight: 500; }
+
+/* Recording states */
+.record-section { margin-bottom: 20px; }
+
+.record-idle {
+  text-align: center;
+}
+
+.record-btn-big {
+  width: 70px; height: 70px;
+  background: linear-gradient(135deg, #00a884, #008069);
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 10px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(0,168,132,0.35);
+}
+.record-btn-big:hover { transform: scale(1.05); }
+.record-btn-big.recording {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  animation: micPulse 1s infinite;
+  box-shadow: 0 4px 16px rgba(239,68,68,0.35);
+}
+
+@keyframes micPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+  50% { box-shadow: 0 0 0 14px rgba(239,68,68,0); }
+}
+
+.record-hint { font-size: 13px; color: #667781; }
+
+.recording-status {
+  display: none;
+  text-align: center;
+  padding: 12px;
+  background: #fef2f2;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.recording-status.show { display: block; }
+.recording-status .rec-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: #ef4444;
+  border-radius: 50%;
+  margin-right: 6px;
+  animation: blink 1s infinite;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+.recording-status span { font-size: 13px; color: #dc2626; font-weight: 500; }
+
+.recording-complete {
+  display: none;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.25s ease;
+}
+.recording-complete.show { display: block; }
+
+.rec-complete-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.rec-complete-check { font-size: 20px; color: #16a34a; }
+.rec-complete-title { font-size: 15px; font-weight: 700; color: #15803d; }
+.rec-complete-dur { font-size: 13px; color: #4ade80; margin-left: auto; }
+
+.rec-actions { display: flex; flex-direction: column; gap: 8px; }
+.rec-play-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background 0.15s;
+}
+.rec-play-btn:hover { background: #2563eb; }
+.rec-delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background 0.15s;
+}
+.rec-delete-btn:hover { background: #dc2626; }
+.rec-hint-small { font-size: 12px; color: #667781; text-align: center; margin-top: 4px; }
+
+/* ══ WRITING SECTION ══ */
+.write-card {
+  background: white;
+  border-radius: 18px;
+  padding: 24px 20px 28px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: none;
+  animation: fadeUp 0.3s ease both;
+}
+.write-card.active { display: block; }
+
+.write-textarea {
+  width: 100%;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  color: #111;
+  resize: none;
+  min-height: 130px;
+  outline: none;
+  margin-bottom: 6px;
+  background: #fafafa;
+  transition: border-color 0.2s;
+  line-height: 1.5;
+}
+.write-textarea:focus { border-color: #00a884; background: white; }
+.write-textarea::placeholder { color: #aaa; }
+.char-count { font-size: 12px; color: #667781; margin-bottom: 18px; }
+
+.submit-btn {
+  width: 100%;
+  max-width: 260px;
+  background: linear-gradient(135deg, #00a884, #008069);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.submit-btn.enabled { opacity: 1; pointer-events: all; }
+.submit-btn.enabled:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,168,132,0.35); }
+
+/* ══ THANK YOU SCREEN ══ */
+.thanks-card {
+  background: white;
+  border-radius: 18px;
+  padding: 32px 20px 36px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  display: none;
+  text-align: center;
+  animation: fadeUp 0.3s ease both;
+}
+.thanks-card.active { display: block; }
+
+.thanks-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 6px;
+  line-height: 1.2;
+}
+
+.thanks-brand {
+  font-size: 22px;
+  font-weight: 700;
+  color: #00a884;
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+.thanks-box {
+  background: #f0f4ff;
+  border-radius: 14px;
+  padding: 18px 20px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.thanks-submitted { font-size: 14px; color: #374151; margin-bottom: 10px; }
+.thanks-rep { font-size: 15px; font-weight: 700; color: #111; line-height: 1.5; }
+
+.thanks-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+.stat-item {}
+.stat-label { font-size: 12px; color: #667781; margin-bottom: 4px; }
+.stat-value { font-size: 15px; font-weight: 700; color: #111; }
+
+.thanks-divider { border: none; border-top: 1px solid #e9edef; margin: 20px 0; }
+.thanks-contact { font-size: 14px; color: #667781; margin-bottom: 14px; }
+
+.contact-btns { display: flex; gap: 10px; }
+.contact-btn-email {
+  flex: 1;
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.contact-btn-email:hover { background: #2563eb; }
+.contact-btn-wa {
+  flex: 1;
+  background: #00a884;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.contact-btn-wa:hover { background: #008069; }
+
+/* ══ RESULT SCREEN ══ */
+.result-card {
+  display: none;
+  background: white;
+  border-radius: 18px;
+  padding: 28px 20px 32px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  text-align: center;
+  animation: fadeUp 0.3s ease both;
+}
+.result-card.active { display: block; }
+
+.result-emoji { font-size: 52px; margin-bottom: 12px; }
+.result-title { font-size: 24px; font-weight: 800; color: #111; margin-bottom: 6px; }
+.result-level-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 99px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.result-desc { font-size: 15px; color: #374151; line-height: 1.6; margin-bottom: 24px; }
+
+.result-score-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+.result-score-num { font-size: 36px; font-weight: 800; color: #00a884; }
+.result-score-label { font-size: 13px; color: #4ade80; margin-top: 2px; }
+
+.start-learning-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #00a884, #008069);
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s;
+  margin-bottom: 10px;
+}
+.start-learning-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,168,132,0.35); }
+
+.retake-btn {
+  background: none;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  width: 100%;
+  transition: all 0.15s;
+}
+.retake-btn:hover { border-color: #9ca3af; }
+
+/* Footer */
+.footer { text-align: center; font-size: 11px; color: #9ca3af; padding: 20px 0 0; }
+.footer a { color: #00a884; text-decoration: none; }
+
+@media (max-width: 480px) {
+  .page-wrap { padding: 16px 12px 40px; }
+  .q-text { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">English<span>o</span> 🗣️</div>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <div class="progress-label" id="progressLabel">0 / 17</div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- ══ Q1: A1 Vocabulary ══ -->
+  <div class="q-card active" id="q1">
+    <div class="level-badge level-A1">A1</div>
+    <button class="translate-btn" onclick="toggleTranslate(1)">Translate to Marathi</button>
+    <div class="translation-text" id="trans1">"dog" म्हणजे काय?</div>
+    <div class="q-text">What is a "dog"?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(1,'a','a')"><div class="opt-letter">a</div> An animal</button>
+      <button class="opt-btn" onclick="selectOpt(1,'b','a')"><div class="opt-letter">b</div> A vegetable</button>
+      <button class="opt-btn" onclick="selectOpt(1,'c','a')"><div class="opt-letter">c</div> A color</button>
+      <button class="opt-btn" onclick="selectOpt(1,'d','a')"><div class="opt-letter">d</div> A building</button>
+    </div>
+    <button class="next-btn" id="next1" onclick="nextQ(1)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q2: A1 Numbers ══ -->
+  <div class="q-card" id="q2">
+    <div class="level-badge level-A1">A1</div>
+    <button class="translate-btn" onclick="toggleTranslate(2)">Translate to Marathi</button>
+    <div class="translation-text" id="trans2">दहाच्या नंतर कोणती संख्या येते?</div>
+    <div class="q-text">Which number comes after ten?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(2,'a','c')"><div class="opt-letter">a</div> Nine</button>
+      <button class="opt-btn" onclick="selectOpt(2,'b','c')"><div class="opt-letter">b</div> Twenty</button>
+      <button class="opt-btn" onclick="selectOpt(2,'c','c')"><div class="opt-letter">c</div> Eleven</button>
+      <button class="opt-btn" onclick="selectOpt(2,'d','c')"><div class="opt-letter">d</div> Hundred</button>
+    </div>
+    <button class="next-btn" id="next2" onclick="nextQ(2)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q3: A1 Basic sentence ══ -->
+  <div class="q-card" id="q3">
+    <div class="level-badge level-A1">A1</div>
+    <button class="translate-btn" onclick="toggleTranslate(3)">Translate to Marathi</button>
+    <div class="translation-text" id="trans3">रिकाम्या जागी काय येईल? "My name ___ Rahul."</div>
+    <div class="q-text">Fill in the blank: "My name ___ Rahul."</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(3,'a','b')"><div class="opt-letter">a</div> are</button>
+      <button class="opt-btn" onclick="selectOpt(3,'b','b')"><div class="opt-letter">b</div> is</button>
+      <button class="opt-btn" onclick="selectOpt(3,'c','b')"><div class="opt-letter">c</div> am</button>
+      <button class="opt-btn" onclick="selectOpt(3,'d','b')"><div class="opt-letter">d</div> be</button>
+    </div>
+    <button class="next-btn" id="next3" onclick="nextQ(3)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q4: A2 Preposition ══ -->
+  <div class="q-card" id="q4">
+    <div class="level-badge level-A2">A2</div>
+    <button class="translate-btn" onclick="toggleTranslate(4)">Translate to Marathi</button>
+    <div class="translation-text" id="trans4">माझी बहीण ___ शाळेत जाते.</div>
+    <div class="q-text">My sister goes ___ school every day.</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(4,'a','b')"><div class="opt-letter">a</div> on</button>
+      <button class="opt-btn" onclick="selectOpt(4,'b','b')"><div class="opt-letter">b</div> to</button>
+      <button class="opt-btn" onclick="selectOpt(4,'c','b')"><div class="opt-letter">c</div> at</button>
+      <button class="opt-btn" onclick="selectOpt(4,'d','b')"><div class="opt-letter">d</div> by</button>
+    </div>
+    <button class="next-btn" id="next4" onclick="nextQ(4)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q5: A2 Comprehension ══ -->
+  <div class="q-card" id="q5">
+    <div class="level-badge level-A2">A2</div>
+    <button class="translate-btn" onclick="toggleTranslate(5)">Translate to Marathi</button>
+    <div class="translation-text" id="trans5">वाचा: "Priya has a cat and two dogs." Priya कडे किती प्राणी आहेत?</div>
+    <div class="q-text">Read: "Priya has a cat and two dogs." How many pets does Priya have?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(5,'a','c')"><div class="opt-letter">a</div> One</button>
+      <button class="opt-btn" onclick="selectOpt(5,'b','c')"><div class="opt-letter">b</div> Two</button>
+      <button class="opt-btn" onclick="selectOpt(5,'c','c')"><div class="opt-letter">c</div> Three</button>
+      <button class="opt-btn" onclick="selectOpt(5,'d','c')"><div class="opt-letter">d</div> Four</button>
+    </div>
+    <button class="next-btn" id="next5" onclick="nextQ(5)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q6: A2 Situation ══ -->
+  <div class="q-card" id="q6">
+    <div class="level-badge level-A2">A2</div>
+    <button class="translate-btn" onclick="toggleTranslate(6)">Translate to Marathi</button>
+    <div class="translation-text" id="trans6">तुम्हाला वेळ माहित नाही. तुम्ही काय विचारता?</div>
+    <div class="q-text">You don't know the time. What do you ask?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(6,'a','b')"><div class="opt-letter">a</div> Where is the time?</button>
+      <button class="opt-btn" onclick="selectOpt(6,'b','b')"><div class="opt-letter">b</div> Excuse me, what time is it?</button>
+      <button class="opt-btn" onclick="selectOpt(6,'c','b')"><div class="opt-letter">c</div> Time what is?</button>
+      <button class="opt-btn" onclick="selectOpt(6,'d','b')"><div class="opt-letter">d</div> Tell me time now.</button>
+    </div>
+    <button class="next-btn" id="next6" onclick="nextQ(6)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q7: B1 Tense ══ -->
+  <div class="q-card" id="q7">
+    <div class="level-badge level-B1">B1</div>
+    <button class="translate-btn" onclick="toggleTranslate(7)">Translate to Marathi</button>
+    <div class="translation-text" id="trans7">रिकाम्या जागी काय येईल? "She ___ in Mumbai for 5 years."</div>
+    <div class="q-text">Fill in the blank: "She ___ in Mumbai for 5 years."</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(7,'a','c')"><div class="opt-letter">a</div> is living</button>
+      <button class="opt-btn" onclick="selectOpt(7,'b','c')"><div class="opt-letter">b</div> lived</button>
+      <button class="opt-btn" onclick="selectOpt(7,'c','c')"><div class="opt-letter">c</div> has lived</button>
+      <button class="opt-btn" onclick="selectOpt(7,'d','c')"><div class="opt-letter">d</div> was living</button>
+    </div>
+    <button class="next-btn" id="next7" onclick="nextQ(7)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q8: B1 Comprehension ══ -->
+  <div class="q-card" id="q8">
+    <div class="level-badge level-B1">B1</div>
+    <button class="translate-btn" onclick="toggleTranslate(8)">Translate to Marathi</button>
+    <div class="translation-text" id="trans8">वाचा: "Amit studies hard but he never passes exams." Amit बद्दल काय खरे आहे?</div>
+    <div class="q-text">Read: "Amit studies hard but never passes exams." What is true about Amit?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(8,'a','b')"><div class="opt-letter">a</div> He is lazy.</button>
+      <button class="opt-btn" onclick="selectOpt(8,'b','b')"><div class="opt-letter">b</div> He works hard but fails.</button>
+      <button class="opt-btn" onclick="selectOpt(8,'c','b')"><div class="opt-letter">c</div> He never studies.</button>
+      <button class="opt-btn" onclick="selectOpt(8,'d','b')"><div class="opt-letter">d</div> He always passes.</button>
+    </div>
+    <button class="next-btn" id="next8" onclick="nextQ(8)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q9: B1 Modal ══ -->
+  <div class="q-card" id="q9">
+    <div class="level-badge level-B1">B1</div>
+    <button class="translate-btn" onclick="toggleTranslate(9)">Translate to Marathi</button>
+    <div class="translation-text" id="trans9">तुम्ही आजारी आहात म्हणून ऑफिसला जाऊ शकत नाही. तुम्ही बॉसला काय म्हणाल?</div>
+    <div class="q-text">You are sick and can't go to office. What do you tell your boss?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(9,'a','b')"><div class="opt-letter">a</div> I not come today.</button>
+      <button class="opt-btn" onclick="selectOpt(9,'b','b')"><div class="opt-letter">b</div> I won't be able to come in today, I'm not feeling well.</button>
+      <button class="opt-btn" onclick="selectOpt(9,'c','b')"><div class="opt-letter">c</div> Today I am sick so no coming.</button>
+      <button class="opt-btn" onclick="selectOpt(9,'d','b')"><div class="opt-letter">d</div> Cannot come, sick am I.</button>
+    </div>
+    <button class="next-btn" id="next9" onclick="nextQ(9)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q10: B2 Vocabulary ══ -->
+  <div class="q-card" id="q10">
+    <div class="level-badge level-B2">B2</div>
+    <button class="translate-btn" onclick="toggleTranslate(10)">Translate to Marathi</button>
+    <div class="translation-text" id="trans10">"exhausted" चा अर्थ काय आहे?</div>
+    <div class="q-text">What does "exhausted" mean?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(10,'a','c')"><div class="opt-letter">a</div> Very happy</button>
+      <button class="opt-btn" onclick="selectOpt(10,'b','c')"><div class="opt-letter">b</div> Very hungry</button>
+      <button class="opt-btn" onclick="selectOpt(10,'c','c')"><div class="opt-letter">c</div> Extremely tired</button>
+      <button class="opt-btn" onclick="selectOpt(10,'d','c')"><div class="opt-letter">d</div> Very angry</button>
+    </div>
+    <button class="next-btn" id="next10" onclick="nextQ(10)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q11: B2 Passive Voice ══ -->
+  <div class="q-card" id="q11">
+    <div class="level-badge level-B2">B2</div>
+    <button class="translate-btn" onclick="toggleTranslate(11)">Translate to Marathi</button>
+    <div class="translation-text" id="trans11">या वाक्याचे Passive voice मध्ये रूपांतर करा: "The chef cooked the food."</div>
+    <div class="q-text">Which is the correct passive form of: "The chef cooked the food."</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(11,'a','b')"><div class="opt-letter">a</div> The food is cooked by the chef.</button>
+      <button class="opt-btn" onclick="selectOpt(11,'b','b')"><div class="opt-letter">b</div> The food was cooked by the chef.</button>
+      <button class="opt-btn" onclick="selectOpt(11,'c','b')"><div class="opt-letter">c</div> The food has cooked by the chef.</button>
+      <button class="opt-btn" onclick="selectOpt(11,'d','b')"><div class="opt-letter">d</div> The food were cooked by chef.</button>
+    </div>
+    <button class="next-btn" id="next11" onclick="nextQ(11)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q12: B2 Formal email ══ -->
+  <div class="q-card" id="q12">
+    <div class="level-badge level-B2">B2</div>
+    <button class="translate-btn" onclick="toggleTranslate(12)">Translate to Marathi</button>
+    <div class="translation-text" id="trans12">Formal email मध्ये शेवट कसा करता?</div>
+    <div class="q-text">How do you end a formal email?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(12,'a','b')"><div class="opt-letter">a</div> Bye bye!</button>
+      <button class="opt-btn" onclick="selectOpt(12,'b','b')"><div class="opt-letter">b</div> Yours sincerely,</button>
+      <button class="opt-btn" onclick="selectOpt(12,'c','b')"><div class="opt-letter">c</div> See you later,</button>
+      <button class="opt-btn" onclick="selectOpt(12,'d','b')"><div class="opt-letter">d</div> Ok thanks,</button>
+    </div>
+    <button class="next-btn" id="next12" onclick="nextQ(12)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q13: C1 Vocabulary ══ -->
+  <div class="q-card" id="q13">
+    <div class="level-badge level-C1">C1</div>
+    <button class="translate-btn" onclick="toggleTranslate(13)">Translate to Marathi</button>
+    <div class="translation-text" id="trans13">"ambiguous" चा सर्वोत्तम अर्थ निवडा.</div>
+    <div class="q-text">Choose the best meaning of "ambiguous."</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(13,'a','c')"><div class="opt-letter">a</div> Very clear and direct</button>
+      <button class="opt-btn" onclick="selectOpt(13,'b','c')"><div class="opt-letter">b</div> Completely false</button>
+      <button class="opt-btn" onclick="selectOpt(13,'c','c')"><div class="opt-letter">c</div> Open to more than one interpretation</button>
+      <button class="opt-btn" onclick="selectOpt(13,'d','c')"><div class="opt-letter">d</div> Extremely important</button>
+    </div>
+    <button class="next-btn" id="next13" onclick="nextQ(13)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q14: C1 Idiom ══ -->
+  <div class="q-card" id="q14">
+    <div class="level-badge level-C1">C1</div>
+    <button class="translate-btn" onclick="toggleTranslate(14)">Translate to Marathi</button>
+    <div class="translation-text" id="trans14">"bite the bullet" म्हणजे काय?</div>
+    <div class="q-text">What does "bite the bullet" mean?</div>
+    <div class="options">
+      <button class="opt-btn" onclick="selectOpt(14,'a','b')"><div class="opt-letter">a</div> To eat something hard</button>
+      <button class="opt-btn" onclick="selectOpt(14,'b','b')"><div class="opt-letter">b</div> To endure a painful situation bravely</button>
+      <button class="opt-btn" onclick="selectOpt(14,'c','b')"><div class="opt-letter">c</div> To lose a fight</button>
+      <button class="opt-btn" onclick="selectOpt(14,'d','b')"><div class="opt-letter">d</div> To speak too loudly</button>
+    </div>
+    <button class="next-btn" id="next14" onclick="nextQ(14)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q15: SPEAKING ══ -->
+  <div class="speak-card" id="q15">
+    <div class="level-badge level-B1" style="margin-bottom:12px;">Speaking</div>
+    <button class="translate-btn" onclick="toggleTranslate(15)">Translate to Marathi</button>
+    <div class="translation-text" id="trans15">खालील वाक्ये मोठ्याने वाचा. आपला आवाज रेकॉर्ड केला जाईल.</div>
+    <div class="q-text">Read the following sentences aloud.</div>
+    <p class="speak-intro">(A1 to C1 level — read naturally)</p>
+    <div class="sentences-list">
+      <div class="sentence-item">
+        <div class="sentence-num">1</div>
+        <div class="sentence-body">
+          <div class="sentence-text">The weather is very nice today.</div>
+          <div class="sentence-level">A1 – Beginner</div>
+        </div>
+      </div>
+      <div class="sentence-item">
+        <div class="sentence-num">2</div>
+        <div class="sentence-body">
+          <div class="sentence-text">We should arrive at the airport two hours before departure.</div>
+          <div class="sentence-level">A2 – Elementary</div>
+        </div>
+      </div>
+      <div class="sentence-item">
+        <div class="sentence-num">3</div>
+        <div class="sentence-body">
+          <div class="sentence-text">Learning a new language opens up opportunities for personal and professional growth.</div>
+          <div class="sentence-level">B1 – Intermediate</div>
+        </div>
+      </div>
+      <div class="sentence-item">
+        <div class="sentence-num">4</div>
+        <div class="sentence-body">
+          <div class="sentence-text">Despite numerous challenges, successful entrepreneurs demonstrate remarkable resilience.</div>
+          <div class="sentence-level">B2 – Upper Intermediate</div>
+        </div>
+      </div>
+      <div class="sentence-item">
+        <div class="sentence-num">5</div>
+        <div class="sentence-body">
+          <div class="sentence-text">The rapid advancement in artificial intelligence has fundamentally transformed contemporary communication methodologies.</div>
+          <div class="sentence-level">C1 – Advanced</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="record-section">
+      <div class="record-idle" id="recordIdle">
+        <button class="record-btn-big" id="recordBtn" onclick="toggleRecord()">🎤</button>
+        <div class="record-hint">Tap mic to start recording</div>
+      </div>
+      <div class="recording-status" id="recordingStatus">
+        <div class="rec-dot"></div>
+        <span id="recordTimer">Recording... 0s</span>
+      </div>
+      <div class="recording-complete" id="recordingComplete">
+        <div class="rec-complete-header">
+          <span class="rec-complete-check">✅</span>
+          <span class="rec-complete-title">Recording Complete!</span>
+          <span class="rec-complete-dur" id="recDur"></span>
+        </div>
+        <div class="rec-actions">
+          <button class="rec-play-btn" onclick="playRecording()">▷ &nbsp;Play Recording</button>
+          <button class="rec-delete-btn" onclick="deleteRecording()">🗑 &nbsp;Delete &amp; Re-record</button>
+        </div>
+        <div class="rec-hint-small">Listen to your recording or delete to try again</div>
+      </div>
+    </div>
+
+    <button class="next-btn" id="next15" onclick="nextQ(15)">Next Question →</button>
+  </div>
+
+  <!-- ══ Q16: WRITING ══ -->
+  <div class="write-card" id="q16">
+    <div class="level-badge level-C1" style="margin-bottom:12px;">C1</div>
+    <button class="translate-btn" onclick="toggleTranslate(16)">Translate to Marathi</button>
+    <div class="translation-text" id="trans16">या विषयावर ३-४ वाक्ये लिहा: "तुम्हाला इंग्रजी का शिकायचे आहे?"</div>
+    <div class="q-text">Write 3-4 sentences on this topic: "Why do you want to learn English?"</div>
+    <textarea class="write-textarea" id="writeInput" placeholder="I want to learn English because..." oninput="onWriteInput()"></textarea>
+    <div class="char-count" id="charCount">0 characters</div>
+    <button class="submit-btn" id="submitBtn" onclick="submitAssessment()">Submit Assessment →</button>
+  </div>
+
+  <!-- ══ THANKS SCREEN ══ -->
+  <div class="thanks-card" id="thanksCard">
+    <div class="thanks-title">Thank You<br>for Taking</div>
+    <div class="thanks-brand">Englisho —<br>Placement Assessment</div>
+    <div class="thanks-box">
+      <div class="thanks-submitted">Your assessment has been submitted successfully!</div>
+      <div class="thanks-rep">Our AI tutor will start your personalized learning journey shortly.</div>
+    </div>
+    <div class="thanks-stats">
+      <div class="stat-item">
+        <div class="stat-label">Language Pair</div>
+        <div class="stat-value">Marathi → English</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Questions Answered</div>
+        <div class="stat-value" id="statAnswered">17 / 17</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Estimated Level</div>
+        <div class="stat-value" id="statLevel">—</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">Score</div>
+        <div class="stat-value" id="statScore">—</div>
+      </div>
+    </div>
+    <hr class="thanks-divider"/>
+    <div class="thanks-contact">Have questions? Contact us!</div>
+    <div class="contact-btns">
+      <button class="contact-btn-email" onclick="window.location='mailto:hello@englisho.in'">📧 Email Us</button>
+      <button class="contact-btn-wa" onclick="window.open('https://wa.me/919822253333','_blank')">💬 WhatsApp</button>
+    </div>
+    <div style="margin-top:20px;">
+      <button class="start-learning-btn" onclick="startLearning()">🎓 Start Learning Now →</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    © 2026 Englisho. All rights reserved.<br>
+    <a href="https://englisho.in">englisho.in</a>
+  </div>
+
+</div><!-- end page-wrap -->
+
+<script>
+const TOTAL = 17;
+let current = 1;
+let score = 0;
+let answers = {};
+
+// Recording state
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordedBlob = null;
+let recordedAudio = null;
+let recordTimer = null;
+let recSeconds = 0;
+let recHasData = false;
+
+// ── PROGRESS ──
+function updateProgress() {
+  const done = current - 1;
+  const pct = Math.round((done / TOTAL) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = done + ' / ' + TOTAL;
+}
+
+// ── TRANSLATE ──
+function toggleTranslate(qn) {
+  const t = document.getElementById('trans' + qn);
+  const btn = document.querySelector('#q' + qn + ' .translate-btn') || document.querySelector('#q' + qn + ' .translate-btn') || document.getElementById('q' + qn + ' .translate-btn');
+  const allBtns = document.querySelectorAll('#q' + qn + '.q-card .translate-btn, #q' + qn + '.speak-card .translate-btn, #q' + qn + '.write-card .translate-btn');
+  allBtns.forEach(b => b.classList.toggle('translated', !t.classList.contains('show')));
+  t.classList.toggle('show');
+}
+
+// ── SELECT OPTION ──
+function selectOpt(qn, chosen, correct) {
+  // Already answered?
+  if (answers[qn] !== undefined) return;
+  answers[qn] = chosen;
+  const card = document.getElementById('q' + qn);
+  const opts = card.querySelectorAll('.opt-btn');
+  opts.forEach(btn => {
+    const letter = btn.querySelector('.opt-letter').textContent.trim();
+    if (letter === correct) btn.classList.add('correct');
+    else if (letter === chosen) btn.classList.add('wrong');
+    btn.style.cursor = 'default';
+  });
+  if (chosen === correct) score++;
+  document.getElementById('next' + qn).classList.add('enabled');
+}
+
+// ── NEXT Q ──
+function nextQ(qn) {
+  document.getElementById('q' + qn).classList.remove('active');
+  // Handle speak/write sections which have different ids
+  current = qn + 1;
+  updateProgress();
+
+  if (current <= 16) {
+    const nextCard = document.getElementById('q' + current);
+    if (nextCard) {
+      nextCard.classList.add('active');
+      nextCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
+
+// ── SPEAKING: next after recording ──
+// next15 is enabled after recording completes
+
+// ── WRITE INPUT ──
+function onWriteInput() {
+  const val = document.getElementById('writeInput').value;
+  document.getElementById('charCount').textContent = val.length + ' characters';
+  const btn = document.getElementById('submitBtn');
+  if (val.trim().length >= 10) btn.classList.add('enabled');
+  else btn.classList.remove('enabled');
+}
+
+// ── SUBMIT ──
+function submitAssessment() {
+  const totalMCQ = 14;
+  const pct = Math.round((score / totalMCQ) * 100);
+  let level = 'A1';
+  if (score >= 13) level = 'C1';
+  else if (score >= 11) level = 'B2';
+  else if (score >= 9) level = 'B1';
+  else if (score >= 7) level = 'A2';
+  else level = 'A1';
+
+  document.getElementById('statLevel').textContent = level;
+  document.getElementById('statScore').textContent = score + ' / ' + totalMCQ;
+  document.getElementById('statAnswered').textContent = '17 / 17';
+
+  document.getElementById('q16').classList.remove('active');
+  const tc = document.getElementById('thanksCard');
+  tc.classList.add('active');
+  tc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  current = 18;
+  updateProgress();
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = '17 / 17';
+}
+
+function startLearning() {
+  window.location.href = '/';
+}
+
+// ── RECORDING ──
+async function toggleRecord() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    stopRecording();
+  } else {
+    await startRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recordedChunks = [];
+    recSeconds = 0;
+    recHasData = false;
+
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => {
+      if (e.data && e.data.size > 0) {
+        recordedChunks.push(e.data);
+        recHasData = true;
+      }
+    };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      if (recHasData) {
+        recordedBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+        recordedAudio = new Audio(URL.createObjectURL(recordedBlob));
+        showRecordingComplete();
+      } else {
+        resetRecording();
+      }
+    };
+
+    mediaRecorder.start();
+    document.getElementById('recordBtn').classList.add('recording');
+    document.getElementById('recordBtn').textContent = '⏹';
+    document.getElementById('recordingStatus').classList.add('show');
+
+    recordTimer = setInterval(() => {
+      recSeconds++;
+      document.getElementById('recordTimer').textContent = 'Recording... ' + recSeconds + 's';
+      if (recSeconds >= 120) stopRecording(); // max 2 min
+    }, 1000);
+  } catch(e) {
+    alert('Microphone access denied. Please allow mic access to record.');
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state === 'recording') {
+    mediaRecorder.stop();
+  }
+  clearInterval(recordTimer);
+  document.getElementById('recordBtn').classList.remove('recording');
+  document.getElementById('recordBtn').textContent = '🎤';
+  document.getElementById('recordingStatus').classList.remove('show');
+}
+
+function showRecordingComplete() {
+  document.getElementById('recordingComplete').classList.add('show');
+  document.getElementById('recDur').textContent = 'Duration: ' + recSeconds + ' seconds';
+  document.getElementById('next15').classList.add('enabled');
+}
+
+function playRecording() {
+  if (recordedAudio) {
+    recordedAudio.currentTime = 0;
+    recordedAudio.play();
+  }
+}
+
+function deleteRecording() {
+  recordedBlob = null;
+  recordedAudio = null;
+  recHasData = false;
+  recordedChunks = [];
+  recSeconds = 0;
+  document.getElementById('recordingComplete').classList.remove('show');
+  document.getElementById('next15').classList.remove('enabled');
+  document.getElementById('recordBtn').textContent = '🎤';
+  document.getElementById('recordBtn').classList.remove('recording');
+}
+
+function resetRecording() {
+  document.getElementById('recordBtn').textContent = '🎤';
+  document.getElementById('recordingStatus').classList.remove('show');
+}
+
+// Init
+updateProgress();
+</script>
+</body>
+</html>
