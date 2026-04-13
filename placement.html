@@ -1095,10 +1095,11 @@ async function submitAssessment() {
 
   const totalMCQ = 14;
   let level = 'A1';
-  if (score >= 13) level = 'C1';
-  else if (score >= 11) level = 'B2';
+  // MCQ scoring — capped at B2. Only writing eval can push to C1.
+  // 14 simple MCQs cannot reliably detect C1 — max is B2
+  if (score >= 12) level = 'B2';
   else if (score >= 9) level = 'B1';
-  else if (score >= 7) level = 'A2';
+  else if (score >= 6) level = 'A2';
   else level = 'A1';
 
   // Evaluate writing via Gemini
@@ -1107,18 +1108,22 @@ async function submitAssessment() {
   let finalLevel = level;
 
   try {
-    const evalPrompt = `You are an English level assessor. A student wrote this response to "Why do you want to learn English?":
+    const evalPrompt = `You are a strict CEFR English assessor. A student wrote this about "Why do you want to learn English?":
 
 "${writingText}"
 
-Their MCQ score suggests level: ${level}
+Their MCQ test suggests level: ${level}
 
-Evaluate their writing in 2 lines max:
-1. Does the writing confirm ${level} level, or suggest higher/lower? 
-2. Give ONE specific grammar/vocabulary observation.
+Assess their writing STRICTLY:
+- C1 requires: complex sentences, sophisticated vocabulary, accurate grammar, nuanced expression. Only confirm C1 if the writing is genuinely advanced.
+- B2 requires: clear ideas, good range of vocabulary, mostly accurate grammar
+- MCQ alone cannot confirm C1 — writing must show clear evidence
 
-Reply in this exact JSON format only (no markdown):
-{"confirmed_level":"${level}","feedback":"your one observation here"}`;
+Reply ONLY in this exact JSON (no markdown):
+{"confirmed_level":"[A1/A2/B1/B2/C1]","feedback":"one specific observation about their grammar or vocabulary"}
+
+Be honest. Most learners who score 12/14 on MCQ are B2, not C1.`;
+
 
     const res = await fetch('https://englisho-api.nilesh53333.workers.dev/gemini', {
       method: 'POST',
