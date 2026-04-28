@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Englisho — Practice English Anywhere</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf6ee;
+    --paper-dark: #f3ecdc;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --ink-faint: #8a857a;
+    --accent: #25d366;     /* WhatsApp green — earned, not arbitrary */
+    --accent-deep: #128c7e;
+    --warm: #d97706;
+    --rose: #e11d48;
+    --line: #d6cfbf;
+    --line-soft: #e8e1d1;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 12% 20%, rgba(217, 119, 6, 0.04), transparent 40%),
+      radial-gradient(circle at 88% 80%, rgba(37, 211, 102, 0.04), transparent 40%);
+    min-height: 100vh;
+  }
+
+  /* Typography */
+  .display { font-family: 'Fraunces', serif; font-weight: 700; letter-spacing: -0.02em; }
+  .marathi { font-family: 'Noto Sans Devanagari', sans-serif; }
+
+  /* ─── HEADER ─── */
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 18px 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(250, 246, 238, 0.85);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.2);
+  }
+  .header-tag {
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  /* ─── LAYOUT ─── */
+  main {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 28px 80px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-deep);
+  }
+  .hero .marathi-tag {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink-soft);
+    font-size: 17px;
+    margin-top: 8px;
+  }
+  .hero .english-sub {
+    color: var(--ink-faint);
+    font-size: 14px;
+    margin-top: 12px;
+    font-style: italic;
+  }
+
+  /* ─── FORM PANEL ─── */
+  .panel {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 40px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 8px 30px rgba(0,0,0,0.04);
+  }
+  .panel-tag {
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .panel-title {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 32px;
+    letter-spacing: -0.01em;
+  }
+
+  /* ─── FORM FIELDS ─── */
+  .field {
+    margin-bottom: 26px;
+  }
+  .field-label {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .field-label .num {
+    font-family: 'Inter', sans-serif;
+    color: var(--accent-deep);
+    font-weight: 700;
+    margin-right: 8px;
+    font-size: 13px;
+  }
+  .field-hint {
+    color: var(--ink-faint);
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  .field-hint .marathi {
+    color: var(--ink-soft);
+  }
+
+  /* Pills (radio-button style) */
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    padding: 10px 16px;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s;
+    user-select: none;
+    color: var(--ink);
+  }
+  .pill:hover { border-color: var(--ink-soft); transform: translateY(-1px); }
+  .pill.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  /* Categories grid */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+  }
+  .cat {
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    padding: 14px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+  }
+  .cat:hover { border-color: var(--ink-soft); transform: translateY(-1px); }
+  .cat.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .cat-icon { font-size: 22px; display: block; margin-bottom: 4px; }
+  .cat-name { font-size: 12px; font-weight: 500; }
+
+  /* Textarea */
+  .topic-input {
+    width: 100%;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    resize: vertical;
+    min-height: 70px;
+    transition: border-color 0.15s;
+  }
+  .topic-input:focus {
+    outline: none;
+    border-color: var(--ink);
+  }
+  .topic-input::placeholder { color: var(--ink-faint); font-style: italic; }
+
+  .topic-suggestions {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .suggestion {
+    font-size: 11px;
+    background: transparent;
+    border: 1px dashed var(--line);
+    padding: 5px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    color: var(--ink-faint);
+    transition: all 0.15s;
+  }
+  .suggestion:hover {
+    color: var(--ink);
+    border-color: var(--ink-soft);
+    border-style: solid;
+  }
+
+  /* Generate button */
+  .generate-bar {
+    margin-top: 36px;
+    padding-top: 28px;
+    border-top: 1px dashed var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .generate-bar .est {
+    font-size: 12px;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+  .btn-generate {
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 14px 32px;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .btn-generate:hover {
+    background: var(--accent-deep);
+    transform: translateY(-1px);
+  }
+  .btn-generate:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-generate .arrow {
+    transition: transform 0.2s;
+  }
+  .btn-generate:hover .arrow { transform: translateX(4px); }
+
+  /* Loading */
+  .loading-screen {
+    display: none;
+    text-align: center;
+    padding: 80px 20px;
+  }
+  .loading-screen.active { display: block; }
+  .loading-text {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .loading-marathi {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+  }
+  .loading-bar {
+    width: 200px;
+    height: 2px;
+    background: var(--line);
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    border-radius: 2px;
+  }
+  .loading-bar::before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    width: 60px;
+    background: var(--accent);
+    animation: loading-slide 1.6s ease-in-out infinite;
+  }
+  @keyframes loading-slide {
+    0% { left: -60px; }
+    100% { left: 200px; }
+  }
+
+  /* ─── PLAY SCREEN ─── */
+  .play-screen { display: none; }
+  .play-screen.active { display: block; }
+
+  .scenario-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+  }
+  .scenario-card .meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .scenario-card .meta .badge {
+    border: 1px solid var(--line);
+    padding: 3px 8px;
+    border-radius: 12px;
+  }
+  .scenario-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .scenario-card .title-mr {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .scenario-card .case {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.7;
+    padding: 14px 18px;
+    background: var(--paper);
+    border-radius: 4px;
+    border-left: 2px solid var(--line);
+  }
+
+  .tasks-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 24px 32px;
+    margin-bottom: 24px;
+  }
+  .tasks-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .task-item:last-child { border-bottom: none; }
+  .task-checkbox {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--line);
+    border-radius: 4px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.3s;
+  }
+  .task-item.done .task-checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .task-content { flex: 1; }
+  .task-en { font-weight: 500; }
+  .task-mr {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-top: 2px;
+  }
+  .task-item.done .task-en { text-decoration: line-through; color: var(--ink-faint); }
+
+  /* Chat */
+  .chat-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .chat-header {
+    background: var(--paper);
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .chat-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--paper-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    border: 1px solid var(--line);
+  }
+  .chat-name { font-weight: 600; font-size: 14px; }
+  .chat-role { font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  .chat-messages {
+    padding: 24px;
+    min-height: 300px;
+    max-height: 500px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background:
+      linear-gradient(0deg, var(--paper) 0%, white 100%);
+  }
+  .msg {
+    display: flex;
+    flex-direction: column;
+    max-width: 75%;
+    animation: msg-in 0.25s ease-out;
+  }
+  @keyframes msg-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg-bot { align-self: flex-start; }
+  .msg-user { align-self: flex-end; }
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+  .msg-bot .msg-bubble {
+    background: white;
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 2px;
+  }
+  .msg-user .msg-bubble {
+    background: var(--accent);
+    color: white;
+    border-bottom-right-radius: 2px;
+  }
+  .msg-time {
+    font-size: 10px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+    padding: 0 4px;
+  }
+  .msg-user .msg-time { text-align: right; }
+
+  .typing {
+    align-self: flex-start;
+    display: none;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    border-bottom-left-radius: 2px;
+  }
+  .typing.show { display: flex; gap: 4px; }
+  .typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+    animation: typing 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.15s; }
+  .typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-3px); }
+  }
+
+  .chat-input-area {
+    border-top: 1px solid var(--line);
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    background: var(--paper);
+  }
+  .chat-input {
+    flex: 1;
+    background: white;
+    border: 1px solid var(--line);
+    padding: 10px 14px;
+    border-radius: 20px;
+    font-family: inherit;
+    font-size: 14px;
+  }
+  .chat-input:focus { outline: none; border-color: var(--accent); }
+  .chat-send {
+    background: var(--accent);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    transition: transform 0.15s;
+  }
+  .chat-send:hover { transform: scale(1.05); }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Done screen */
+  .done-card {
+    display: none;
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 40px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .done-card.show { display: block; }
+  .done-card .trophy {
+    font-size: 56px;
+    margin-bottom: 12px;
+    animation: trophy 0.6s ease-out;
+  }
+  @keyframes trophy {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(0); opacity: 1; }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .done-card h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+  }
+  .done-card .stats {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin: 24px 0;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .done-card .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--ink);
+    display: block;
+  }
+  .done-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .btn-secondary {
+    background: white;
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    padding: 12px 24px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+  /* Error */
+  .error-msg {
+    color: var(--rose);
+    background: rgba(225, 29, 72, 0.05);
+    border: 1px solid rgba(225, 29, 72, 0.2);
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding: 32px 28px;
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 12px;
+    border-top: 1px solid var(--line);
+  }
+  footer a { color: var(--accent-deep); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    main { padding: 24px 16px 60px; }
+    .panel { padding: 24px 20px; }
+    .scenario-card, .tasks-card { padding: 20px; }
+    .chat-messages { padding: 16px; }
+    .msg { max-width: 88%; }
+    .cat-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <span class="logo-dot"></span>
+    Englisho
+  </div>
+  <div class="header-tag">English practice · WhatsApp-friendly</div>
+</header>
+
+<main>
+  <!-- ═══════════════ FORM SCREEN ═══════════════ -->
+  <div id="form-screen">
+    <div class="hero">
+      <h1>Practice English<br><em>your way</em>.</h1>
+      <p class="marathi-tag">तुमचा topic, तुमचा level, तुमचा practice.</p>
+      <p class="english-sub">Pick a topic, choose how many tasks, AI builds you a roleplay.</p>
+    </div>
+
+    <div class="panel">
+      <div class="panel-tag">Build your scenario</div>
+      <div class="panel-title">Tell us what you want to practice</div>
+
+      <div class="field">
+        <label class="field-label"><span class="num">01</span>Your English level</label>
+        <p class="field-hint marathi">तुमचा सध्याचा level निवडा</p>
+        <div class="pills" id="level-pills">
+          <div class="pill" data-value="beginner">🟢 Beginner</div>
+          <div class="pill" data-value="pre_intermediate">🟡 Pre-Intermediate</div>
+          <div class="pill" data-value="intermediate">🟠 Intermediate</div>
+          <div class="pill" data-value="upper_intermediate">🔵 Upper-Int</div>
+          <div class="pill" data-value="advanced">🔴 Advanced</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span class="num">02</span>Topic category</label>
+        <p class="field-hint marathi">कोणत्या setting मध्ये practice करायचंय?</p>
+        <div class="cat-grid" id="cat-grid">
+          <div class="cat" data-value="restaurants"><span class="cat-icon">🍽️</span><span class="cat-name">Restaurants</span></div>
+          <div class="cat" data-value="travel"><span class="cat-icon">✈️</span><span class="cat-name">Travel</span></div>
+          <div class="cat" data-value="shopping"><span class="cat-icon">🛍️</span><span class="cat-name">Shopping</span></div>
+          <div class="cat" data-value="daily_interaction"><span class="cat-icon">🤝</span><span class="cat-name">Daily Talk</span></div>
+          <div class="cat" data-value="social_dynamics"><span class="cat-icon">💬</span><span class="cat-name">Social</span></div>
+          <div class="cat" data-value="free_discussion"><span class="cat-icon">🗣️</span><span class="cat-name">Discussion</span></div>
+          <div class="cat" data-value="job_interviews"><span class="cat-icon">💼</span><span class="cat-name">Interview</span></div>
+          <div class="cat" data-value="life_in_india"><span class="cat-icon">🇮🇳</span><span class="cat-name">India Life</span></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span class="num">03</span>Describe your scenario</label>
+        <p class="field-hint">A sentence or two about what you want to practice. <span class="marathi">मराठीत किंवा English मध्ये लिहा.</span></p>
+        <textarea id="topic-input" class="topic-input" placeholder="e.g. I want to practice negotiating with my boss for a salary raise"></textarea>
+        <div class="topic-suggestions" id="suggestions"></div>
+      </div>
+
+      <div class="field">
+        <label class="field-label"><span class="num">04</span>How many tasks?</label>
+        <p class="field-hint marathi">Conversation किती लांब हवी? (3 = quick, 7 = deep practice)</p>
+        <div class="pills" id="count-pills">
+          <div class="pill selected" data-value="3">3 tasks · Quick</div>
+          <div class="pill" data-value="5">5 tasks · Standard</div>
+          <div class="pill" data-value="7">7 tasks · Deep</div>
+        </div>
+      </div>
+
+      <div class="generate-bar">
+        <div class="est">⏱ Generation takes 10-15 seconds</div>
+        <button class="btn-generate" id="btn-generate" onclick="generate()">
+          <span>Generate Roleplay</span>
+          <span class="arrow">→</span>
+        </button>
+      </div>
+      <div id="form-error" class="error-msg" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LOADING SCREEN ═══════════════ -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loading-text">Building your scenario…</div>
+    <div class="loading-marathi">_AI तुमच्यासाठी एक खास practice तयार करतंय_</div>
+    <div class="loading-bar"></div>
+  </div>
+
+  <!-- ═══════════════ PLAY SCREEN ═══════════════ -->
+  <div id="play-screen" class="play-screen">
+    <div class="scenario-card" id="scenario-card"></div>
+    <div class="tasks-card" id="tasks-card"></div>
+
+    <div class="chat-card">
+      <div class="chat-header" id="chat-header"></div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Type your message…" onkeypress="if(event.key==='Enter') sendMessage()">
+        <button class="chat-send" id="chat-send" onclick="sendMessage()">→</button>
+      </div>
+    </div>
+
+    <div class="done-card" id="done-card">
+      <div class="trophy">🏆</div>
+      <h2>All tasks complete!</h2>
+      <p style="color:var(--ink-soft);">तुम्ही सगळ्या tasks यशस्वीपणे पूर्ण केल्या!</p>
+      <div class="stats" id="stats"></div>
+      <div class="done-actions">
+        <button class="btn-secondary" onclick="resetToForm()">← New scenario</button>
+        <button class="btn-generate" onclick="quickRegenerate()"><span>Try another like this</span><span class="arrow">→</span></button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Made for Marathi-speaking learners by <a href="https://englisho.in">englisho.in</a><br>
+  <span style="color:var(--ink-faint);font-size:11px;margin-top:8px;display:inline-block;">⚠️ Demo page · scenarios are AI-generated, quality may vary</span>
+</footer>
+
+<script>
+const CONFIG = {
+  WORKER_URL: "https://englisho-api.nilesh53333.workers.dev"
+};
+
+const SUGGESTIONS_BY_CAT = {
+  restaurants: ["I want to send back a wrong order", "Asking about ingredients of a dish", "Splitting bill with friends"],
+  travel: ["Negotiating with auto driver", "Asking for directions in a new city", "Booking last-minute hotel"],
+  shopping: ["Returning a defective phone", "Asking for size exchange", "Bargaining for a kurta"],
+  daily_interaction: ["Meeting a friend's parents", "Talking to delivery person", "Wishing colleague on Diwali"],
+  social_dynamics: ["Politely declining wedding invite", "Apologizing for being late", "Giving honest feedback"],
+  free_discussion: ["Discussing a recent movie", "Planning weekend with friend", "Sharing childhood memory"],
+  job_interviews: ["Salary negotiation", "Why do you want to leave current job", "Tell me about a challenge"],
+  life_in_india: ["Talking to vegetable vendor", "Society watchman about parking", "Negotiating with electrician"]
+};
+
+// ─── State ───
+let state = {
+  level: null,
+  category: null,
+  topic: "",
+  taskCount: 3,
+  scenario: null,
+  history: [],         // for Gemini: [{role:"user"/"assistant", text}]
+  tasksDone: [],
+  startTime: null
+};
+
+// ─── Pill selection ───
+document.querySelectorAll("#level-pills .pill").forEach(p => {
+  p.onclick = () => {
+    document.querySelectorAll("#level-pills .pill").forEach(x => x.classList.remove("selected"));
+    p.classList.add("selected");
+    state.level = p.dataset.value;
+  };
+});
+
+document.querySelectorAll("#cat-grid .cat").forEach(c => {
+  c.onclick = () => {
+    document.querySelectorAll("#cat-grid .cat").forEach(x => x.classList.remove("selected"));
+    c.classList.add("selected");
+    state.category = c.dataset.value;
+    renderSuggestions();
+  };
+});
+
+document.querySelectorAll("#count-pills .pill").forEach(p => {
+  p.onclick = () => {
+    document.querySelectorAll("#count-pills .pill").forEach(x => x.classList.remove("selected"));
+    p.classList.add("selected");
+    state.taskCount = parseInt(p.dataset.value, 10);
+  };
+});
+
+function renderSuggestions() {
+  const wrap = document.getElementById("suggestions");
+  const suggestions = SUGGESTIONS_BY_CAT[state.category] || [];
+  wrap.innerHTML = suggestions.map(s => `<button class="suggestion" onclick="useSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`).join("");
+}
+
+function useSuggestion(text) {
+  document.getElementById("topic-input").value = text;
+}
+
+// ─── Generate ───
+async function generate() {
+  const topic = document.getElementById("topic-input").value.trim();
+  state.topic = topic;
+
+  const errEl = document.getElementById("form-error");
+  errEl.style.display = "none";
+
+  if (!state.level) return showError("Pick your English level (#01)");
+  if (!state.category) return showError("Pick a topic category (#02)");
+  if (!topic || topic.length < 10) return showError("Describe your scenario (#03) — at least 10 characters");
+
+  document.getElementById("form-screen").style.display = "none";
+  document.getElementById("loading-screen").classList.add("active");
+
+  try {
+    const r = await fetch(CONFIG.WORKER_URL + "/admin/generate-scenario", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        oneLiner: topic,
+        level: state.level,
+        category: state.category,
+        taskCount: state.taskCount
+      })
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data.error || ("HTTP " + r.status));
+
+    state.scenario = data.scenario;
+    state.history = [];
+    state.tasksDone = [];
+    state.startTime = Date.now();
+
+    renderPlayScreen();
+  } catch (e) {
+    document.getElementById("loading-screen").classList.remove("active");
+    document.getElementById("form-screen").style.display = "block";
+    showError("Generation failed: " + e.message);
+  }
+}
+
+function showError(msg) {
+  const errEl = document.getElementById("form-error");
+  errEl.textContent = "⚠ " + msg;
+  errEl.style.display = "block";
+}
+
+// ─── Play screen ───
+function renderPlayScreen() {
+  document.getElementById("loading-screen").classList.remove("active");
+  document.getElementById("play-screen").classList.add("active");
+
+  const sc = state.scenario;
+  const lvlMap = {
+    beginner: { icon: "🟢", name: "Beginner" },
+    pre_intermediate: { icon: "🟡", name: "Pre-Intermediate" },
+    intermediate: { icon: "🟠", name: "Intermediate" },
+    upper_intermediate: { icon: "🔵", name: "Upper-Int" },
+    advanced: { icon: "🔴", name: "Advanced" }
+  };
+  const lvl = lvlMap[sc.level] || { icon: "•", name: sc.level };
+
+  // Scenario card
+  document.getElementById("scenario-card").innerHTML = `
+    <div class="meta">
+      <span class="badge">${lvl.icon} ${lvl.name}</span>
+      <span class="badge">${sc.tasks.length} tasks</span>
+      <span class="badge">AI-generated</span>
+    </div>
+    <h2>${escapeHtml(sc.title_en)}</h2>
+    <div class="title-mr">${escapeHtml(sc.title_mr)}</div>
+    <div class="case">${escapeHtml(sc.case_mr)}</div>
+  `;
+
+  // Tasks
+  renderTasks();
+
+  // Chat header
+  document.getElementById("chat-header").innerHTML = `
+    <div class="chat-avatar">${sc.character?.emoji || "👤"}</div>
+    <div>
+      <div class="chat-name">${escapeHtml(sc.character?.name || "Assistant")}</div>
+      <div class="chat-role">${escapeHtml((sc.setting_mr || "").replace(/^🚪\s*/, "").slice(0, 60))}</div>
+    </div>
+  `;
+
+  // Chat messages — start with character's opening
+  document.getElementById("chat-messages").innerHTML = "";
+  document.getElementById("done-card").classList.remove("show");
+
+  const opening = sc.character?.opening_en;
+  if (opening) {
+    addBotMessage(opening);
+    state.history.push({ role: "assistant", text: opening });
+  }
+
+  document.getElementById("chat-input").value = "";
+  document.getElementById("chat-input").focus();
+  scrollToBottom();
+}
+
+function renderTasks() {
+  const sc = state.scenario;
+  let html = `<h3>📋 Your tasks <span style="color:var(--ink-faint);font-weight:400;font-size:14px;">— ${state.tasksDone.length}/${sc.tasks.length}</span></h3>`;
+  for (let i = 0; i < sc.tasks.length; i++) {
+    const t = sc.tasks[i];
+    const done = state.tasksDone.includes(t.id);
+    html += `
+      <div class="task-item ${done ? 'done' : ''}">
+        <div class="task-checkbox">${done ? '✓' : ''}</div>
+        <div class="task-content">
+          <div class="task-en">${i + 1}. ${escapeHtml(t.english)}</div>
+          <div class="task-mr">${escapeHtml(t.marathi)}</div>
+        </div>
+      </div>
+    `;
+  }
+  document.getElementById("tasks-card").innerHTML = html;
+}
+
+function addBotMessage(text) {
+  const wrap = document.getElementById("chat-messages");
+  const div = document.createElement("div");
+  div.className = "msg msg-bot";
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">${state.scenario.character?.name || "Bot"} · just now</div>`;
+  wrap.appendChild(div);
+  scrollToBottom();
+}
+
+function addUserMessage(text) {
+  const wrap = document.getElementById("chat-messages");
+  const div = document.createElement("div");
+  div.className = "msg msg-user";
+  div.innerHTML = `<div class="msg-bubble">${escapeHtml(text)}</div><div class="msg-time">You · just now</div>`;
+  wrap.appendChild(div);
+  scrollToBottom();
+}
+
+function showTyping() {
+  const wrap = document.getElementById("chat-messages");
+  let typing = document.getElementById("typing-indicator");
+  if (!typing) {
+    typing = document.createElement("div");
+    typing.id = "typing-indicator";
+    typing.className = "typing";
+    typing.innerHTML = "<span></span><span></span><span></span>";
+    wrap.appendChild(typing);
+  }
+  typing.classList.add("show");
+  scrollToBottom();
+}
+
+function hideTyping() {
+  const typing = document.getElementById("typing-indicator");
+  if (typing) typing.classList.remove("show");
+}
+
+function scrollToBottom() {
+  const wrap = document.getElementById("chat-messages");
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+  if (!text) return;
+  if (state.tasksDone.length === state.scenario.tasks.length) return; // already done
+
+  input.value = "";
+  input.disabled = true;
+  document.getElementById("chat-send").disabled = true;
+
+  addUserMessage(text);
+  state.history.push({ role: "user", text });
+  showTyping();
+
+  try {
+    const r = await fetch(CONFIG.WORKER_URL + "/play/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        scenario: state.scenario,
+        history: state.history.slice(0, -1),  // history excluding current user msg (worker sends current as userMessage)
+        userMessage: text,
+        tasksDone: state.tasksDone
+      })
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data.error || "HTTP " + r.status);
+
+    hideTyping();
+
+    // Update tasks
+    if (data.newlyDoneTasks && data.newlyDoneTasks.length > 0) {
+      state.tasksDone.push(...data.newlyDoneTasks);
+      renderTasks();
+    }
+
+    addBotMessage(data.reply);
+    state.history.push({ role: "assistant", text: data.reply });
+
+    // Check completion
+    if (data.allTasksDone) {
+      setTimeout(() => showDone(), 700);
+    }
+  } catch (e) {
+    hideTyping();
+    addBotMessage("(connection issue — try again: " + e.message + ")");
+  } finally {
+    input.disabled = false;
+    document.getElementById("chat-send").disabled = false;
+    input.focus();
+  }
+}
+
+function showDone() {
+  const elapsed = Math.round((Date.now() - state.startTime) / 1000);
+  const min = Math.floor(elapsed / 60);
+  const sec = elapsed % 60;
+  document.getElementById("stats").innerHTML = `
+    <div><span class="stat-num">${state.scenario.tasks.length}</span>tasks done</div>
+    <div><span class="stat-num">${state.history.filter(h => h.role === "user").length}</span>messages sent</div>
+    <div><span class="stat-num">${min}m ${sec}s</span>time spent</div>
+  `;
+  document.getElementById("done-card").classList.add("show");
+  document.getElementById("done-card").scrollIntoView({ behavior: "smooth", block: "center" });
+  document.getElementById("chat-input").disabled = true;
+  document.getElementById("chat-send").disabled = true;
+}
+
+// ─── Reset / Regenerate ───
+function resetToForm() {
+  document.getElementById("play-screen").classList.remove("active");
+  document.getElementById("form-screen").style.display = "block";
+  document.getElementById("done-card").classList.remove("show");
+  state.scenario = null;
+  state.history = [];
+  state.tasksDone = [];
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function quickRegenerate() {
+  // Same level/category/count, but allow user to tweak topic
+  document.getElementById("play-screen").classList.remove("active");
+  document.getElementById("done-card").classList.remove("show");
+  document.getElementById("form-screen").style.display = "block";
+  // Keep the form pre-filled
+  document.getElementById("topic-input").value = state.topic;
+  document.getElementById("topic-input").focus();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ─── Utils ───
+function escapeHtml(s) {
+  if (!s) return "";
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+</script>
+
+</body>
+</html>
